@@ -24,17 +24,17 @@ export default function DashboardPage() {
           position: relative;
           overflow-x: hidden;
           background:
-            radial-gradient(circle at top, rgba(26,34,54,0.55) 0%, rgba(7,9,16,0.96) 42%, #04060b 100%);
+            radial-gradient(circle at top, rgba(18,26,42,0.40) 0%, rgba(7,9,16,0.97) 42%, #04060b 100%);
         }
 
         .grid {
           position: fixed;
           inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,0.014) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
           background-size: 64px 64px;
-          opacity: 0.18;
+          opacity: 0.12;
           pointer-events: none;
         }
 
@@ -43,25 +43,24 @@ export default function DashboardPage() {
           inset: 0;
           pointer-events: none;
           background:
-            radial-gradient(circle at 18% 20%, rgba(255,255,255,0.04), transparent 20%),
-            radial-gradient(circle at 82% 28%, rgba(73,92,148,0.14), transparent 24%),
-            radial-gradient(circle at 50% 78%, rgba(255,255,255,0.03), transparent 20%);
+            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02), transparent 20%),
+            radial-gradient(circle at 85% 24%, rgba(73,92,148,0.06), transparent 24%);
         }
 
         .shell {
           position: relative;
           z-index: 2;
-          max-width: 1360px;
+          max-width: 1180px;
           margin: 0 auto;
-          padding: 24px 24px 80px;
+          padding: 24px 24px 70px;
         }
 
         .glass {
-          background: rgba(255,255,255,0.04);
+          background: rgba(255,255,255,0.035);
           border: 1px solid rgba(255,255,255,0.08);
           box-shadow:
-            0 20px 50px rgba(0,0,0,0.34),
-            inset 0 1px 0 rgba(255,255,255,0.05);
+            0 18px 40px rgba(0,0,0,0.30),
+            inset 0 1px 0 rgba(255,255,255,0.045);
           backdrop-filter: blur(18px) saturate(125%);
           -webkit-backdrop-filter: blur(18px) saturate(125%);
         }
@@ -89,8 +88,8 @@ export default function DashboardPage() {
         }
 
         .brand-icon-wrap {
-          width: 56px;
-          height: 56px;
+          width: 54px;
+          height: 54px;
           border-radius: 18px;
           display: flex;
           align-items: center;
@@ -100,8 +99,8 @@ export default function DashboardPage() {
         }
 
         .brand-icon {
-          width: 38px;
-          height: 38px;
+          width: 36px;
+          height: 36px;
           object-fit: contain;
         }
 
@@ -141,16 +140,9 @@ export default function DashboardPage() {
         }
 
         .hero {
-          display: grid;
-          grid-template-columns: 1.15fr 0.85fr;
-          gap: 20px;
-          margin-bottom: 20px;
-        }
-
-        .hero-left,
-        .hero-right {
           border-radius: 30px;
-          padding: 30px;
+          padding: 34px;
+          margin-bottom: 20px;
         }
 
         .eyebrow {
@@ -166,90 +158,53 @@ export default function DashboardPage() {
         }
 
         .hero-title {
-          margin: 0 0 10px 0;
-          font-size: clamp(38px, 5vw, 66px);
-          line-height: 0.95;
-          letter-spacing: -0.06em;
-          font-weight: 700;
+          margin: 0 0 12px 0;
+          font-size: clamp(34px, 5vw, 56px);
+          line-height: 0.96;
+          letter-spacing: -0.055em;
+          font-weight: 680;
         }
 
         .hero-text {
           margin: 0;
-          max-width: 760px;
+          max-width: 740px;
           color: #98a3b3;
-          font-size: 18px;
-          line-height: 1.85;
+          font-size: 17px;
+          line-height: 1.8;
         }
 
-        .status-grid {
+        .stats {
+          margin-top: 28px;
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(4, 1fr);
           gap: 14px;
-          margin-top: 24px;
         }
 
-        .status-card {
-          border-radius: 22px;
+        .stat {
+          border-radius: 20px;
           padding: 18px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: rgba(255,255,255,0.025);
+          border: 1px solid rgba(255,255,255,0.06);
         }
 
-        .status-label {
+        .stat-label {
           color: #7f8999;
           font-size: 12px;
           margin-bottom: 8px;
         }
 
-        .status-value {
+        .stat-value {
           font-size: 18px;
           font-weight: 650;
           color: #eef2f8;
+          letter-spacing: -0.02em;
         }
 
-        .right-title {
-          margin: 0 0 10px 0;
-          font-size: 26px;
-          line-height: 1.05;
-          letter-spacing: -0.04em;
-          font-weight: 680;
-        }
-
-        .right-text {
-          margin: 0 0 20px 0;
-          color: #97a2b2;
-          line-height: 1.8;
-          font-size: 15px;
-        }
-
-        .mini-stack {
+        .grid-2 {
           display: grid;
-          gap: 12px;
-        }
-
-        .mini-row {
-          border-radius: 18px;
-          padding: 16px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
-        }
-
-        .mini-row strong {
-          display: block;
-          margin-bottom: 6px;
-          font-size: 15px;
-        }
-
-        .mini-row span {
-          color: #95a0b1;
-          font-size: 14px;
-          line-height: 1.7;
-        }
-
-        .main-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-columns: 1fr 1fr;
           gap: 20px;
+          margin-bottom: 20px;
         }
 
         .card {
@@ -259,10 +214,10 @@ export default function DashboardPage() {
 
         .card h2 {
           margin: 0 0 12px 0;
-          font-size: 28px;
+          font-size: 26px;
+          line-height: 1.04;
           letter-spacing: -0.04em;
-          line-height: 1.02;
-          font-weight: 650;
+          font-weight: 660;
         }
 
         .card p {
@@ -288,27 +243,6 @@ export default function DashboardPage() {
           line-height: 1.7;
         }
 
-        .wide {
-          margin-top: 20px;
-          border-radius: 30px;
-          padding: 30px;
-        }
-
-        .wide h2 {
-          margin: 0 0 12px 0;
-          font-size: 32px;
-          letter-spacing: -0.05em;
-          line-height: 1.02;
-          font-weight: 680;
-        }
-
-        .wide p {
-          margin: 0;
-          color: #97a2b2;
-          line-height: 1.9;
-          font-size: 16px;
-        }
-
         .footer {
           margin-top: 24px;
           padding-top: 22px;
@@ -320,20 +254,25 @@ export default function DashboardPage() {
           flex-wrap: wrap;
         }
 
-        @media (max-width: 1100px) {
-          .hero,
-          .main-grid {
-            grid-template-columns: 1fr !important;
+        @media (max-width: 900px) {
+          .stats,
+          .grid-2 {
+            grid-template-columns: 1fr 1fr;
           }
         }
 
         @media (max-width: 700px) {
           .shell {
-            padding: 16px 16px 60px;
+            padding: 16px 16px 56px;
           }
 
-          .status-grid {
+          .stats,
+          .grid-2 {
             grid-template-columns: 1fr;
+          }
+
+          .hero {
+            padding: 24px;
           }
         }
       `}</style>
@@ -359,131 +298,72 @@ export default function DashboardPage() {
           </div>
 
           <div className="top-actions">
-            <Link href="/" className="action-btn">
-              Home
-            </Link>
-            <Link href="/more" className="action-btn">
-              More Information
-            </Link>
-            <Link href="/login" className="action-btn">
-              Log Out
-            </Link>
+            <Link href="/" className="action-btn">Home</Link>
+            <Link href="/login" className="action-btn">Log Out</Link>
           </div>
         </div>
 
-        <section className="hero">
-          <div className="hero-left glass">
-            <div className="eyebrow">CLIENT OVERVIEW</div>
-            <h1 className="hero-title">Welcome to your private access area.</h1>
-            <p className="hero-text">
-              This dashboard is the structured client environment for future access
-              to your SFCM infrastructure, delivery resources, onboarding material,
-              and protected client-level components.
-            </p>
-
-            <div className="status-grid">
-              <div className="status-card">
-                <div className="status-label">Subscription</div>
-                <div className="status-value">Active</div>
-              </div>
-
-              <div className="status-card">
-                <div className="status-label">Access Level</div>
-                <div className="status-value">Private Client</div>
-              </div>
-
-              <div className="status-card">
-                <div className="status-label">Infrastructure</div>
-                <div className="status-value">Connected</div>
-              </div>
-
-              <div className="status-card">
-                <div className="status-label">Framework</div>
-                <div className="status-value">Risk-First</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-right glass">
-            <h2 className="right-title">Current dashboard status</h2>
-            <p className="right-text">
-              The client portal is prepared as a premium protected area and can be
-              connected next to your real authentication and subscription logic.
-            </p>
-
-            <div className="mini-stack">
-              <div className="mini-row">
-                <strong>Portal readiness</strong>
-                <span>Frontend client area is active and ready for backend connection.</span>
-              </div>
-
-              <div className="mini-row">
-                <strong>Next integration</strong>
-                <span>Authentication, database validation, and client-specific access rules.</span>
-              </div>
-
-              <div className="mini-row">
-                <strong>Protected delivery</strong>
-                <span>Only active clients should later see restricted infrastructure content.</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="main-grid">
-          <div className="card glass">
-            <h2>Client Access</h2>
-            <p>
-              This area can later contain personalized client permissions, private
-              onboarding steps, access approvals, and subscription-based feature
-              visibility.
-            </p>
-
-            <div className="list">
-              <div className="list-item">Private login environment</div>
-              <div className="list-item">Client-specific permissions</div>
-              <div className="list-item">Controlled dashboard visibility</div>
-            </div>
-          </div>
-
-          <div className="card glass">
-            <h2>Infrastructure</h2>
-            <p>
-              The dashboard can be used as the central entry point for setup
-              guidance, delivery instructions, operational updates, and protected
-              infrastructure resources.
-            </p>
-
-            <div className="list">
-              <div className="list-item">Setup and onboarding material</div>
-              <div className="list-item">Protected delivery resources</div>
-              <div className="list-item">Client environment status</div>
-            </div>
-          </div>
-
-          <div className="card glass">
-            <h2>Subscription Control</h2>
-            <p>
-              Later, access to this dashboard can depend on active billing status,
-              expiry date, or manual activation and deactivation from your admin
-              control layer.
-            </p>
-
-            <div className="list">
-              <div className="list-item">Active / inactive client status</div>
-              <div className="list-item">Access lock if subscription expires</div>
-              <div className="list-item">Manual admin override possible</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="wide glass">
-          <h2>What comes next</h2>
-          <p>
-            The next step is to connect this dashboard to a real authentication
-            system and database structure. After that, only valid users with active
-            access should be able to log in and view protected client content.
+        <section className="hero glass">
+          <div className="eyebrow">CLIENT OVERVIEW</div>
+          <h1 className="hero-title">Private client access area.</h1>
+          <p className="hero-text">
+            This dashboard gives a clean overview of your SFCM access status,
+            client credentials, infrastructure readiness, and protected delivery
+            information.
           </p>
+
+          <div className="stats">
+            <div className="stat">
+              <div className="stat-label">Subscription</div>
+              <div className="stat-value">Active</div>
+            </div>
+
+            <div className="stat">
+              <div className="stat-label">Access Level</div>
+              <div className="stat-value">Private Client</div>
+            </div>
+
+            <div className="stat">
+              <div className="stat-label">Client Secret</div>
+              <div className="stat-value">SFCM_SECRET_001</div>
+            </div>
+
+            <div className="stat">
+              <div className="stat-label">Infrastructure</div>
+              <div className="stat-value">Connected</div>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid-2">
+          <div className="card glass">
+            <h2>Access Details</h2>
+            <p>
+              This area is intended for private clients with controlled access to
+              SFCM infrastructure, setup information, and future protected content.
+            </p>
+
+            <div className="list">
+              <div className="list-item">Client email visibility</div>
+              <div className="list-item">Permanent client secret</div>
+              <div className="list-item">Subscription-based access control</div>
+            </div>
+          </div>
+
+          <div className="card glass">
+            <h2>Next Integration</h2>
+            <p>
+              The next technical step is to connect this dashboard directly to Neon
+              so that login, client data, and account status are loaded live from
+              the database.
+            </p>
+
+            <div className="list">
+              <div className="list-item">Email + password login</div>
+              <div className="list-item">Secret tied to one client only</div>
+              <div className="list-item">Access lock for inactive subscriptions</div>
+            </div>
+          </div>
         </section>
 
         <footer className="footer">
