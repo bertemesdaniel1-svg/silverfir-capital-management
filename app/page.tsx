@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function Page() {
-  const [chartDarkness, setChartDarkness] = useState(0.25);
+  const [chartDarkness, setChartDarkness] = useState(0.18);
   const [parallax, setParallax] = useState(0);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
@@ -18,12 +18,11 @@ export default function Page() {
       );
       const progress = Math.min(scrollTop / docHeight, 1);
 
-      // oben ca. 65% sichtbar, unten ca. 5%
-      const darkness = 0.25 + progress * 0.70;
+      // oben relativ klar, unten fast weg
+      const darkness = 0.18 + progress * 0.77;
       setChartDarkness(Math.min(0.95, darkness));
 
-      // leichte Parallax für Grid/Atmosphäre
-      setParallax(scrollTop * 0.12);
+      setParallax(scrollTop * 0.08);
 
       ticking = false;
     };
@@ -38,8 +37,8 @@ export default function Page() {
     const onMouseMove = (e: MouseEvent) => {
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
-      const rx = ((e.clientY - cy) / cy) * -2.5;
-      const ry = ((e.clientX - cx) / cx) * 3.5;
+      const rx = ((e.clientY - cy) / cy) * -2.2;
+      const ry = ((e.clientX - cx) / cx) * 3;
       setTilt({ x: rx, y: ry });
     };
 
@@ -115,7 +114,6 @@ export default function Page() {
           background-size: 64px 64px;
           opacity: 0.10;
           pointer-events: none;
-          will-change: transform;
         }
 
         .ambient {
@@ -138,7 +136,7 @@ export default function Page() {
         .container {
           max-width: 1380px;
           margin: 0 auto;
-          padding: 32px 24px 110px;
+          padding: 120px 24px 110px;
         }
 
         .glass {
@@ -152,14 +150,33 @@ export default function Page() {
           -webkit-backdrop-filter: blur(18px) saturate(125%);
         }
 
-        .nav {
+        /* Sticky top bar */
+        .topbar-wrap {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 20;
+          padding: 18px 24px;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+        }
+
+        .topbar {
+          max-width: 1380px;
+          margin: 0 auto;
           display: flex;
           justify-content: space-between;
           align-items: center;
           gap: 20px;
-          margin-bottom: 78px;
           flex-wrap: wrap;
-          animation: fadeUp 1s ease forwards;
+          border-radius: 22px;
+          padding: 14px 18px;
+          background: rgba(7,10,16,0.48);
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow:
+            0 14px 30px rgba(0,0,0,0.28),
+            inset 0 1px 0 rgba(255,255,255,0.04);
         }
 
         .brand {
@@ -264,22 +281,22 @@ export default function Page() {
 
         .hero-title {
           margin: 0 0 14px 0;
-          font-size: clamp(54px, 8vw, 104px);
+          font-size: clamp(48px, 7vw, 88px);
           line-height: 0.90;
-          letter-spacing: -0.07em;
+          letter-spacing: -0.06em;
           font-weight: 700;
           text-wrap: balance;
         }
 
         .hero-sub-1 {
-          font-size: clamp(18px, 2.4vw, 24px);
+          font-size: clamp(16px, 2vw, 22px);
           letter-spacing: 0.34em;
           margin-bottom: 10px;
           font-weight: 650;
         }
 
         .hero-sub-2 {
-          font-size: clamp(12px, 1.5vw, 16px);
+          font-size: clamp(11px, 1.2vw, 15px);
           letter-spacing: 0.30em;
           margin-bottom: 30px;
           font-weight: 550;
@@ -289,30 +306,30 @@ export default function Page() {
           background: linear-gradient(
             180deg,
             #ffffff 0%,
-            #f0f2f5 18%,
-            #cfd4db 38%,
-            #ffffff 52%,
-            #aeb4bc 68%,
-            #e9edf2 82%,
-            #8f97a1 100%
+            #f8f9fb 10%,
+            #d8dde4 28%,
+            #ffffff 44%,
+            #b1b7c0 62%,
+            #f0f3f6 78%,
+            #9199a3 100%
           );
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           text-shadow:
-            0 1px 0 rgba(255,255,255,0.20),
-            0 10px 30px rgba(0,0,0,0.22);
+            0 1px 0 rgba(255,255,255,0.22),
+            0 12px 30px rgba(0,0,0,0.24);
           filter: drop-shadow(0 0 8px rgba(255,255,255,0.05));
         }
 
         .metallic-sub {
           background: linear-gradient(
             180deg,
-            #f7f8fa 0%,
-            #d9dee5 30%,
-            #ffffff 52%,
-            #adb4be 78%,
-            #e3e7ec 100%
+            #ffffff 0%,
+            #e2e6ec 24%,
+            #ffffff 46%,
+            #b3bac4 72%,
+            #eef2f6 100%
           );
           -webkit-background-clip: text;
           background-clip: text;
@@ -325,10 +342,10 @@ export default function Page() {
         .metallic-sub-2 {
           background: linear-gradient(
             180deg,
-            #d6dce4 0%,
-            #b1b8c2 45%,
-            #e8ecf1 68%,
-            #8e97a2 100%
+            #dce2ea 0%,
+            #b5bcc6 36%,
+            #eef2f6 62%,
+            #919aa5 100%
           );
           -webkit-background-clip: text;
           background-clip: text;
@@ -683,15 +700,6 @@ export default function Page() {
           }
         }
 
-        @keyframes gridDrift {
-          0% {
-            transform: translate3d(0, 0, 0);
-          }
-          100% {
-            transform: translate3d(0, 64px, 0);
-          }
-        }
-
         @media (max-width: 1180px) {
           .hero-main-row {
             grid-template-columns: 1fr;
@@ -708,12 +716,12 @@ export default function Page() {
         }
 
         @media (max-width: 700px) {
-          .container {
-            padding: 24px 16px 84px;
+          .topbar-wrap {
+            padding: 12px 14px;
           }
 
-          .nav {
-            margin-bottom: 50px;
+          .container {
+            padding: 110px 16px 84px;
           }
 
           .hero {
@@ -753,43 +761,65 @@ export default function Page() {
           alt="US100 Background Chart"
           className="fixed-chart-image"
         />
-        <div className="fixed-chart-fade" />
+        <div
+          className="fixed-chart-fade"
+          style={{
+            background: `
+              linear-gradient(
+                180deg,
+                rgba(4,6,11,${chartDarkness}) 0%,
+                rgba(4,6,11,${Math.min(chartDarkness + 0.10, 0.98)}) 18%,
+                rgba(4,6,11,${Math.min(chartDarkness + 0.22, 0.985)}) 40%,
+                rgba(4,6,11,${Math.min(chartDarkness + 0.36, 0.99)}) 62%,
+                rgba(4,6,11,${Math.min(chartDarkness + 0.52, 0.995)}) 82%,
+                rgba(4,6,11,${Math.min(chartDarkness + 0.64, 0.998)}) 100%
+              ),
+              linear-gradient(
+                90deg,
+                rgba(4,6,11,0.70) 0%,
+                rgba(4,6,11,0.30) 22%,
+                rgba(4,6,11,0.10) 50%,
+                rgba(4,6,11,0.30) 78%,
+                rgba(4,6,11,0.72) 100%
+              )
+            `,
+          }}
+        />
       </div>
 
       <div
         className="ambient"
-        style={{ transform: `translateY(${parallax * 0.4}px)` }}
+        style={{ transform: `translateY(${parallax * 0.35}px)` }}
       />
 
-      <div
-        className="page-content"
-        style={{ transform: `translateY(${parallax * 0}px)` }}
-      >
+      <div className="topbar-wrap">
+        <div className="topbar">
+          <div className="brand">
+            <div className="brand-icon-wrap glass">
+              <img
+                src="/sfcm-tree-logo.png"
+                alt="SFCM Tree Logo"
+                className="brand-icon"
+              />
+            </div>
+
+            <div>
+              <div className="brand-top">SFCM</div>
+              <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
+            </div>
+          </div>
+
+          <div className="nav-links">
+            <a href="#strategy">Strategy</a>
+            <a href="#infrastructure">Infrastructure</a>
+            <a href="#clients">Clients</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div className="page-content">
         <section className="container">
-          <nav className="nav">
-            <div className="brand">
-              <div className="brand-icon-wrap glass">
-                <img
-                  src="/sfcm-tree-logo.png"
-                  alt="SFCM Tree Logo"
-                  className="brand-icon"
-                />
-              </div>
-
-              <div>
-                <div className="brand-top">SFCM</div>
-                <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
-              </div>
-            </div>
-
-            <div className="nav-links">
-              <a href="#strategy">Strategy</a>
-              <a href="#infrastructure">Infrastructure</a>
-              <a href="#clients">Clients</a>
-              <a href="#contact">Contact</a>
-            </div>
-          </nav>
-
           <section className="hero">
             <div className="hero-content">
               <div className="hero-left">
@@ -799,7 +829,7 @@ export default function Page() {
                   <div
                     className="title-wrap"
                     style={{
-                      transform: `perspective(1200px) rotateX(${tilt.x * 0.18}deg) rotateY(${tilt.y * 0.18}deg)`,
+                      transform: `perspective(1200px) rotateX(${tilt.x * 0.16}deg) rotateY(${tilt.y * 0.16}deg)`,
                     }}
                   >
                     <h1 className="hero-title metallic-title">SFCM</h1>
@@ -812,7 +842,7 @@ export default function Page() {
                   <div
                     className="small-chart-card glass"
                     style={{
-                      transform: `perspective(1200px) rotateX(${tilt.x * 0.3}deg) rotateY(${tilt.y * 0.3}deg)`,
+                      transform: `perspective(1200px) rotateX(${tilt.x * 0.26}deg) rotateY(${tilt.y * 0.26}deg)`,
                     }}
                   >
                     <div className="small-chart-label">US100 CHART</div>
@@ -852,7 +882,7 @@ export default function Page() {
                 <div
                   className="hero-card glass"
                   style={{
-                    transform: `perspective(1200px) rotateX(${tilt.x * 0.22}deg) rotateY(${tilt.y * 0.22}deg)`,
+                    transform: `perspective(1200px) rotateX(${tilt.x * 0.18}deg) rotateY(${tilt.y * 0.18}deg)`,
                   }}
                 >
                   <div className="card-label">BRAND MARK</div>
