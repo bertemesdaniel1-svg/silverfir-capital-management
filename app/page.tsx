@@ -1,36 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 export default function Page() {
-  const [chartOpacity, setChartOpacity] = useState(0.68);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const updateOpacity = () => {
-      const maxScroll = 1400;
-      const progress = Math.min(window.scrollY / maxScroll, 1);
-
-      // Start 10% sichtbarer als vorher und unten fast weg
-      const opacity = 0.68 - progress * 0.6; // endet bei ca. 0.08
-      setChartOpacity(Math.max(0.08, opacity));
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateOpacity);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    updateOpacity();
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <main className="sfcm-page">
       <style>{`
@@ -50,53 +18,104 @@ export default function Page() {
         .sfcm-page {
           min-height: 100vh;
           color: white;
-          font-family: Arial, Helvetica, sans-serif;
+          font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
           position: relative;
           overflow-x: hidden;
           background: linear-gradient(180deg, #070910 0%, #04060b 48%, #020409 100%);
         }
 
-        .sfcm-page::before {
-          content: "";
+        /* Fixed chart always behind everything */
+        .fixed-chart-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          overflow: hidden;
+        }
+
+        .fixed-chart-image {
           position: absolute;
           inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center center;
+          opacity: 0.65;
+          transform: scale(1.03);
+        }
+
+        /* This is what makes the chart darker lower on the page */
+        .fixed-chart-fade {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(
+              180deg,
+              rgba(4,6,11,0.22) 0%,
+              rgba(4,6,11,0.34) 14%,
+              rgba(4,6,11,0.50) 30%,
+              rgba(4,6,11,0.68) 48%,
+              rgba(4,6,11,0.82) 66%,
+              rgba(4,6,11,0.92) 82%,
+              rgba(4,6,11,0.97) 100%
+            ),
+            linear-gradient(
+              90deg,
+              rgba(4,6,11,0.70) 0%,
+              rgba(4,6,11,0.30) 22%,
+              rgba(4,6,11,0.10) 50%,
+              rgba(4,6,11,0.30) 78%,
+              rgba(4,6,11,0.72) 100%
+            );
+        }
+
+        .sfcm-page::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: 1;
           background-image:
-            linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,0.014) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
           background-size: 64px 64px;
           opacity: 0.10;
           animation: gridDrift 28s linear infinite;
           pointer-events: none;
-          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
-          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25));
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25));
         }
 
         .ambient {
-          position: absolute;
+          position: fixed;
           inset: 0;
+          z-index: 1;
           pointer-events: none;
           background:
-            radial-gradient(circle at 15% 85%, rgba(90,110,160,0.03), transparent 24%),
-            radial-gradient(circle at 88% 20%, rgba(255,255,255,0.012), transparent 18%);
+            radial-gradient(circle at 18% 82%, rgba(90,110,160,0.03), transparent 24%),
+            radial-gradient(circle at 86% 18%, rgba(255,255,255,0.012), transparent 18%);
           opacity: 0.7;
         }
 
-        .container {
+        .page-content {
           position: relative;
           z-index: 2;
+        }
+
+        .container {
           max-width: 1380px;
           margin: 0 auto;
           padding: 32px 24px 110px;
         }
 
         .glass {
-          background: rgba(255,255,255,0.04);
+          background: rgba(255,255,255,0.035);
           border: 1px solid rgba(255,255,255,0.09);
           box-shadow:
-            0 14px 34px rgba(0,0,0,0.28),
-            inset 0 1px 0 rgba(255,255,255,0.04);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+            0 18px 40px rgba(0,0,0,0.30),
+            inset 0 1px 0 rgba(255,255,255,0.045),
+            inset 0 -1px 0 rgba(255,255,255,0.015);
+          backdrop-filter: blur(18px) saturate(125%);
+          -webkit-backdrop-filter: blur(18px) saturate(125%);
         }
 
         .nav {
@@ -118,7 +137,7 @@ export default function Page() {
         .brand-icon-wrap {
           width: 58px;
           height: 58px;
-          border-radius: 16px;
+          border-radius: 18px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -132,7 +151,7 @@ export default function Page() {
 
         .brand-top {
           font-size: 15px;
-          letter-spacing: 0.22em;
+          letter-spacing: 0.20em;
           color: #eef2f8;
           font-weight: 700;
         }
@@ -140,7 +159,7 @@ export default function Page() {
         .brand-sub {
           font-size: 12px;
           color: #8a94a5;
-          letter-spacing: 0.16em;
+          letter-spacing: 0.14em;
         }
 
         .nav-links {
@@ -168,48 +187,7 @@ export default function Page() {
           display: flex;
           align-items: center;
           overflow: hidden;
-          border-radius: 34px;
-        }
-
-        .hero-chart-bg {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          overflow: hidden;
-          pointer-events: none;
-        }
-
-        .hero-chart-image {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center center;
-          transform: scale(1.02);
-          will-change: opacity;
-          transition: opacity 0.18s linear;
-        }
-
-        .hero-chart-overlay {
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(
-              90deg,
-              rgba(4,6,11,0.72) 0%,
-              rgba(4,6,11,0.38) 24%,
-              rgba(4,6,11,0.12) 50%,
-              rgba(4,6,11,0.38) 76%,
-              rgba(4,6,11,0.74) 100%
-            ),
-            linear-gradient(
-              180deg,
-              rgba(4,6,11,0.24) 0%,
-              rgba(4,6,11,0.08) 24%,
-              rgba(4,6,11,0.24) 62%,
-              rgba(4,6,11,0.82) 100%
-            );
+          border-radius: 36px;
         }
 
         .hero-content {
@@ -231,10 +209,10 @@ export default function Page() {
           display: inline-block;
           padding: 10px 16px;
           border-radius: 999px;
-          color: #b4bdca;
-          font-size: 12px;
-          letter-spacing: 0.16em;
-          margin-bottom: 28px;
+          color: #b8c1ce;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          margin-bottom: 30px;
         }
 
         .hero-main-row {
@@ -246,37 +224,38 @@ export default function Page() {
         }
 
         .hero-title {
-          margin: 0 0 18px 0;
-          font-size: clamp(56px, 9vw, 126px);
-          line-height: 0.92;
-          letter-spacing: -0.06em;
-          font-family: Georgia, "Times New Roman", serif;
-          color: rgba(245,248,252,0.96);
-          text-shadow: 0 0 10px rgba(255,255,255,0.02);
+          margin: 0 0 16px 0;
+          font-size: clamp(64px, 10vw, 136px);
+          line-height: 0.90;
+          letter-spacing: -0.075em;
+          font-weight: 700;
+          color: rgba(248,250,252,0.98);
+          text-wrap: balance;
         }
 
         .hero-sub-1 {
-          font-size: clamp(18px, 3vw, 32px);
-          color: rgba(220,226,235,0.92);
-          letter-spacing: 0.34em;
-          margin-bottom: 12px;
-          font-family: Georgia, "Times New Roman", serif;
+          font-size: clamp(18px, 3vw, 30px);
+          color: rgba(224,230,238,0.94);
+          letter-spacing: 0.28em;
+          margin-bottom: 10px;
+          font-weight: 600;
         }
 
         .hero-sub-2 {
-          font-size: clamp(13px, 2vw, 20px);
+          font-size: clamp(13px, 2vw, 18px);
           color: #7f8898;
-          letter-spacing: 0.26em;
+          letter-spacing: 0.24em;
           margin-bottom: 30px;
+          font-weight: 500;
         }
 
         .small-chart-card {
-          border-radius: 26px;
+          border-radius: 28px;
           padding: 14px;
         }
 
         .small-chart-label {
-          color: #9ca7b7;
+          color: #a5afbe;
           font-size: 11px;
           letter-spacing: 0.18em;
           margin-bottom: 10px;
@@ -286,16 +265,18 @@ export default function Page() {
         .small-chart-image {
           width: 100%;
           display: block;
-          border-radius: 18px;
+          border-radius: 20px;
           border: 1px solid rgba(255,255,255,0.06);
         }
 
         .hero-text {
           max-width: 760px;
-          color: #98a3b3;
-          font-size: 19px;
-          line-height: 1.9;
-          margin-bottom: 36px;
+          color: #9aa5b5;
+          font-size: 20px;
+          line-height: 1.75;
+          letter-spacing: -0.015em;
+          margin-bottom: 38px;
+          text-wrap: pretty;
         }
 
         .cta-row {
@@ -307,26 +288,39 @@ export default function Page() {
         .btn-primary,
         .btn-secondary {
           text-decoration: none;
-          border-radius: 14px;
+          border-radius: 18px;
           padding: 15px 28px;
-          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
           display: inline-flex;
           align-items: center;
           justify-content: center;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          min-height: 54px;
         }
 
         .btn-primary {
-          color: #f3f6fb;
-          font-weight: 700;
+          color: #f6f8fb;
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+          box-shadow:
+            0 12px 30px rgba(0,0,0,0.24),
+            inset 0 1px 0 rgba(255,255,255,0.10);
         }
 
         .btn-secondary {
-          color: #eef2f8;
+          color: #e9edf4;
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
         }
 
         .btn-primary:hover,
         .btn-secondary:hover {
           transform: translateY(-2px);
+          border-color: rgba(255,255,255,0.14);
+          box-shadow:
+            0 16px 36px rgba(0,0,0,0.28),
+            inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
         .tag-row {
@@ -339,8 +333,9 @@ export default function Page() {
         .tag {
           padding: 10px 14px;
           border-radius: 999px;
-          color: #aab3c0;
+          color: #aeb7c4;
           font-size: 13px;
+          font-weight: 500;
         }
 
         .hero-card-wrap {
@@ -348,15 +343,16 @@ export default function Page() {
         }
 
         .hero-card {
-          border-radius: 30px;
+          border-radius: 32px;
           padding: 30px;
         }
 
         .card-label {
           margin-bottom: 18px;
-          color: #c7ced8;
-          font-size: 15px;
-          letter-spacing: 0.12em;
+          color: #ccd3dd;
+          font-size: 14px;
+          letter-spacing: 0.14em;
+          font-weight: 600;
         }
 
         .integrated-brand {
@@ -371,7 +367,7 @@ export default function Page() {
         .integrated-logo-box {
           width: 108px;
           height: 108px;
-          border-radius: 24px;
+          border-radius: 26px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -393,18 +389,19 @@ export default function Page() {
         }
 
         .integrated-text-main {
-          font-size: 28px;
+          font-size: 30px;
           line-height: 1;
-          font-family: Georgia, "Times New Roman", serif;
-          letter-spacing: -0.03em;
-          color: #f0f3f8;
+          letter-spacing: -0.035em;
+          color: #f2f5fa;
           margin-bottom: 8px;
+          font-weight: 650;
         }
 
         .integrated-text-sub {
           color: #8a93a3;
           font-size: 13px;
           letter-spacing: 0.14em;
+          font-weight: 500;
         }
 
         .metrics {
@@ -415,7 +412,7 @@ export default function Page() {
 
         .metric {
           padding: 18px;
-          border-radius: 18px;
+          border-radius: 20px;
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
@@ -431,8 +428,9 @@ export default function Page() {
         }
 
         .metric-value {
-          font-weight: 700;
+          font-weight: 650;
           font-size: 17px;
+          letter-spacing: -0.02em;
         }
 
         .cards-3 {
@@ -443,8 +441,8 @@ export default function Page() {
         }
 
         .info-card {
-          padding: 28px;
-          border-radius: 24px;
+          padding: 30px;
+          border-radius: 28px;
           transition: transform 0.25s ease, border-color 0.25s ease;
         }
 
@@ -456,15 +454,18 @@ export default function Page() {
         .info-card h3 {
           margin-top: 0;
           margin-bottom: 12px;
-          font-size: 28px;
-          letter-spacing: -0.03em;
+          font-size: 30px;
+          letter-spacing: -0.04em;
+          line-height: 1.02;
+          font-weight: 650;
         }
 
         .info-card p {
           color: #97a2b2;
-          line-height: 1.85;
+          line-height: 1.8;
           margin-bottom: 0;
           font-size: 16px;
+          letter-spacing: -0.01em;
         }
 
         .section-2 {
@@ -475,29 +476,33 @@ export default function Page() {
         }
 
         .big-panel {
-          border-radius: 30px;
-          padding: 34px;
+          border-radius: 32px;
+          padding: 36px;
         }
 
         .section-kicker {
-          color: #aeb7c3;
+          color: #b2bbc8;
           letter-spacing: 0.16em;
           font-size: 12px;
           margin-bottom: 16px;
+          font-weight: 600;
         }
 
         .big-panel h2,
         .cta-panel h2 {
           margin: 0;
-          font-size: clamp(34px, 5vw, 58px);
-          line-height: 1.02;
-          letter-spacing: -0.05em;
+          font-size: clamp(36px, 5vw, 60px);
+          line-height: 0.98;
+          letter-spacing: -0.06em;
+          font-weight: 680;
+          text-wrap: balance;
         }
 
         .big-panel p,
         .mini-card p {
           color: #97a2b2;
-          line-height: 1.9;
+          line-height: 1.85;
+          letter-spacing: -0.01em;
         }
 
         .mini-grid {
@@ -507,8 +512,8 @@ export default function Page() {
         }
 
         .mini-card {
-          border-radius: 24px;
-          padding: 24px;
+          border-radius: 28px;
+          padding: 26px;
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
@@ -520,14 +525,16 @@ export default function Page() {
         .mini-card h3 {
           margin-top: 0;
           margin-bottom: 10px;
-          font-size: 23px;
-          letter-spacing: -0.03em;
+          font-size: 24px;
+          letter-spacing: -0.035em;
+          line-height: 1.04;
+          font-weight: 640;
         }
 
         .cta-panel {
           margin-top: 90px;
-          padding: 34px;
-          border-radius: 30px;
+          padding: 36px;
+          border-radius: 32px;
         }
 
         .cta-inner {
@@ -547,6 +554,7 @@ export default function Page() {
           justify-content: space-between;
           gap: 20px;
           flex-wrap: wrap;
+          letter-spacing: -0.01em;
         }
 
         @keyframes fadeUp {
@@ -624,229 +632,230 @@ export default function Page() {
         }
       `}</style>
 
+      <div className="fixed-chart-bg">
+        <img
+          src="/us100-chart.png"
+          alt="US100 Background Chart"
+          className="fixed-chart-image"
+        />
+        <div className="fixed-chart-fade" />
+      </div>
+
       <div className="ambient" />
 
-      <section className="container">
-        <nav className="nav">
-          <div className="brand">
-            <div className="brand-icon-wrap glass">
-              <img
-                src="/sfcm-tree-logo.png"
-                alt="SFCM Tree Logo"
-                className="brand-icon"
-              />
+      <div className="page-content">
+        <section className="container">
+          <nav className="nav">
+            <div className="brand">
+              <div className="brand-icon-wrap glass">
+                <img
+                  src="/sfcm-tree-logo.png"
+                  alt="SFCM Tree Logo"
+                  className="brand-icon"
+                />
+              </div>
+
+              <div>
+                <div className="brand-top">SFCM</div>
+                <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
+              </div>
             </div>
 
-            <div>
-              <div className="brand-top">SFCM</div>
-              <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
+            <div className="nav-links">
+              <a href="#strategy">Strategy</a>
+              <a href="#infrastructure">Infrastructure</a>
+              <a href="#clients">Clients</a>
+              <a href="#contact">Contact</a>
             </div>
-          </div>
+          </nav>
 
-          <div className="nav-links">
-            <a href="#strategy">Strategy</a>
-            <a href="#infrastructure">Infrastructure</a>
-            <a href="#clients">Clients</a>
-            <a href="#contact">Contact</a>
-          </div>
-        </nav>
+          <section className="hero">
+            <div className="hero-content">
+              <div className="hero-left">
+                <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
 
-        <section className="hero">
-          <div className="hero-chart-bg">
-            <img
-              src="/us100-chart.png"
-              alt="US100 Background Chart"
-              className="hero-chart-image"
-              style={{ opacity: chartOpacity }}
-            />
-            <div className="hero-chart-overlay" />
-          </div>
+                <div className="hero-main-row">
+                  <div>
+                    <h1 className="hero-title">SFCM</h1>
+                    <div className="hero-sub-1">SILVER FIR</div>
+                    <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+                  </div>
 
-          <div className="hero-content">
-            <div className="hero-left">
-              <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
-
-              <div className="hero-main-row">
-                <div>
-                  <h1 className="hero-title">SFCM</h1>
-                  <div className="hero-sub-1">SILVER FIR</div>
-                  <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+                  <div className="small-chart-card glass">
+                    <div className="small-chart-label">US100 CHART</div>
+                    <img
+                      src="/us100-chart.png"
+                      alt="US100 Chart"
+                      className="small-chart-image"
+                    />
+                  </div>
                 </div>
 
-                <div className="small-chart-card glass">
-                  <div className="small-chart-label">US100 CHART</div>
-                  <img
-                    src="/us100-chart.png"
-                    alt="US100 Chart"
-                    className="small-chart-image"
-                  />
+                <p className="hero-text">
+                  Advanced algorithmic trading infrastructure built for disciplined
+                  execution, premium client access, and a modern systematic trading
+                  brand with institutional presentation.
+                </p>
+
+                <div className="cta-row">
+                  <a href="#clients" className="btn-primary glass">
+                    Get Access
+                  </a>
+
+                  <a href="#strategy" className="btn-secondary glass">
+                    Explore Strategy
+                  </a>
+                </div>
+
+                <div className="tag-row">
+                  <div className="tag glass">Gold</div>
+                  <div className="tag glass">Nasdaq</div>
+                  <div className="tag glass">Automation</div>
+                  <div className="tag glass">Risk-First</div>
                 </div>
               </div>
 
-              <p className="hero-text">
-                Advanced algorithmic trading infrastructure built for disciplined
-                execution, premium client access, and a modern systematic trading
-                brand with institutional presentation.
+              <div className="hero-card-wrap">
+                <div className="hero-card glass">
+                  <div className="card-label">BRAND MARK</div>
+
+                  <div className="integrated-brand">
+                    <div className="integrated-logo-box glass">
+                      <img
+                        src="/sfcm-tree-logo.png"
+                        alt="SFCM Logo"
+                        className="integrated-logo"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="integrated-text-top">SFCM</div>
+                      <div className="integrated-text-main">Silver Fir</div>
+                      <div className="integrated-text-sub">CAPITAL MANAGEMENT</div>
+                    </div>
+                  </div>
+
+                  <div className="metrics">
+                    <div className="metric glass">
+                      <div className="metric-label">Core Markets</div>
+                      <div className="metric-value">Gold / Nasdaq</div>
+                    </div>
+
+                    <div className="metric glass">
+                      <div className="metric-label">Access</div>
+                      <div className="metric-value">Private Clients</div>
+                    </div>
+
+                    <div className="metric glass">
+                      <div className="metric-label">Infrastructure</div>
+                      <div className="metric-value">Vercel + Cloudflare</div>
+                    </div>
+
+                    <div className="metric glass">
+                      <div className="metric-label">Framework</div>
+                      <div className="metric-value">Risk-First</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="strategy" className="cards-3">
+            <div className="info-card glass">
+              <h3>Structured Execution</h3>
+              <p>
+                Systematic trade execution with predefined logic, disciplined entries,
+                and controlled management.
               </p>
+            </div>
+
+            <div className="info-card glass">
+              <h3>Premium Brand Identity</h3>
+              <p>
+                A refined digital presence designed to present SFCM as a serious
+                modern capital-markets brand.
+              </p>
+            </div>
+
+            <div className="info-card glass">
+              <h3>Scalable Client Access</h3>
+              <p>
+                Built to evolve into dashboards, subscriptions, onboarding, and
+                protected client infrastructure.
+              </p>
+            </div>
+          </section>
+
+          <section id="infrastructure" className="section-2">
+            <div className="big-panel glass">
+              <div className="section-kicker">INFRASTRUCTURE</div>
+
+              <h2>
+                Modern, scalable,
+                <br />
+                client-ready architecture.
+              </h2>
+
+              <p>
+                SFCM is positioned not only as a trading concept, but as a premium
+                digital operating system for private client delivery, execution
+                infrastructure, and advanced financial branding.
+              </p>
+            </div>
+
+            <div id="clients" className="mini-grid">
+              <div className="mini-card glass">
+                <h3>Private Client Access</h3>
+                <p>Secure onboarding and controlled access structure.</p>
+              </div>
+
+              <div className="mini-card glass">
+                <h3>Trading Infrastructure</h3>
+                <p>Website, server, tunnel, automation, and delivery stack.</p>
+              </div>
+
+              <div className="mini-card glass">
+                <h3>Execution Framework</h3>
+                <p>Clear process logic for entry, stop, target, and operational flow.</p>
+              </div>
+
+              <div className="mini-card glass">
+                <h3>Growth-Ready Platform</h3>
+                <p>Prepared for subscriptions, dashboard systems, and expansion.</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="cta-panel glass">
+            <div className="cta-inner">
+              <div>
+                <div className="section-kicker">NEXT STAGE</div>
+                <h2>
+                  Private access, refined delivery,
+                  <br />
+                  institutional presence.
+                </h2>
+              </div>
 
               <div className="cta-row">
-                <a href="#clients" className="btn-primary glass">
-                  Get Access
+                <a href="#contact" className="btn-primary glass">
+                  Request Access
                 </a>
 
                 <a href="#strategy" className="btn-secondary glass">
-                  Explore Strategy
+                  View Infrastructure
                 </a>
               </div>
-
-              <div className="tag-row">
-                <div className="tag glass">Gold</div>
-                <div className="tag glass">Nasdaq</div>
-                <div className="tag glass">Automation</div>
-                <div className="tag glass">Risk-First</div>
-              </div>
             </div>
+          </section>
 
-            <div className="hero-card-wrap">
-              <div className="hero-card glass">
-                <div className="card-label">BRAND MARK</div>
-
-                <div className="integrated-brand">
-                  <div className="integrated-logo-box glass">
-                    <img
-                      src="/sfcm-tree-logo.png"
-                      alt="SFCM Logo"
-                      className="integrated-logo"
-                    />
-                  </div>
-
-                  <div>
-                    <div className="integrated-text-top">SFCM</div>
-                    <div className="integrated-text-main">Silver Fir</div>
-                    <div className="integrated-text-sub">CAPITAL MANAGEMENT</div>
-                  </div>
-                </div>
-
-                <div className="metrics">
-                  <div className="metric glass">
-                    <div className="metric-label">Core Markets</div>
-                    <div className="metric-value">Gold / Nasdaq</div>
-                  </div>
-
-                  <div className="metric glass">
-                    <div className="metric-label">Access</div>
-                    <div className="metric-value">Private Clients</div>
-                  </div>
-
-                  <div className="metric glass">
-                    <div className="metric-label">Infrastructure</div>
-                    <div className="metric-value">Vercel + Cloudflare</div>
-                  </div>
-
-                  <div className="metric glass">
-                    <div className="metric-label">Framework</div>
-                    <div className="metric-value">Risk-First</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <footer id="contact" className="footer">
+            <div>Silver Fir Capital Management</div>
+            <div>contact@silverfircm.com</div>
+          </footer>
         </section>
-
-        <section id="strategy" className="cards-3">
-          <div className="info-card glass">
-            <h3>Structured Execution</h3>
-            <p>
-              Systematic trade execution with predefined logic, disciplined entries,
-              and controlled management.
-            </p>
-          </div>
-
-          <div className="info-card glass">
-            <h3>Premium Brand Identity</h3>
-            <p>
-              A refined digital presence designed to present SFCM as a serious
-              modern capital-markets brand.
-            </p>
-          </div>
-
-          <div className="info-card glass">
-            <h3>Scalable Client Access</h3>
-            <p>
-              Built to evolve into dashboards, subscriptions, onboarding, and
-              protected client infrastructure.
-            </p>
-          </div>
-        </section>
-
-        <section id="infrastructure" className="section-2">
-          <div className="big-panel glass">
-            <div className="section-kicker">INFRASTRUCTURE</div>
-
-            <h2>
-              Modern, scalable,
-              <br />
-              client-ready architecture.
-            </h2>
-
-            <p>
-              SFCM is positioned not only as a trading concept, but as a premium
-              digital operating system for private client delivery, execution
-              infrastructure, and advanced financial branding.
-            </p>
-          </div>
-
-          <div id="clients" className="mini-grid">
-            <div className="mini-card glass">
-              <h3>Private Client Access</h3>
-              <p>Secure onboarding and controlled access structure.</p>
-            </div>
-
-            <div className="mini-card glass">
-              <h3>Trading Infrastructure</h3>
-              <p>Website, server, tunnel, automation, and delivery stack.</p>
-            </div>
-
-            <div className="mini-card glass">
-              <h3>Execution Framework</h3>
-              <p>Clear process logic for entry, stop, target, and operational flow.</p>
-            </div>
-
-            <div className="mini-card glass">
-              <h3>Growth-Ready Platform</h3>
-              <p>Prepared for subscriptions, dashboard systems, and expansion.</p>
-            </div>
-          </div>
-        </section>
-
-        <section className="cta-panel glass">
-          <div className="cta-inner">
-            <div>
-              <div className="section-kicker">NEXT STAGE</div>
-              <h2>
-                Private access, refined delivery,
-                <br />
-                institutional presence.
-              </h2>
-            </div>
-
-            <div className="cta-row">
-              <a href="#contact" className="btn-primary glass">
-                Request Access
-              </a>
-
-              <a href="#strategy" className="btn-secondary glass">
-                View Infrastructure
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <footer id="contact" className="footer">
-          <div>Silver Fir Capital Management</div>
-          <div>contact@silverfircm.com</div>
-        </footer>
-      </section>
+      </div>
     </main>
   );
 }
