@@ -21,7 +21,7 @@ export default function Page() {
           position: relative;
           overflow: hidden;
           background:
-            radial-gradient(circle at 50% 0%, rgba(38,48,78,0.22) 0%, rgba(8,11,20,0.96) 34%, rgba(3,5,10,1) 72%, rgba(1,2,6,1) 100%);
+            radial-gradient(circle at 50% 0%, rgba(34,44,72,0.10) 0%, rgba(7,10,18,0.98) 28%, rgba(3,5,10,1) 62%, rgba(1,2,6,1) 100%);
         }
 
         .sfcm-page::before {
@@ -29,57 +29,57 @@ export default function Page() {
           position: absolute;
           inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
           background-size: 64px 64px;
-          opacity: 0.22;
-          animation: gridDrift 18s linear infinite;
+          opacity: 0.12;
+          animation: gridDrift 24s linear infinite;
           pointer-events: none;
-          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.22));
-          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.22));
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.18));
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.18));
         }
 
         .orb {
           position: absolute;
           border-radius: 999px;
-          filter: blur(28px);
+          filter: blur(40px);
           pointer-events: none;
           mix-blend-mode: screen;
         }
 
         .orb-1 {
-          width: 820px;
-          height: 820px;
-          top: -360px;
+          width: 520px;
+          height: 520px;
+          top: -220px;
           left: 50%;
           transform: translateX(-50%);
-          background: radial-gradient(circle, rgba(112,130,200,0.16) 0%, rgba(112,130,200,0.05) 36%, rgba(112,130,200,0) 70%);
-          animation: floatOrb1 14s ease-in-out infinite alternate;
+          background: radial-gradient(circle, rgba(80,100,155,0.08) 0%, rgba(80,100,155,0.025) 40%, rgba(80,100,155,0) 75%);
+          animation: floatOrb1 16s ease-in-out infinite alternate;
         }
 
         .orb-2 {
-          width: 360px;
-          height: 360px;
-          top: 140px;
-          right: -80px;
-          background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.025) 40%, rgba(255,255,255,0) 75%);
-          animation: floatOrb2 12s ease-in-out infinite alternate;
+          width: 220px;
+          height: 220px;
+          top: 180px;
+          right: 40px;
+          background: radial-gradient(circle, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.012) 40%, rgba(255,255,255,0) 80%);
+          animation: floatOrb2 14s ease-in-out infinite alternate;
         }
 
         .orb-3 {
-          width: 340px;
-          height: 340px;
-          bottom: 40px;
-          left: -70px;
-          background: radial-gradient(circle, rgba(80,110,185,0.13) 0%, rgba(80,110,185,0.03) 40%, rgba(80,110,185,0) 75%);
-          animation: floatOrb3 16s ease-in-out infinite alternate;
+          width: 220px;
+          height: 220px;
+          bottom: 100px;
+          left: -40px;
+          background: radial-gradient(circle, rgba(70,90,145,0.06) 0%, rgba(70,90,145,0.02) 40%, rgba(70,90,145,0) 80%);
+          animation: floatOrb3 18s ease-in-out infinite alternate;
         }
 
         .noise {
           position: absolute;
           inset: 0;
           pointer-events: none;
-          opacity: 0.04;
+          opacity: 0.025;
           background-image:
             radial-gradient(circle at 20% 20%, white 0.7px, transparent 0.8px),
             radial-gradient(circle at 80% 30%, white 0.7px, transparent 0.8px),
@@ -109,31 +109,28 @@ export default function Page() {
         .brand {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 14px;
         }
 
         .brand-icon-wrap {
-          width: 62px;
-          height: 62px;
-          border-radius: 18px;
-          background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-          border: 1px solid rgba(255,255,255,0.08);
+          width: 58px;
+          height: 58px;
+          border-radius: 16px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+          border: 1px solid rgba(255,255,255,0.07);
           display: flex;
           align-items: center;
           justify-content: center;
           box-shadow:
-            0 12px 40px rgba(0,0,0,0.55),
-            0 0 24px rgba(255,255,255,0.04),
-            inset 0 0 18px rgba(255,255,255,0.02);
-          backdrop-filter: blur(16px);
-          animation: pulseGlow 4s ease-in-out infinite;
+            0 10px 28px rgba(0,0,0,0.45),
+            inset 0 0 12px rgba(255,255,255,0.015);
         }
 
         .brand-icon {
-          width: 42px;
-          height: 42px;
+          width: 40px;
+          height: 40px;
           object-fit: contain;
-          filter: drop-shadow(0 0 16px rgba(255,255,255,0.18));
+          filter: drop-shadow(0 0 10px rgba(255,255,255,0.08));
         }
 
         .brand-top {
@@ -145,14 +142,14 @@ export default function Page() {
 
         .brand-sub {
           font-size: 12px;
-          color: #8e97a7;
+          color: #8892a2;
           letter-spacing: 0.16em;
         }
 
         .nav-links {
           display: flex;
           gap: 28px;
-          color: #a3adbc;
+          color: #9ca6b5;
           font-size: 14px;
           flex-wrap: wrap;
         }
@@ -182,44 +179,23 @@ export default function Page() {
         .eyebrow {
           display: inline-block;
           padding: 10px 16px;
-          border: 1px solid rgba(255,255,255,0.12);
+          border: 1px solid rgba(255,255,255,0.08);
           border-radius: 999px;
-          color: #b7c0cd;
+          color: #aeb7c3;
           font-size: 12px;
           letter-spacing: 0.16em;
           margin-bottom: 28px;
-          background: rgba(255,255,255,0.025);
-          box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
-          backdrop-filter: blur(10px);
-        }
-
-        .hero-title-wrap {
-          position: relative;
-          margin-bottom: 18px;
-        }
-
-        .hero-title-wrap::before {
-          content: "";
-          position: absolute;
-          inset: 14px auto auto 8px;
-          width: 260px;
-          height: 120px;
-          background: radial-gradient(circle, rgba(255,255,255,0.10), rgba(255,255,255,0));
-          filter: blur(38px);
-          pointer-events: none;
-          animation: shimmerGlow 5s ease-in-out infinite;
+          background: rgba(255,255,255,0.018);
         }
 
         .hero-title {
-          margin: 0;
+          margin: 0 0 18px 0;
           font-size: clamp(56px, 9vw, 126px);
           line-height: 0.92;
           letter-spacing: -0.06em;
           font-family: Georgia, "Times New Roman", serif;
-          color: #f2f5f9;
-          text-shadow: 0 0 32px rgba(255,255,255,0.08);
-          position: relative;
-          animation: titleShine 6s ease-in-out infinite;
+          color: #edf1f6;
+          text-shadow: 0 0 18px rgba(255,255,255,0.04);
         }
 
         .hero-sub-1 {
@@ -232,14 +208,14 @@ export default function Page() {
 
         .hero-sub-2 {
           font-size: clamp(13px, 2vw, 20px);
-          color: #8790a0;
+          color: #7f8898;
           letter-spacing: 0.26em;
           margin-bottom: 30px;
         }
 
         .hero-text {
           max-width: 760px;
-          color: #9ea8b7;
+          color: #99a4b4;
           font-size: 19px;
           line-height: 1.9;
           margin-bottom: 36px;
@@ -264,27 +240,23 @@ export default function Page() {
           color: #101318;
           font-weight: 700;
           box-shadow:
-            0 14px 40px rgba(255,255,255,0.10),
-            0 8px 24px rgba(0,0,0,0.28);
+            0 10px 24px rgba(0,0,0,0.22),
+            0 6px 20px rgba(255,255,255,0.05);
         }
 
         .btn-primary:hover {
           transform: translateY(-2px);
-          box-shadow:
-            0 18px 48px rgba(255,255,255,0.13),
-            0 10px 26px rgba(0,0,0,0.34);
         }
 
         .btn-secondary {
-          border: 1px solid rgba(255,255,255,0.14);
+          border: 1px solid rgba(255,255,255,0.11);
           color: #eef2f8;
-          background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
-          box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+          background: rgba(255,255,255,0.02);
         }
 
         .btn-secondary:hover {
           transform: translateY(-2px);
-          background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.028));
+          background: rgba(255,255,255,0.03);
         }
 
         .tag-row {
@@ -297,92 +269,86 @@ export default function Page() {
         .tag {
           padding: 10px 14px;
           border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.08);
-          background: rgba(255,255,255,0.025);
-          color: #b1bac8;
+          border: 1px solid rgba(255,255,255,0.06);
+          background: rgba(255,255,255,0.015);
+          color: #aab3c0;
           font-size: 13px;
-          animation: fadeUp 1.2s ease forwards;
         }
 
         .hero-card-wrap {
-          position: relative;
-          animation: floatCard 7s ease-in-out infinite;
-        }
-
-        .hero-card-wrap::before {
-          content: "";
-          position: absolute;
-          inset: 8% 8% auto auto;
-          width: 180px;
-          height: 180px;
-          border-radius: 999px;
-          background: radial-gradient(circle, rgba(255,255,255,0.12), rgba(255,255,255,0));
-          filter: blur(28px);
-          pointer-events: none;
+          animation: fadeUp 1.2s ease forwards;
         }
 
         .hero-card {
-          border: 1px solid rgba(255,255,255,0.085);
+          border: 1px solid rgba(255,255,255,0.07);
           border-radius: 30px;
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.022));
+            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.012));
           padding: 30px;
           box-shadow:
-            0 32px 90px rgba(0,0,0,0.56),
-            inset 0 0 40px rgba(255,255,255,0.018);
-          backdrop-filter: blur(18px);
+            0 24px 60px rgba(0,0,0,0.45),
+            inset 0 0 24px rgba(255,255,255,0.01);
           position: relative;
           overflow: hidden;
         }
 
-        .hero-card::after {
-          content: "";
-          position: absolute;
-          top: -20%;
-          left: -40%;
-          width: 40%;
-          height: 140%;
-          background: linear-gradient(
-            90deg,
-            rgba(255,255,255,0) 0%,
-            rgba(255,255,255,0.07) 50%,
-            rgba(255,255,255,0) 100%
-          );
-          transform: rotate(14deg);
-          animation: cardSweep 8s ease-in-out infinite;
-          pointer-events: none;
-        }
-
         .card-label {
           margin-bottom: 18px;
-          color: #d0d7e0;
+          color: #c7ced8;
           font-size: 15px;
           letter-spacing: 0.12em;
         }
 
-        .logo-frame-wrap {
+        .integrated-brand {
           display: flex;
-          justify-content: center;
-          margin-bottom: 24px;
+          align-items: center;
+          gap: 18px;
+          margin-bottom: 28px;
+          padding-bottom: 24px;
+          border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
-        .logo-frame {
-          padding: 20px;
-          border-radius: 28px;
+        .integrated-logo-box {
+          width: 108px;
+          height: 108px;
+          border-radius: 24px;
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012));
-          border: 1px solid rgba(255,255,255,0.08);
-          box-shadow:
-            0 16px 40px rgba(0,0,0,0.38),
-            inset 0 0 24px rgba(255,255,255,0.015);
-          animation: logoPulse 5s ease-in-out infinite;
+            linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.008));
+          border: 1px solid rgba(255,255,255,0.06);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 auto;
         }
 
-        .hero-logo {
-          width: 240px;
-          max-width: 100%;
-          border-radius: 22px;
-          display: block;
+        .integrated-logo {
+          width: 72px;
+          height: 72px;
+          object-fit: contain;
+          filter: drop-shadow(0 0 8px rgba(255,255,255,0.04));
+        }
+
+        .integrated-text-top {
+          font-size: 13px;
+          letter-spacing: 0.22em;
+          color: #e6ebf3;
+          font-weight: 700;
+          margin-bottom: 8px;
+        }
+
+        .integrated-text-main {
+          font-size: 28px;
+          line-height: 1;
+          font-family: Georgia, "Times New Roman", serif;
+          letter-spacing: -0.03em;
+          color: #f0f3f8;
+          margin-bottom: 8px;
+        }
+
+        .integrated-text-sub {
+          color: #8a93a3;
+          font-size: 13px;
+          letter-spacing: 0.14em;
         }
 
         .metrics {
@@ -395,18 +361,18 @@ export default function Page() {
           padding: 18px;
           border-radius: 18px;
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-          border: 1px solid rgba(255,255,255,0.075);
+            linear-gradient(180deg, rgba(255,255,255,0.018), rgba(255,255,255,0.008));
+          border: 1px solid rgba(255,255,255,0.06);
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .metric:hover {
           transform: translateY(-2px);
-          border-color: rgba(255,255,255,0.13);
+          border-color: rgba(255,255,255,0.10);
         }
 
         .metric-label {
-          color: #8590a0;
+          color: #808b9b;
           font-size: 12px;
           margin-bottom: 8px;
         }
@@ -426,16 +392,16 @@ export default function Page() {
         .info-card {
           padding: 28px;
           border-radius: 24px;
-          border: 1px solid rgba(255,255,255,0.075);
+          border: 1px solid rgba(255,255,255,0.06);
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-          box-shadow: 0 16px 45px rgba(0,0,0,0.22);
+            linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+          box-shadow: 0 14px 34px rgba(0,0,0,0.18);
           transition: transform 0.25s ease, border-color 0.25s ease;
         }
 
         .info-card:hover {
           transform: translateY(-4px);
-          border-color: rgba(255,255,255,0.12);
+          border-color: rgba(255,255,255,0.10);
         }
 
         .info-card h3 {
@@ -446,7 +412,7 @@ export default function Page() {
         }
 
         .info-card p {
-          color: #9fa9b7;
+          color: #97a2b2;
           line-height: 1.85;
           margin-bottom: 0;
           font-size: 16px;
@@ -462,13 +428,13 @@ export default function Page() {
         .big-panel {
           border-radius: 30px;
           padding: 34px;
-          border: 1px solid rgba(255,255,255,0.075);
+          border: 1px solid rgba(255,255,255,0.06);
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+            linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
         }
 
         .section-kicker {
-          color: #b7c0cd;
+          color: #aeb7c3;
           letter-spacing: 0.16em;
           font-size: 12px;
           margin-bottom: 16px;
@@ -484,28 +450,28 @@ export default function Page() {
 
         .big-panel p,
         .mini-card p {
-          color: #9ea8b7;
+          color: #97a2b2;
           line-height: 1.9;
         }
 
         .mini-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          gridTemplateColumns: 1fr 1fr;
           gap: 18px;
         }
 
         .mini-card {
           border-radius: 24px;
           padding: 24px;
-          border: 1px solid rgba(255,255,255,0.075);
+          border: 1px solid rgba(255,255,255,0.06);
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+            linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .mini-card:hover {
           transform: translateY(-3px);
-          border-color: rgba(255,255,255,0.12);
+          border-color: rgba(255,255,255,0.10);
         }
 
         .mini-card h3 {
@@ -519,21 +485,10 @@ export default function Page() {
           margin-top: 90px;
           padding: 34px;
           border-radius: 30px;
-          border: 1px solid rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.06);
           background:
-            linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-          box-shadow: 0 20px 60px rgba(0,0,0,0.24);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .cta-panel::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(120deg, rgba(255,255,255,0.03), transparent 32%, transparent 68%, rgba(255,255,255,0.03));
-          pointer-events: none;
+            linear-gradient(135deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+          box-shadow: 0 16px 42px rgba(0,0,0,0.20);
         }
 
         .cta-inner {
@@ -542,15 +497,13 @@ export default function Page() {
           gap: 22px;
           flex-wrap: wrap;
           align-items: center;
-          position: relative;
-          z-index: 2;
         }
 
         .footer {
           margin-top: 80px;
           padding-top: 28px;
-          border-top: 1px solid rgba(255,255,255,0.08);
-          color: #818c9d;
+          border-top: 1px solid rgba(255,255,255,0.07);
+          color: #7f8999;
           display: flex;
           justify-content: space-between;
           gap: 20px;
@@ -579,10 +532,10 @@ export default function Page() {
 
         @keyframes floatOrb1 {
           0% {
-            transform: translateX(-50%) translateY(0px) scale(1);
+            transform: translateX(-50%) translateY(0px);
           }
           100% {
-            transform: translateX(-50%) translateY(24px) scale(1.04);
+            transform: translateX(-50%) translateY(18px);
           }
         }
 
@@ -591,7 +544,7 @@ export default function Page() {
             transform: translateY(0px) translateX(0px);
           }
           100% {
-            transform: translateY(18px) translateX(-18px);
+            transform: translateY(12px) translateX(-10px);
           }
         }
 
@@ -600,86 +553,7 @@ export default function Page() {
             transform: translateY(0px) translateX(0px);
           }
           100% {
-            transform: translateY(-18px) translateX(16px);
-          }
-        }
-
-        @keyframes pulseGlow {
-          0%, 100% {
-            box-shadow:
-              0 12px 40px rgba(0,0,0,0.55),
-              0 0 24px rgba(255,255,255,0.04),
-              inset 0 0 18px rgba(255,255,255,0.02);
-          }
-          50% {
-            box-shadow:
-              0 14px 46px rgba(0,0,0,0.60),
-              0 0 34px rgba(255,255,255,0.08),
-              inset 0 0 20px rgba(255,255,255,0.03);
-          }
-        }
-
-        @keyframes shimmerGlow {
-          0%, 100% {
-            opacity: 0.65;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.05);
-          }
-        }
-
-        @keyframes titleShine {
-          0%, 100% {
-            text-shadow: 0 0 32px rgba(255,255,255,0.08);
-          }
-          50% {
-            text-shadow:
-              0 0 42px rgba(255,255,255,0.12),
-              0 0 70px rgba(140,160,220,0.08);
-          }
-        }
-
-        @keyframes floatCard {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        @keyframes cardSweep {
-          0% {
-            transform: translateX(-120%) rotate(14deg);
-            opacity: 0;
-          }
-          15% {
-            opacity: 0.55;
-          }
-          35% {
-            opacity: 0.25;
-          }
-          100% {
-            transform: translateX(260%) rotate(14deg);
-            opacity: 0;
-          }
-        }
-
-        @keyframes logoPulse {
-          0%, 100% {
-            transform: scale(1);
-            box-shadow:
-              0 16px 40px rgba(0,0,0,0.38),
-              inset 0 0 24px rgba(255,255,255,0.015);
-          }
-          50% {
-            transform: scale(1.015);
-            box-shadow:
-              0 18px 46px rgba(0,0,0,0.42),
-              0 0 24px rgba(255,255,255,0.04),
-              inset 0 0 26px rgba(255,255,255,0.02);
+            transform: translateY(-12px) translateX(8px);
           }
         }
 
@@ -688,11 +562,7 @@ export default function Page() {
           .cards-3,
           .section-2,
           .mini-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .hero-card-wrap {
-            animation: none;
+            grid-template-columns: 1fr !important;
           }
         }
 
@@ -722,6 +592,11 @@ export default function Page() {
           }
 
           .cta-inner {
+            align-items: flex-start;
+          }
+
+          .integrated-brand {
+            flex-direction: column;
             align-items: flex-start;
           }
         }
@@ -761,10 +636,7 @@ export default function Page() {
           <div className="hero-left">
             <div className="eyebrow">PRIVATE TRADING INFRASTRUCTURE</div>
 
-            <div className="hero-title-wrap">
-              <h1 className="hero-title">SFCM</h1>
-            </div>
-
+            <h1 className="hero-title">SFCM</h1>
             <div className="hero-sub-1">SILVER FIR</div>
             <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
 
@@ -796,13 +668,19 @@ export default function Page() {
             <div className="hero-card">
               <div className="card-label">BRAND MARK</div>
 
-              <div className="logo-frame-wrap">
-                <div className="logo-frame">
+              <div className="integrated-brand">
+                <div className="integrated-logo-box">
                   <img
                     src="/sfcm-tree-logo.png"
                     alt="SFCM Logo"
-                    className="hero-logo"
+                    className="integrated-logo"
                   />
+                </div>
+
+                <div>
+                  <div className="integrated-text-top">SFCM</div>
+                  <div className="integrated-text-main">Silver Fir</div>
+                  <div className="integrated-text-sub">CAPITAL MANAGEMENT</div>
                 </div>
               </div>
 
