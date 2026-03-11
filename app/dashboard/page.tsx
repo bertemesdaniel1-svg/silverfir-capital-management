@@ -1,25 +1,22 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { getClientFromSessionToken } from "@/lib/auth";
 
-export default function DashboardPage() {
-    const [client, setClient] = useState<any>(null);
+export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get("sfcm_session")?.value;
 
-    useEffect(() => {
-    const loadClient = async () => {
-      const res = await fetch("/api/client");
-      const data = await res.json();
+  if (!sessionToken) {
+    redirect("/login");
+  }
 
-      if (data.success) {
-        setClient(data.client);
-      }
-    };
+  const client = await getClientFromSessionToken(sessionToken);
 
-    loadClient();
-  }, []);
-  
+  if (!client) {
+    redirect("/login");
+  }
+
   return (
     <main className="dashboard-page">
       <style>{`
@@ -142,7 +139,8 @@ export default function DashboardPage() {
           flex-wrap: wrap;
         }
 
-        .action-btn {
+        .action-btn,
+        .logout-btn {
           text-decoration: none;
           color: #e7edf5;
           padding: 11px 16px;
@@ -153,9 +151,14 @@ export default function DashboardPage() {
           font-size: 14px;
         }
 
-        .action-btn:hover {
+        .action-btn:hover,
+        .logout-btn:hover {
           transform: translateY(-2px);
           border-color: rgba(255,255,255,0.16);
+        }
+
+        .logout-btn {
+          cursor: pointer;
         }
 
         .hero {
@@ -217,6 +220,7 @@ export default function DashboardPage() {
           font-weight: 650;
           color: #eef2f8;
           letter-spacing: -0.02em;
+          word-break: break-word;
         }
 
         .grid-2 {
@@ -318,14 +322,19 @@ export default function DashboardPage() {
 
           <div className="top-actions">
             <Link href="/" className="action-btn">Home</Link>
-            <Link href="/login" className="action-btn">Log Out</Link>
+
+            <form action="/api/logout" method="post">
+              <button className="logout-btn" type="submit">
+                Log Out
+              </button>
+            </form>
           </div>
         </div>
 
         <section className="hero glass">
           <div className="eyebrow">CLIENT OVERVIEW</div>
           <h1 className="hero-title">
-            {client ? `Welcome, ${client.first_name} ${client.last_name}.` : "Private client access area."}
+            Welcome, {client.first_name} {client.last_name}.
           </h1>
           <p className="hero-text">
             This dashboard gives a clean overview of your SFCM access status,
@@ -336,17 +345,17 @@ export default function DashboardPage() {
           <div className="stats">
             <div className="stat">
               <div className="stat-label">Subscription</div>
-              <div className="stat-value">{client?.subscription_status}</div>
+              <div className="stat-value">{client.subscription_status}</div>
             </div>
 
             <div className="stat">
               <div className="stat-label">Email</div>
-              <div className="stat-value">{client?.email}</div>
-              </div>
+              <div className="stat-value">{client.email}</div>
+            </div>
 
             <div className="stat">
               <div className="stat-label">Client Secret</div>
-              <div className="stat-value">{client?.client_secret}</div>
+              <div className="stat-value">{client.client_secret}</div>
             </div>
 
             <div className="stat">
@@ -360,30 +369,28 @@ export default function DashboardPage() {
           <div className="card glass">
             <h2>Access Details</h2>
             <p>
-              {client
-                ? `${client.first_name} ${client.last_name} has controlled access to SFCM infrastructure, setup information, and protected client content.`
-                : "This area is intended for private clients with controlled access to SFCM infrastructure, setup information, and future protected content."}
+              {client.first_name} {client.last_name} has controlled access to SFCM
+              infrastructure, setup information, and future protected content.
             </p>
 
             <div className="list">
               <div className="list-item">Client email visibility</div>
               <div className="list-item">Permanent client secret</div>
-              <div className="list-item">Subscription-based access control</div>
+              <div className="list-item">Protected private dashboard access</div>
             </div>
           </div>
 
           <div className="card glass">
-            <h2>Next Integration</h2>
+            <h2>Client Status</h2>
             <p>
-              The next technical step is to connect this dashboard directly to Neon
-              so that login, client data, and account status are loaded live from
-              the database.
+              Your dashboard is now protected through a real login session and can
+              only be opened after successful authentication.
             </p>
 
             <div className="list">
-              <div className="list-item">Email + password login</div>
-              <div className="list-item">Secret tied to one client only</div>
-              <div className="list-item">Access lock for inactive subscriptions</div>
+              <div className="list-item">Login protected by session cookie</div>
+              <div className="list-item">Dashboard loaded from Neon database</div>
+              <div className="list-item">Client data tied to one account only</div>
             </div>
           </div>
         </section>
