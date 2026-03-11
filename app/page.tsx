@@ -487,11 +487,11 @@ export default function Page() {
         }
 
         .small-chart-card {
-          border-radius: 30px;
-          padding: 16px;
+          border-radius: 32px;
+          padding: 18px;
           transform-style: preserve-3d;
           transition: transform 0.18s ease;
-          max-width: 460px;
+          max-width: 560px;
           margin-left: auto;
         }
 
@@ -506,7 +506,7 @@ export default function Page() {
         .small-chart-image {
           width: 100%;
           display: block;
-          border-radius: 22px;
+          border-radius: 26px;
           border: 1px solid rgba(255,255,255,0.06);
         }
 
