@@ -356,6 +356,13 @@ export default function LoginPage() {
             inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
+        .login-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
         .primary-btn:hover {
           transform: translateY(-2px);
           border-color: rgba(255,255,255,0.16);
@@ -442,9 +449,9 @@ export default function LoginPage() {
                 </a>
               </div>
 
-              <button className="primary-btn" type="submit">
-                Sign In
-              </button>
+              <Link href="/dashboard" className="primary-btn login-link">
+  Sign In
+</Link>
             </form>
 
             <div className="notice">
