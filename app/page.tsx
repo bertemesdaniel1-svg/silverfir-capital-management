@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -17,27 +16,9 @@ export default function Page() {
       setTilt({ x: rotateX, y: rotateY });
     };
 
-    const handleScroll = () => {
-      const max = 900;
-      const progress = Math.min(window.scrollY / max, 1);
-      setScrollProgress(progress);
-    };
-
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("scroll", handleScroll);
-
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
-
-  const chartOpacity = 0.28 * (1 - scrollProgress);
-  const chartBlur = scrollProgress * 18;
-  const chartScale = 1 + scrollProgress * 0.08;
-  const chartTranslateY = scrollProgress * 80;
 
   return (
     <main className="sfcm-page">
@@ -73,7 +54,7 @@ export default function Page() {
             linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
           background-size: 64px 64px;
-          opacity: 0.12;
+          opacity: 0.10;
           animation: gridDrift 28s linear infinite;
           pointer-events: none;
           mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
@@ -85,8 +66,8 @@ export default function Page() {
           inset: 0;
           pointer-events: none;
           background:
-            radial-gradient(circle at 15% 85%, rgba(90,110,160,0.04), transparent 24%),
-            radial-gradient(circle at 88% 20%, rgba(255,255,255,0.018), transparent 18%);
+            radial-gradient(circle at 15% 85%, rgba(90,110,160,0.03), transparent 24%),
+            radial-gradient(circle at 88% 20%, rgba(255,255,255,0.012), transparent 18%);
           opacity: 0.7;
         }
 
@@ -195,6 +176,13 @@ export default function Page() {
           height: 100%;
           object-fit: cover;
           object-position: center center;
+          opacity: 0.52;
+          filter: blur(0px);
+          transform: scale(1);
+          will-change: transform, opacity, filter;
+          animation: chartFadeOut linear forwards;
+          animation-timeline: view();
+          animation-range: entry 0% exit 100%;
         }
 
         .hero-chart-overlay {
@@ -203,18 +191,18 @@ export default function Page() {
           background:
             linear-gradient(
               90deg,
-              rgba(4,6,11,0.92) 0%,
-              rgba(4,6,11,0.72) 28%,
-              rgba(4,6,11,0.52) 52%,
-              rgba(4,6,11,0.72) 78%,
-              rgba(4,6,11,0.9) 100%
+              rgba(4,6,11,0.70) 0%,
+              rgba(4,6,11,0.46) 24%,
+              rgba(4,6,11,0.22) 50%,
+              rgba(4,6,11,0.46) 76%,
+              rgba(4,6,11,0.72) 100%
             ),
             linear-gradient(
               180deg,
-              rgba(4,6,11,0.62) 0%,
-              rgba(4,6,11,0.20) 25%,
-              rgba(4,6,11,0.22) 70%,
-              rgba(4,6,11,0.82) 100%
+              rgba(4,6,11,0.42) 0%,
+              rgba(4,6,11,0.10) 30%,
+              rgba(4,6,11,0.14) 72%,
+              rgba(4,6,11,0.68) 100%
             );
         }
 
@@ -554,6 +542,19 @@ export default function Page() {
           }
         }
 
+        @keyframes chartFadeOut {
+          0% {
+            opacity: 0.52;
+            filter: blur(0px);
+            transform: scale(1) translateY(0px);
+          }
+          100% {
+            opacity: 0;
+            filter: blur(18px);
+            transform: scale(1.08) translateY(80px);
+          }
+        }
+
         @media (max-width: 1100px) {
           .hero-content,
           .cards-3,
@@ -636,12 +637,6 @@ export default function Page() {
               src="/us100-chart.png"
               alt="US100 Background Chart"
               className="hero-chart-image"
-              style={{
-                opacity: chartOpacity,
-                filter: `blur(${chartBlur}px)`,
-                transform: `scale(${chartScale}) translateY(${chartTranslateY}px)`,
-                transition: "opacity 0.1s linear, filter 0.1s linear, transform 0.1s linear",
-              }}
             />
             <div className="hero-chart-overlay" />
           </div>
