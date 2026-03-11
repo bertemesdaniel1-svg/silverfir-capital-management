@@ -1,6 +1,25 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
 
 export default function DashboardPage() {
+    const [client, setClient] = useState<any>(null);
+
+    useEffect(() => {
+    const loadClient = async () => {
+      const res = await fetch("/api/client");
+      const data = await res.json();
+
+      if (data.success) {
+        setClient(data.client);
+      }
+    };
+
+    loadClient();
+  }, []);
+  
   return (
     <main className="dashboard-page">
       <style>{`
@@ -315,7 +334,7 @@ export default function DashboardPage() {
           <div className="stats">
             <div className="stat">
               <div className="stat-label">Subscription</div>
-              <div className="stat-value">Active</div>
+              <div className="stat-value">{client?.subscription_status}</div>
             </div>
 
             <div className="stat">
@@ -325,7 +344,7 @@ export default function DashboardPage() {
 
             <div className="stat">
               <div className="stat-label">Client Secret</div>
-              <div className="stat-value">SFCM_SECRET_001</div>
+              <div className="stat-value">{client?.client_secret}</div>
             </div>
 
             <div className="stat">
