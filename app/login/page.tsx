@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <main className="login-page">
@@ -30,7 +35,7 @@ export default function LoginPage() {
           position: relative;
           overflow: hidden;
           background:
-            radial-gradient(circle at top, rgba(36,44,66,0.55) 0%, rgba(7,9,16,0.96) 42%, #04060b 100%);
+            radial-gradient(circle at top, rgba(36,44,66,0.40) 0%, rgba(7,9,16,0.96) 42%, #04060b 100%);
         }
 
         .grid {
@@ -40,7 +45,7 @@ export default function LoginPage() {
             linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
           background-size: 64px 64px;
-          opacity: 0.18;
+          opacity: 0.14;
           pointer-events: none;
         }
 
@@ -49,9 +54,9 @@ export default function LoginPage() {
           inset: 0;
           pointer-events: none;
           background:
-            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 22%),
-            radial-gradient(circle at 80% 30%, rgba(68,86,140,0.14), transparent 24%),
-            radial-gradient(circle at 50% 80%, rgba(255,255,255,0.03), transparent 18%);
+            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03), transparent 22%),
+            radial-gradient(circle at 80% 30%, rgba(68,86,140,0.10), transparent 24%),
+            radial-gradient(circle at 50% 80%, rgba(255,255,255,0.02), transparent 18%);
         }
 
         .shell {
@@ -64,13 +69,13 @@ export default function LoginPage() {
           padding: 32px 18px;
         }
 
-       .panel {
-  width: 100%;
-  max-width: 480px;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-}
+        .panel {
+          width: 100%;
+          max-width: 480px;
+          margin: auto;
+          display: flex;
+          justify-content: center;
+        }
 
         .glass {
           background: rgba(255,255,255,0.04);
@@ -82,175 +87,33 @@ export default function LoginPage() {
           -webkit-backdrop-filter: blur(18px) saturate(125%);
         }
 
-        .left {
+        .right {
           border-radius: 30px;
-          padding: 34px;
+          padding: 36px;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          min-height: 660px;
-        }
-
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          margin-bottom: 30px;
-        }
-
-        .brand-icon-wrap {
-          width: 58px;
-          height: 58px;
-          border-radius: 18px;
-          display: flex;
-          align-items: center;
           justify-content: center;
-          background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-          border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .brand-icon {
-          width: 40px;
-          height: 40px;
-          object-fit: contain;
-        }
-
-        .brand-top {
-          font-size: 15px;
-          letter-spacing: 0.20em;
-          font-weight: 700;
-          color: #eef2f8;
-        }
-
-        .brand-sub {
-          font-size: 12px;
-          color: #8a94a5;
-          letter-spacing: 0.14em;
-        }
-
-        .eyebrow {
-          display: inline-block;
-          margin-bottom: 22px;
-          padding: 9px 14px;
-          border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.08);
-          color: #b8c1ce;
-          font-size: 11px;
-          letter-spacing: 0.18em;
-          background: rgba(255,255,255,0.03);
-        }
-
-        .title {
-          margin: 0 0 14px 0;
-          font-size: clamp(42px, 5vw, 68px);
-          line-height: 0.94;
-          letter-spacing: -0.06em;
-          font-weight: 700;
-          font-family: Georgia, "Times New Roman", serif;
-          background:
-            linear-gradient(
-              180deg,
-              #ffffff 0%,
-              #fbfcfd 10%,
-              #d7dce2 26%,
-              #ffffff 42%,
-              #b7bec7 58%,
-              #eef1f5 76%,
-              #8c949e 100%
-            );
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          text-shadow:
-            0 1px 0 rgba(255,255,255,0.2),
-            0 8px 18px rgba(0,0,0,0.22);
-        }
-
-        .subtitle {
-          max-width: 620px;
-          margin: 0;
-          color: #9aa5b5;
-          font-size: 18px;
-          line-height: 1.8;
-          letter-spacing: -0.01em;
-        }
-
-        .feature-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-          margin-top: 34px;
-        }
-
-        .feature-card {
-          border-radius: 22px;
-          padding: 18px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
-        }
-
-        .feature-label {
-          color: #7f8999;
-          font-size: 12px;
-          margin-bottom: 8px;
-        }
-
-        .feature-value {
-          font-size: 18px;
-          font-weight: 650;
-          letter-spacing: -0.02em;
-          color: #eef2f8;
-        }
-
-        .bottom-links {
-          display: flex;
-          gap: 14px;
-          flex-wrap: wrap;
-          margin-top: 28px;
-        }
-
-        .ghost-link {
-          text-decoration: none;
-          color: #dfe6ef;
-          padding: 13px 18px;
-          border-radius: 16px;
-          border: 1px solid rgba(255,255,255,0.08);
-          background: rgba(255,255,255,0.025);
-          transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .ghost-link:hover {
-          transform: translateY(-2px);
-          border-color: rgba(255,255,255,0.14);
+          width: 100%;
         }
 
         .back-btn {
-  display: inline-block;
-  align-self: flex-start;
-  margin-bottom: 20px;
-  color: #cfd6e1;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 10px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
-  transition: all 0.2s ease;
-}
+          display: inline-block;
+          align-self: flex-start;
+          margin-bottom: 20px;
+          color: #cfd6e1;
+          text-decoration: none;
+          font-size: 14px;
+          padding: 10px 16px;
+          border-radius: 14px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.03);
+          transition: all 0.2s ease;
+        }
 
-.back-btn:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.16);
-}
-
-        .right {
-  border-radius: 30px;
-  padding: 36px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-}
+        .back-btn:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255,255,255,0.16);
+        }
 
         .login-label {
           color: #b9c3d1;
@@ -356,16 +219,26 @@ export default function LoginPage() {
             inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
-        .login-link {
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
         .primary-btn:hover {
           transform: translateY(-2px);
           border-color: rgba(255,255,255,0.16);
+        }
+
+        .primary-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .error-box {
+          margin-top: 14px;
+          padding: 14px;
+          border-radius: 14px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,80,80,0.08);
+          color: #ffb3b3;
+          font-size: 13px;
+          line-height: 1.6;
         }
 
         .notice {
@@ -384,16 +257,6 @@ export default function LoginPage() {
           color: #7f8999;
           font-size: 13px;
         }
-
-        @media (max-width: 980px) {
-          .panel {
-            grid-template-columns: 1fr;
-          }
-
-          .left {
-            min-height: auto;
-          }
-        }
       `}</style>
 
       <div className="grid" />
@@ -401,21 +264,52 @@ export default function LoginPage() {
 
       <section className="shell">
         <div className="panel">
-          
-         <div className="right glass">
-  <Link href="/" className="back-btn">
-    ← Back to Home
-  </Link>
+          <div className="right glass">
+            <Link href="/" className="back-btn">
+              ← Back to Home
+            </Link>
 
-  <div className="login-label">CLIENT LOGIN</div>
+            <div className="login-label">CLIENT LOGIN</div>
             <h2 className="login-title">Sign in to continue</h2>
             <p className="login-text">
-              Enter your client credentials to access your private area. This page
-              is the visual login interface and can later be connected to your real
-              authentication system.
+              Enter your client credentials to access your private area.
             </p>
 
-            <form className="form" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+
+                setError("");
+                setLoading(true);
+
+                try {
+                  const res = await fetch("/api/login", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      email,
+                      password,
+                    }),
+                  });
+
+                  const data = await res.json();
+
+                  if (!data.success) {
+                    setError(data.error || "Login failed");
+                    setLoading(false);
+                    return;
+                  }
+
+                  router.push("/dashboard");
+                } catch {
+                  setError("Server error");
+                  setLoading(false);
+                }
+              }}
+            >
               <div className="field">
                 <label htmlFor="email">Email</label>
                 <input
@@ -449,15 +343,16 @@ export default function LoginPage() {
                 </a>
               </div>
 
-              <Link href="/dashboard" className="primary-btn login-link">
-  Sign In
-</Link>
+              <button className="primary-btn" type="submit" disabled={loading}>
+                {loading ? "Signing In..." : "Sign In"}
+              </button>
+
+              {error && <div className="error-box">{error}</div>}
             </form>
 
             <div className="notice">
-              This page is currently designed as a premium frontend login screen.
-              In the next step, it can be connected to a real authentication
-              provider and protected client dashboard.
+              This login is now connected to your backend route and checks whether
+              the email and password exist in your Neon client database.
             </div>
 
             <div className="footer-note">
