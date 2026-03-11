@@ -64,14 +64,13 @@ export default function LoginPage() {
           padding: 32px 18px;
         }
 
-        .panel {
-          width: 100%;
-          max-width: 1120px;
-          display: grid;
-          grid-template-columns: 1fr 460px;
-          gap: 24px;
-          align-items: stretch;
-        }
+       .panel {
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
 
         .glass {
           background: rgba(255,255,255,0.04);
@@ -225,13 +224,33 @@ export default function LoginPage() {
           border-color: rgba(255,255,255,0.14);
         }
 
+        .back-btn {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 20px;
+  color: #cfd6e1;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.16);
+}
+
         .right {
-          border-radius: 30px;
-          padding: 30px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
+  border-radius: 30px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
 
         .login-label {
           color: #b9c3d1;
@@ -375,68 +394,13 @@ export default function LoginPage() {
 
       <section className="shell">
         <div className="panel">
-          <div className="left glass">
-            <div>
-              <div className="brand">
-                <div className="brand-icon-wrap">
-                  <img
-                    src="/sfcm-tree-logo.png"
-                    alt="SFCM Tree Logo"
-                    className="brand-icon"
-                  />
-                </div>
+          
+         <div className="right glass">
+  <Link href="/" className="back-btn">
+    ← Back to Home
+  </Link>
 
-                <div>
-                  <div className="brand-top">SFCM</div>
-                  <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
-                </div>
-              </div>
-
-              <div className="eyebrow">PRIVATE CLIENT ACCESS</div>
-
-              <h1 className="title">Client login for structured access.</h1>
-
-              <p className="subtitle">
-                Access your client area through a private login environment built
-                for premium delivery, secure onboarding, and a professional
-                infrastructure layer.
-              </p>
-
-              <div className="feature-grid">
-                <div className="feature-card">
-                  <div className="feature-label">Access Layer</div>
-                  <div className="feature-value">Private Client Portal</div>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-label">Environment</div>
-                  <div className="feature-value">Secure Infrastructure</div>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-label">Delivery</div>
-                  <div className="feature-value">Controlled Access</div>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-label">Framework</div>
-                  <div className="feature-value">Risk-First</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bottom-links">
-              <Link href="/" className="ghost-link">
-                Back to Home
-              </Link>
-              <Link href="/more" className="ghost-link">
-                More Information
-              </Link>
-            </div>
-          </div>
-
-          <div className="right glass">
-            <div className="login-label">CLIENT LOGIN</div>
+  <div className="login-label">CLIENT LOGIN</div>
             <h2 className="login-title">Sign in to continue</h2>
             <p className="login-text">
               Enter your client credentials to access your private area. This page
