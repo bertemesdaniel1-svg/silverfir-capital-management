@@ -94,7 +94,7 @@ export default function Page() {
 
   return (
     <main className="sfcm-page">
-      <style>{
+      <style>{`
         * {
           box-sizing: border-box;
         }
