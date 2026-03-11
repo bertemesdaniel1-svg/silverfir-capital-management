@@ -1,25 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
 export default function Page() {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-
-      const rotateY = ((e.clientX - centerX) / centerX) * 4;
-      const rotateX = ((e.clientY - centerY) / centerY) * -3;
-
-      setTilt({ x: rotateX, y: rotateY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   return (
     <main className="sfcm-page">
       <style>{`
@@ -42,8 +21,7 @@ export default function Page() {
           font-family: Arial, Helvetica, sans-serif;
           position: relative;
           overflow-x: hidden;
-          background:
-            linear-gradient(180deg, #070910 0%, #04060b 48%, #020409 100%);
+          background: linear-gradient(180deg, #070910 0%, #04060b 48%, #020409 100%);
         }
 
         .sfcm-page::before {
@@ -176,13 +154,9 @@ export default function Page() {
           height: 100%;
           object-fit: cover;
           object-position: center center;
-          opacity: 0.52;
+          opacity: 0.58;
           filter: blur(0px);
-          transform: scale(1);
-          will-change: transform, opacity, filter;
-          animation: chartFadeOut linear forwards;
-          animation-timeline: view();
-          animation-range: entry 0% exit 100%;
+          transform: scale(1.02);
         }
 
         .hero-chart-overlay {
@@ -191,18 +165,18 @@ export default function Page() {
           background:
             linear-gradient(
               90deg,
-              rgba(4,6,11,0.70) 0%,
-              rgba(4,6,11,0.46) 24%,
-              rgba(4,6,11,0.22) 50%,
-              rgba(4,6,11,0.46) 76%,
-              rgba(4,6,11,0.72) 100%
+              rgba(4,6,11,0.72) 0%,
+              rgba(4,6,11,0.40) 24%,
+              rgba(4,6,11,0.16) 50%,
+              rgba(4,6,11,0.40) 76%,
+              rgba(4,6,11,0.74) 100%
             ),
             linear-gradient(
               180deg,
-              rgba(4,6,11,0.42) 0%,
-              rgba(4,6,11,0.10) 30%,
-              rgba(4,6,11,0.14) 72%,
-              rgba(4,6,11,0.68) 100%
+              rgba(4,6,11,0.28) 0%,
+              rgba(4,6,11,0.10) 24%,
+              rgba(4,6,11,0.28) 62%,
+              rgba(4,6,11,0.78) 100%
             );
         }
 
@@ -231,9 +205,12 @@ export default function Page() {
           margin-bottom: 28px;
         }
 
-        .title-wrap {
-          transform: perspective(1400px) rotateX(${tilt.x * 0.06}deg) rotateY(${tilt.y * 0.06}deg);
-          transition: transform 0.12s ease-out;
+        .hero-main-row {
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 28px;
+          align-items: center;
+          margin-bottom: 20px;
         }
 
         .hero-title {
@@ -259,6 +236,26 @@ export default function Page() {
           color: #7f8898;
           letter-spacing: 0.26em;
           margin-bottom: 30px;
+        }
+
+        .small-chart-card {
+          border-radius: 26px;
+          padding: 14px;
+        }
+
+        .small-chart-label {
+          color: #9ca7b7;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          margin-bottom: 10px;
+          padding-left: 4px;
+        }
+
+        .small-chart-image {
+          width: 100%;
+          display: block;
+          border-radius: 18px;
+          border: 1px solid rgba(255,255,255,0.06);
         }
 
         .hero-text {
@@ -321,8 +318,6 @@ export default function Page() {
         .hero-card {
           border-radius: 30px;
           padding: 30px;
-          transition: transform 0.16s ease;
-          transform-style: preserve-3d;
         }
 
         .card-label {
@@ -542,16 +537,9 @@ export default function Page() {
           }
         }
 
-        @keyframes chartFadeOut {
-          0% {
-            opacity: 0.52;
-            filter: blur(0px);
-            transform: scale(1) translateY(0px);
-          }
-          100% {
-            opacity: 0;
-            filter: blur(18px);
-            transform: scale(1.08) translateY(80px);
+        @media (max-width: 1180px) {
+          .hero-main-row {
+            grid-template-columns: 1fr;
           }
         }
 
@@ -645,10 +633,21 @@ export default function Page() {
             <div className="hero-left">
               <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
 
-              <div className="title-wrap">
-                <h1 className="hero-title">SFCM</h1>
-                <div className="hero-sub-1">SILVER FIR</div>
-                <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+              <div className="hero-main-row">
+                <div>
+                  <h1 className="hero-title">SFCM</h1>
+                  <div className="hero-sub-1">SILVER FIR</div>
+                  <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+                </div>
+
+                <div className="small-chart-card glass">
+                  <div className="small-chart-label">US100 CHART</div>
+                  <img
+                    src="/us100-chart.png"
+                    alt="US100 Chart"
+                    className="small-chart-image"
+                  />
+                </div>
               </div>
 
               <p className="hero-text">
@@ -676,12 +675,7 @@ export default function Page() {
             </div>
 
             <div className="hero-card-wrap">
-              <div
-                className="hero-card glass"
-                style={{
-                  transform: `perspective(1400px) rotateX(${tilt.x * 0.12}deg) rotateY(${tilt.y * 0.12}deg)`,
-                }}
-              >
+              <div className="hero-card glass">
                 <div className="card-label">BRAND MARK</div>
 
                 <div className="integrated-brand">
