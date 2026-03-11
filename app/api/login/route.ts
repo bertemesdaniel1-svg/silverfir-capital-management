@@ -1,57 +1,55 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { createSession } from "@/lib/auth";
 
 export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const email = String(body.email ?? "").trim().toLowerCase();
-    const password = String(body.password ?? "").trim();
 
-    if (!email || !password) {
-      return NextResponse.json(
-        { success: false, error: "Missing email or password." },
-        { status: 400 }
-      );
-    }
+  const body = await request.json();
 
-    const result = await sql`
-      SELECT id, first_name, last_name, email, password_hash, client_secret, subscription_status
-      FROM clients
-      WHERE email = ${email}
-      LIMIT 1
-    `;
+  const email = body.email;
+  const password = body.password;
 
-    const client = result[0];
+  const result = await sql`
+    SELECT *
+    FROM clients
+    WHERE email = ${email}
+    LIMIT 1
+  `;
 
-    if (!client) {
-      return NextResponse.json(
-        { success: false, error: "Client not found." },
-        { status: 401 }
-      );
-    }
+  const client = result[0];
 
-    if (client.password_hash !== password) {
-      return NextResponse.json(
-        { success: false, error: "Wrong password." },
-        { status: 401 }
-      );
-    }
-
+  if (!client) {
     return NextResponse.json({
-      success: true,
-      client: {
-        id: client.id,
-        first_name: client.first_name,
-        last_name: client.last_name,
-        email: client.email,
-        client_secret: client.client_secret,
-        subscription_status: client.subscription_status
-      }
+      success: false,
+      error: "Client not found"
     });
-  } catch {
-    return NextResponse.json(
-      { success: false, error: "Server error." },
-      { status: 500 }
-    );
   }
+
+  if (client.password_hash !== password) {
+    return NextResponse.json({
+      success: false,
+      error: "Wrong password"
+    });
+  }
+
+  const session = await createSession(client.id);
+
+  const response = NextResponse.json({
+    success: true
+  });
+
+  response.cookies.set(
+    "sfcm_session",
+    session.token,
+    {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      expires: session.expiresAt
+    }
+  );
+
+  return response;
+
 }
