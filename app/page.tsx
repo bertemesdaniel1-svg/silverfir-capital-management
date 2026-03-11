@@ -1,4 +1,31 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function Page() {
+  const [mouse, setMouse] = useState({ x: 50, y: 20 });
+  const [heroTilt, setHeroTilt] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+
+      setMouse({ x, y });
+
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      const rotateY = ((e.clientX - centerX) / centerX) * 8;
+      const rotateX = ((e.clientY - centerY) / centerY) * -6;
+
+      setHeroTilt({ x: rotateX, y: rotateY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
     <main className="sfcm-page">
       <style>{`
@@ -21,7 +48,7 @@ export default function Page() {
           position: relative;
           overflow: hidden;
           background:
-            radial-gradient(circle at 50% 0%, rgba(34,44,72,0.10) 0%, rgba(7,10,18,0.98) 28%, rgba(3,5,10,1) 62%, rgba(1,2,6,1) 100%);
+            radial-gradient(circle at 50% 0%, rgba(28,36,58,0.08) 0%, rgba(7,10,18,0.98) 28%, rgba(3,5,10,1) 62%, rgba(1,2,6,1) 100%);
         }
 
         .sfcm-page::before {
@@ -29,14 +56,27 @@ export default function Page() {
           position: absolute;
           inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
           background-size: 64px 64px;
           opacity: 0.12;
           animation: gridDrift 24s linear infinite;
           pointer-events: none;
           mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.18));
           -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0.18));
+        }
+
+        .cursor-glow {
+          position: fixed;
+          width: 420px;
+          height: 420px;
+          border-radius: 999px;
+          pointer-events: none;
+          z-index: 1;
+          filter: blur(70px);
+          background: radial-gradient(circle, rgba(120,140,210,0.10) 0%, rgba(120,140,210,0.035) 40%, rgba(120,140,210,0) 75%);
+          transform: translate(-50%, -50%);
+          transition: left 0.08s linear, top 0.08s linear;
         }
 
         .orb {
@@ -48,44 +88,31 @@ export default function Page() {
         }
 
         .orb-1 {
-          width: 520px;
-          height: 520px;
-          top: -220px;
+          width: 460px;
+          height: 460px;
+          top: -180px;
           left: 50%;
           transform: translateX(-50%);
-          background: radial-gradient(circle, rgba(80,100,155,0.08) 0%, rgba(80,100,155,0.025) 40%, rgba(80,100,155,0) 75%);
+          background: radial-gradient(circle, rgba(80,100,155,0.06) 0%, rgba(80,100,155,0.02) 40%, rgba(80,100,155,0) 75%);
           animation: floatOrb1 16s ease-in-out infinite alternate;
         }
 
         .orb-2 {
-          width: 220px;
-          height: 220px;
+          width: 180px;
+          height: 180px;
           top: 180px;
-          right: 40px;
-          background: radial-gradient(circle, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.012) 40%, rgba(255,255,255,0) 80%);
+          right: 50px;
+          background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.01) 40%, rgba(255,255,255,0) 80%);
           animation: floatOrb2 14s ease-in-out infinite alternate;
         }
 
         .orb-3 {
-          width: 220px;
-          height: 220px;
+          width: 180px;
+          height: 180px;
           bottom: 100px;
           left: -40px;
-          background: radial-gradient(circle, rgba(70,90,145,0.06) 0%, rgba(70,90,145,0.02) 40%, rgba(70,90,145,0) 80%);
+          background: radial-gradient(circle, rgba(70,90,145,0.045) 0%, rgba(70,90,145,0.014) 40%, rgba(70,90,145,0) 80%);
           animation: floatOrb3 18s ease-in-out infinite alternate;
-        }
-
-        .noise {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          opacity: 0.025;
-          background-image:
-            radial-gradient(circle at 20% 20%, white 0.7px, transparent 0.8px),
-            radial-gradient(circle at 80% 30%, white 0.7px, transparent 0.8px),
-            radial-gradient(circle at 60% 80%, white 0.7px, transparent 0.8px),
-            radial-gradient(circle at 30% 70%, white 0.7px, transparent 0.8px);
-          background-size: 180px 180px;
         }
 
         .container {
@@ -188,6 +215,14 @@ export default function Page() {
           background: rgba(255,255,255,0.018);
         }
 
+        .hero-main-row {
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 28px;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
         .hero-title {
           margin: 0 0 18px 0;
           font-size: clamp(56px, 9vw, 126px);
@@ -211,6 +246,34 @@ export default function Page() {
           color: #7f8898;
           letter-spacing: 0.26em;
           margin-bottom: 30px;
+        }
+
+        .hero-chart-card {
+          border-radius: 26px;
+          padding: 14px;
+          border: 1px solid rgba(255,255,255,0.07);
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.008));
+          box-shadow:
+            0 20px 50px rgba(0,0,0,0.35),
+            inset 0 0 18px rgba(255,255,255,0.01);
+          transform-style: preserve-3d;
+          transition: transform 0.18s ease;
+        }
+
+        .hero-chart-label {
+          color: #9da7b7;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          margin-bottom: 10px;
+          padding-left: 4px;
+        }
+
+        .hero-chart-image {
+          width: 100%;
+          display: block;
+          border-radius: 18px;
+          border: 1px solid rgba(255,255,255,0.06);
         }
 
         .hero-text {
@@ -290,6 +353,8 @@ export default function Page() {
             inset 0 0 24px rgba(255,255,255,0.01);
           position: relative;
           overflow: hidden;
+          transform-style: preserve-3d;
+          transition: transform 0.18s ease;
         }
 
         .card-label {
@@ -456,7 +521,7 @@ export default function Page() {
 
         .mini-grid {
           display: grid;
-          gridTemplateColumns: 1fr 1fr;
+          grid-template-columns: 1fr 1fr;
           gap: 18px;
         }
 
@@ -557,6 +622,12 @@ export default function Page() {
           }
         }
 
+        @media (max-width: 1180px) {
+          .hero-main-row {
+            grid-template-columns: 1fr;
+          }
+        }
+
         @media (max-width: 1100px) {
           .hero,
           .cards-3,
@@ -599,8 +670,20 @@ export default function Page() {
             flex-direction: column;
             align-items: flex-start;
           }
+
+          .hero-main-row {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
+
+      <div
+        className="cursor-glow"
+        style={{
+          left: `${mouse.x}%`,
+          top: `${mouse.y}%`,
+        }}
+      />
 
       <div className="orb orb-1" />
       <div className="orb orb-2" />
@@ -636,9 +719,27 @@ export default function Page() {
           <div className="hero-left">
             <div className="eyebrow">PRIVATE TRADING INFRASTRUCTURE</div>
 
-            <h1 className="hero-title">SFCM</h1>
-            <div className="hero-sub-1">SILVER FIR</div>
-            <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+            <div className="hero-main-row">
+              <div>
+                <h1 className="hero-title">SFCM</h1>
+                <div className="hero-sub-1">SILVER FIR</div>
+                <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+              </div>
+
+              <div
+                className="hero-chart-card"
+                style={{
+                  transform: `perspective(1200px) rotateX(${heroTilt.x * 0.35}deg) rotateY(${heroTilt.y * 0.35}deg)`,
+                }}
+              >
+                <div className="hero-chart-label">US100 CHART</div>
+                <img
+                  src="/us100-chart.png"
+                  alt="US100 Chart"
+                  className="hero-chart-image"
+                />
+              </div>
+            </div>
 
             <p className="hero-text">
               Advanced algorithmic trading infrastructure built for disciplined
@@ -665,7 +766,12 @@ export default function Page() {
           </div>
 
           <div className="hero-card-wrap">
-            <div className="hero-card">
+            <div
+              className="hero-card"
+              style={{
+                transform: `perspective(1400px) rotateX(${heroTilt.x * 0.2}deg) rotateY(${heroTilt.y * 0.2}deg)`,
+              }}
+            >
               <div className="card-label">BRAND MARK</div>
 
               <div className="integrated-brand">
