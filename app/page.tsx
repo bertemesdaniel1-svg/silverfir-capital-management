@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -16,9 +17,27 @@ export default function Page() {
       setTilt({ x: rotateX, y: rotateY });
     };
 
+    const handleScroll = () => {
+      const max = 900;
+      const progress = Math.min(window.scrollY / max, 1);
+      setScrollProgress(progress);
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("scroll", handleScroll);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+  const chartOpacity = 0.28 * (1 - scrollProgress);
+  const chartBlur = scrollProgress * 18;
+  const chartScale = 1 + scrollProgress * 0.08;
+  const chartTranslateY = scrollProgress * 80;
 
   return (
     <main className="sfcm-page">
@@ -41,7 +60,7 @@ export default function Page() {
           color: white;
           font-family: Arial, Helvetica, sans-serif;
           position: relative;
-          overflow: hidden;
+          overflow-x: hidden;
           background:
             linear-gradient(180deg, #070910 0%, #04060b 48%, #020409 100%);
         }
@@ -153,10 +172,61 @@ export default function Page() {
         }
 
         .hero {
+          position: relative;
+          min-height: 760px;
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+          border-radius: 34px;
+        }
+
+        .hero-chart-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .hero-chart-image {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center center;
+        }
+
+        .hero-chart-overlay {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(
+              90deg,
+              rgba(4,6,11,0.92) 0%,
+              rgba(4,6,11,0.72) 28%,
+              rgba(4,6,11,0.52) 52%,
+              rgba(4,6,11,0.72) 78%,
+              rgba(4,6,11,0.9) 100%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(4,6,11,0.62) 0%,
+              rgba(4,6,11,0.20) 25%,
+              rgba(4,6,11,0.22) 70%,
+              rgba(4,6,11,0.82) 100%
+            );
+        }
+
+        .hero-content {
+          position: relative;
+          z-index: 2;
+          width: 100%;
           display: grid;
           grid-template-columns: 1.05fr 0.95fr;
           gap: 42px;
           align-items: center;
+          padding: 40px 0;
         }
 
         .hero-left {
@@ -171,14 +241,6 @@ export default function Page() {
           font-size: 12px;
           letter-spacing: 0.16em;
           margin-bottom: 28px;
-        }
-
-        .hero-main-row {
-          display: grid;
-          grid-template-columns: 1fr 360px;
-          gap: 28px;
-          align-items: center;
-          margin-bottom: 20px;
         }
 
         .title-wrap {
@@ -209,28 +271,6 @@ export default function Page() {
           color: #7f8898;
           letter-spacing: 0.26em;
           margin-bottom: 30px;
-        }
-
-        .hero-chart-card {
-          border-radius: 26px;
-          padding: 14px;
-          transform-style: preserve-3d;
-          transition: transform 0.16s ease;
-        }
-
-        .hero-chart-label {
-          color: #9ca7b7;
-          font-size: 11px;
-          letter-spacing: 0.18em;
-          margin-bottom: 10px;
-          padding-left: 4px;
-        }
-
-        .hero-chart-image {
-          width: 100%;
-          display: block;
-          border-radius: 18px;
-          border: 1px solid rgba(255,255,255,0.06);
         }
 
         .hero-text {
@@ -514,14 +554,8 @@ export default function Page() {
           }
         }
 
-        @media (max-width: 1180px) {
-          .hero-main-row {
-            grid-template-columns: 1fr;
-          }
-        }
-
         @media (max-width: 1100px) {
-          .hero,
+          .hero-content,
           .cards-3,
           .section-2,
           .mini-grid {
@@ -536,6 +570,10 @@ export default function Page() {
 
           .nav {
             margin-bottom: 50px;
+          }
+
+          .hero {
+            min-height: auto;
           }
 
           .hero-text {
@@ -561,10 +599,6 @@ export default function Page() {
           .integrated-brand {
             flex-direction: column;
             align-items: flex-start;
-          }
-
-          .hero-main-row {
-            grid-template-columns: 1fr;
           }
         }
       `}</style>
@@ -597,99 +631,100 @@ export default function Page() {
         </nav>
 
         <section className="hero">
-          <div className="hero-left">
-            <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
+          <div className="hero-chart-bg">
+            <img
+              src="/us100-chart.png"
+              alt="US100 Background Chart"
+              className="hero-chart-image"
+              style={{
+                opacity: chartOpacity,
+                filter: `blur(${chartBlur}px)`,
+                transform: `scale(${chartScale}) translateY(${chartTranslateY}px)`,
+                transition: "opacity 0.1s linear, filter 0.1s linear, transform 0.1s linear",
+              }}
+            />
+            <div className="hero-chart-overlay" />
+          </div>
 
-            <div className="hero-main-row">
+          <div className="hero-content">
+            <div className="hero-left">
+              <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
+
               <div className="title-wrap">
                 <h1 className="hero-title">SFCM</h1>
                 <div className="hero-sub-1">SILVER FIR</div>
                 <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
               </div>
 
+              <p className="hero-text">
+                Advanced algorithmic trading infrastructure built for disciplined
+                execution, premium client access, and a modern systematic trading
+                brand with institutional presentation.
+              </p>
+
+              <div className="cta-row">
+                <a href="#clients" className="btn-primary glass">
+                  Get Access
+                </a>
+
+                <a href="#strategy" className="btn-secondary glass">
+                  Explore Strategy
+                </a>
+              </div>
+
+              <div className="tag-row">
+                <div className="tag glass">Gold</div>
+                <div className="tag glass">Nasdaq</div>
+                <div className="tag glass">Automation</div>
+                <div className="tag glass">Risk-First</div>
+              </div>
+            </div>
+
+            <div className="hero-card-wrap">
               <div
-                className="hero-chart-card glass"
+                className="hero-card glass"
                 style={{
-                  transform: `perspective(1200px) rotateX(${tilt.x * 0.18}deg) rotateY(${tilt.y * 0.18}deg)`,
+                  transform: `perspective(1400px) rotateX(${tilt.x * 0.12}deg) rotateY(${tilt.y * 0.12}deg)`,
                 }}
               >
-                <div className="hero-chart-label">US100 CHART</div>
-                <img
-                  src="/us100-chart.png"
-                  alt="US100 Chart"
-                  className="hero-chart-image"
-                />
-              </div>
-            </div>
+                <div className="card-label">BRAND MARK</div>
 
-            <p className="hero-text">
-              Advanced algorithmic trading infrastructure built for disciplined
-              execution, premium client access, and a modern systematic trading
-              brand with institutional presentation.
-            </p>
+                <div className="integrated-brand">
+                  <div className="integrated-logo-box glass">
+                    <img
+                      src="/sfcm-tree-logo.png"
+                      alt="SFCM Logo"
+                      className="integrated-logo"
+                    />
+                  </div>
 
-            <div className="cta-row">
-              <a href="#clients" className="btn-primary glass">
-                Get Access
-              </a>
-
-              <a href="#strategy" className="btn-secondary glass">
-                Explore Strategy
-              </a>
-            </div>
-
-            <div className="tag-row">
-              <div className="tag glass">Gold</div>
-              <div className="tag glass">Nasdaq</div>
-              <div className="tag glass">Automation</div>
-              <div className="tag glass">Risk-First</div>
-            </div>
-          </div>
-
-          <div className="hero-card-wrap">
-            <div
-              className="hero-card glass"
-              style={{
-                transform: `perspective(1400px) rotateX(${tilt.x * 0.12}deg) rotateY(${tilt.y * 0.12}deg)`,
-              }}
-            >
-              <div className="card-label">BRAND MARK</div>
-
-              <div className="integrated-brand">
-                <div className="integrated-logo-box glass">
-                  <img
-                    src="/sfcm-tree-logo.png"
-                    alt="SFCM Logo"
-                    className="integrated-logo"
-                  />
+                  <div>
+                    <div className="integrated-text-top">SFCM</div>
+                    <div className="integrated-text-main">Silver Fir</div>
+                    <div className="integrated-text-sub">CAPITAL MANAGEMENT</div>
+                  </div>
                 </div>
 
-                <div>
-                  <div className="integrated-text-top">SFCM</div>
-                  <div className="integrated-text-main">Silver Fir</div>
-                  <div className="integrated-text-sub">CAPITAL MANAGEMENT</div>
-                </div>
-              </div>
+                <div className="metrics">
+                  <div className="metric glass">
+                    <div className="metric-label">Core Markets</div>
+                    <div className="metric-value">Gold / Nasdaq</div>
+                  </div>
 
-              <div className="metrics">
-                <div className="metric glass">
-                  <div className="metric-label">Core Markets</div>
-                  <div className="metric-value">Gold / Nasdaq</div>
-                </div>
+                  <div className="metric glass">
+                    <div className="metric-label">Access</div>
+                    <div className="metric-value">Private Clients</div>
+                  </div>
 
-                <div className="metric glass">
-                  <div className="metric-label">Access</div>
-                  <div className="metric-value">Private Clients</div>
-                </div>
+                  <div className="metric glass">
+                    <div className="metric-label">Infrastructure</div>
+                    <div className="metric-value">Vercel + Cloudflare</div>
+                  </div>
 
-                <div className="metric glass">
-                  <div className="metric-label">Infrastructure</div>
-                  <div className="metric-value">Vercel + Cloudflare</div>
-                </div>
-
-                <div className="metric glass">
-                  <div className="metric-label">Framework</div>
-                  <div className="metric-value">Risk-First</div>
+                  <div className="metric glass">
+                    <div className="metric-label">Framework</div>
+                    <div className="metric-value">Risk-First</div>
+                  </div>
                 </div>
               </div>
             </div>
