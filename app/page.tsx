@@ -1,706 +1,926 @@
 export default function Page() {
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background:
-          "radial-gradient(circle at 50% 0%, rgba(32,41,66,0.45) 0%, rgba(7,10,18,1) 42%, rgba(3,5,10,1) 100%)",
-        color: "white",
-        fontFamily: "Arial, Helvetica, sans-serif",
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      {/* Animated background */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px",
-          maskImage:
-            "linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.15))",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.15))",
-          opacity: 0.35,
-          pointerEvents: "none",
-        }}
-      />
+    <main className="sfcm-page">
+      <style>{`
+        * {
+          box-sizing: border-box;
+        }
 
-      <div
-        style={{
-          position: "absolute",
-          width: "900px",
-          height: "900px",
-          borderRadius: "999px",
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          margin: 0;
+        }
+
+        .sfcm-page {
+          min-height: 100vh;
+          color: white;
+          font-family: Arial, Helvetica, sans-serif;
+          position: relative;
+          overflow: hidden;
           background:
-            "radial-gradient(circle, rgba(76,99,153,0.22) 0%, rgba(76,99,153,0.08) 35%, rgba(76,99,153,0) 70%)",
-          top: "-340px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          filter: "blur(20px)",
-          pointerEvents: "none",
-        }}
-      />
+            radial-gradient(circle at 50% 0%, rgba(38,48,78,0.22) 0%, rgba(8,11,20,0.96) 34%, rgba(3,5,10,1) 72%, rgba(1,2,6,1) 100%);
+        }
 
-      <div
-        style={{
-          position: "absolute",
-          width: "420px",
-          height: "420px",
-          borderRadius: "999px",
+        .sfcm-page::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+          background-size: 64px 64px;
+          opacity: 0.22;
+          animation: gridDrift 18s linear infinite;
+          pointer-events: none;
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.22));
+          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.22));
+        }
+
+        .orb {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(28px);
+          pointer-events: none;
+          mix-blend-mode: screen;
+        }
+
+        .orb-1 {
+          width: 820px;
+          height: 820px;
+          top: -360px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: radial-gradient(circle, rgba(112,130,200,0.16) 0%, rgba(112,130,200,0.05) 36%, rgba(112,130,200,0) 70%);
+          animation: floatOrb1 14s ease-in-out infinite alternate;
+        }
+
+        .orb-2 {
+          width: 360px;
+          height: 360px;
+          top: 140px;
+          right: -80px;
+          background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.025) 40%, rgba(255,255,255,0) 75%);
+          animation: floatOrb2 12s ease-in-out infinite alternate;
+        }
+
+        .orb-3 {
+          width: 340px;
+          height: 340px;
+          bottom: 40px;
+          left: -70px;
+          background: radial-gradient(circle, rgba(80,110,185,0.13) 0%, rgba(80,110,185,0.03) 40%, rgba(80,110,185,0) 75%);
+          animation: floatOrb3 16s ease-in-out infinite alternate;
+        }
+
+        .noise {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.04;
+          background-image:
+            radial-gradient(circle at 20% 20%, white 0.7px, transparent 0.8px),
+            radial-gradient(circle at 80% 30%, white 0.7px, transparent 0.8px),
+            radial-gradient(circle at 60% 80%, white 0.7px, transparent 0.8px),
+            radial-gradient(circle at 30% 70%, white 0.7px, transparent 0.8px);
+          background-size: 180px 180px;
+        }
+
+        .container {
+          position: relative;
+          z-index: 2;
+          max-width: 1380px;
+          margin: 0 auto;
+          padding: 32px 24px 110px;
+        }
+
+        .nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+          margin-bottom: 78px;
+          flex-wrap: wrap;
+          animation: fadeUp 1s ease forwards;
+        }
+
+        .brand {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .brand-icon-wrap {
+          width: 62px;
+          height: 62px;
+          border-radius: 18px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+          border: 1px solid rgba(255,255,255,0.08);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow:
+            0 12px 40px rgba(0,0,0,0.55),
+            0 0 24px rgba(255,255,255,0.04),
+            inset 0 0 18px rgba(255,255,255,0.02);
+          backdrop-filter: blur(16px);
+          animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        .brand-icon {
+          width: 42px;
+          height: 42px;
+          object-fit: contain;
+          filter: drop-shadow(0 0 16px rgba(255,255,255,0.18));
+        }
+
+        .brand-top {
+          font-size: 15px;
+          letter-spacing: 0.22em;
+          color: #eef2f8;
+          font-weight: 700;
+        }
+
+        .brand-sub {
+          font-size: 12px;
+          color: #8e97a7;
+          letter-spacing: 0.16em;
+        }
+
+        .nav-links {
+          display: flex;
+          gap: 28px;
+          color: #a3adbc;
+          font-size: 14px;
+          flex-wrap: wrap;
+        }
+
+        .nav-links a {
+          color: inherit;
+          text-decoration: none;
+          transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .nav-links a:hover {
+          color: #eef2f8;
+          transform: translateY(-1px);
+        }
+
+        .hero {
+          display: grid;
+          grid-template-columns: 1.08fr 0.92fr;
+          gap: 42px;
+          align-items: center;
+        }
+
+        .hero-left {
+          animation: fadeUp 1.1s ease forwards;
+        }
+
+        .eyebrow {
+          display: inline-block;
+          padding: 10px 16px;
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 999px;
+          color: #b7c0cd;
+          font-size: 12px;
+          letter-spacing: 0.16em;
+          margin-bottom: 28px;
+          background: rgba(255,255,255,0.025);
+          box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+          backdrop-filter: blur(10px);
+        }
+
+        .hero-title-wrap {
+          position: relative;
+          margin-bottom: 18px;
+        }
+
+        .hero-title-wrap::before {
+          content: "";
+          position: absolute;
+          inset: 14px auto auto 8px;
+          width: 260px;
+          height: 120px;
+          background: radial-gradient(circle, rgba(255,255,255,0.10), rgba(255,255,255,0));
+          filter: blur(38px);
+          pointer-events: none;
+          animation: shimmerGlow 5s ease-in-out infinite;
+        }
+
+        .hero-title {
+          margin: 0;
+          font-size: clamp(56px, 9vw, 126px);
+          line-height: 0.92;
+          letter-spacing: -0.06em;
+          font-family: Georgia, "Times New Roman", serif;
+          color: #f2f5f9;
+          text-shadow: 0 0 32px rgba(255,255,255,0.08);
+          position: relative;
+          animation: titleShine 6s ease-in-out infinite;
+        }
+
+        .hero-sub-1 {
+          font-size: clamp(18px, 3vw, 32px);
+          color: #d0d6df;
+          letter-spacing: 0.34em;
+          margin-bottom: 12px;
+          font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .hero-sub-2 {
+          font-size: clamp(13px, 2vw, 20px);
+          color: #8790a0;
+          letter-spacing: 0.26em;
+          margin-bottom: 30px;
+        }
+
+        .hero-text {
+          max-width: 760px;
+          color: #9ea8b7;
+          font-size: 19px;
+          line-height: 1.9;
+          margin-bottom: 36px;
+        }
+
+        .cta-row {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+          text-decoration: none;
+          border-radius: 14px;
+          padding: 15px 28px;
+          transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .btn-primary {
+          background: linear-gradient(135deg, #eef2f7 0%, #bcc3cf 100%);
+          color: #101318;
+          font-weight: 700;
+          box-shadow:
+            0 14px 40px rgba(255,255,255,0.10),
+            0 8px 24px rgba(0,0,0,0.28);
+        }
+
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow:
+            0 18px 48px rgba(255,255,255,0.13),
+            0 10px 26px rgba(0,0,0,0.34);
+        }
+
+        .btn-secondary {
+          border: 1px solid rgba(255,255,255,0.14);
+          color: #eef2f8;
+          background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
+          box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+        }
+
+        .btn-secondary:hover {
+          transform: translateY(-2px);
+          background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.028));
+        }
+
+        .tag-row {
+          display: flex;
+          gap: 14px;
+          flex-wrap: wrap;
+          margin-top: 38px;
+        }
+
+        .tag {
+          padding: 10px 14px;
+          border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.025);
+          color: #b1bac8;
+          font-size: 13px;
+          animation: fadeUp 1.2s ease forwards;
+        }
+
+        .hero-card-wrap {
+          position: relative;
+          animation: floatCard 7s ease-in-out infinite;
+        }
+
+        .hero-card-wrap::before {
+          content: "";
+          position: absolute;
+          inset: 8% 8% auto auto;
+          width: 180px;
+          height: 180px;
+          border-radius: 999px;
+          background: radial-gradient(circle, rgba(255,255,255,0.12), rgba(255,255,255,0));
+          filter: blur(28px);
+          pointer-events: none;
+        }
+
+        .hero-card {
+          border: 1px solid rgba(255,255,255,0.085);
+          border-radius: 30px;
           background:
-            "radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.03) 42%, rgba(255,255,255,0) 75%)",
-          top: "140px",
-          right: "-80px",
-          filter: "blur(18px)",
-          pointerEvents: "none",
-        }}
-      />
+            linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.022));
+          padding: 30px;
+          box-shadow:
+            0 32px 90px rgba(0,0,0,0.56),
+            inset 0 0 40px rgba(255,255,255,0.018);
+          backdrop-filter: blur(18px);
+          position: relative;
+          overflow: hidden;
+        }
 
-      <div
-        style={{
-          position: "absolute",
-          width: "320px",
-          height: "320px",
-          borderRadius: "999px",
+        .hero-card::after {
+          content: "";
+          position: absolute;
+          top: -20%;
+          left: -40%;
+          width: 40%;
+          height: 140%;
+          background: linear-gradient(
+            90deg,
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.07) 50%,
+            rgba(255,255,255,0) 100%
+          );
+          transform: rotate(14deg);
+          animation: cardSweep 8s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .card-label {
+          margin-bottom: 18px;
+          color: #d0d7e0;
+          font-size: 15px;
+          letter-spacing: 0.12em;
+        }
+
+        .logo-frame-wrap {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 24px;
+        }
+
+        .logo-frame {
+          padding: 20px;
+          border-radius: 28px;
           background:
-            "radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 40%, rgba(255,255,255,0) 75%)",
-          bottom: "120px",
-          left: "-60px",
-          filter: "blur(18px)",
-          pointerEvents: "none",
-        }}
-      />
+            linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012));
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow:
+            0 16px 40px rgba(0,0,0,0.38),
+            inset 0 0 24px rgba(255,255,255,0.015);
+          animation: logoPulse 5s ease-in-out infinite;
+        }
 
-      <section
-        style={{
-          position: "relative",
-          zIndex: 2,
-          maxWidth: "1380px",
-          margin: "0 auto",
-          padding: "32px 24px 110px",
-        }}
-      >
-        {/* NAV */}
-        <nav
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "20px",
-            marginBottom: "78px",
-            flexWrap: "wrap",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div
-              style={{
-                width: "62px",
-                height: "62px",
-                borderRadius: "18px",
-                background:
-                  "linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03))",
-                border: "1px solid rgba(255,255,255,0.09)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow:
-                  "0 12px 40px rgba(0,0,0,0.45), 0 0 30px rgba(255,255,255,0.06)",
-                backdropFilter: "blur(14px)",
-              }}
-            >
+        .hero-logo {
+          width: 240px;
+          max-width: 100%;
+          border-radius: 22px;
+          display: block;
+        }
+
+        .metrics {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+        }
+
+        .metric {
+          padding: 18px;
+          border-radius: 18px;
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+          border: 1px solid rgba(255,255,255,0.075);
+          transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255,255,255,0.13);
+        }
+
+        .metric-label {
+          color: #8590a0;
+          font-size: 12px;
+          margin-bottom: 8px;
+        }
+
+        .metric-value {
+          font-weight: 700;
+          font-size: 17px;
+        }
+
+        .cards-3 {
+          margin-top: 96px;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 18px;
+        }
+
+        .info-card {
+          padding: 28px;
+          border-radius: 24px;
+          border: 1px solid rgba(255,255,255,0.075);
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+          box-shadow: 0 16px 45px rgba(0,0,0,0.22);
+          transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .info-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(255,255,255,0.12);
+        }
+
+        .info-card h3 {
+          margin-top: 0;
+          margin-bottom: 12px;
+          font-size: 28px;
+          letter-spacing: -0.03em;
+        }
+
+        .info-card p {
+          color: #9fa9b7;
+          line-height: 1.85;
+          margin-bottom: 0;
+          font-size: 16px;
+        }
+
+        .section-2 {
+          margin-top: 88px;
+          display: grid;
+          grid-template-columns: 0.95fr 1.05fr;
+          gap: 20px;
+        }
+
+        .big-panel {
+          border-radius: 30px;
+          padding: 34px;
+          border: 1px solid rgba(255,255,255,0.075);
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+        }
+
+        .section-kicker {
+          color: #b7c0cd;
+          letter-spacing: 0.16em;
+          font-size: 12px;
+          margin-bottom: 16px;
+        }
+
+        .big-panel h2,
+        .cta-panel h2 {
+          margin: 0;
+          font-size: clamp(34px, 5vw, 58px);
+          line-height: 1.02;
+          letter-spacing: -0.05em;
+        }
+
+        .big-panel p,
+        .mini-card p {
+          color: #9ea8b7;
+          line-height: 1.9;
+        }
+
+        .mini-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 18px;
+        }
+
+        .mini-card {
+          border-radius: 24px;
+          padding: 24px;
+          border: 1px solid rgba(255,255,255,0.075);
+          background:
+            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+          transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .mini-card:hover {
+          transform: translateY(-3px);
+          border-color: rgba(255,255,255,0.12);
+        }
+
+        .mini-card h3 {
+          margin-top: 0;
+          margin-bottom: 10px;
+          font-size: 23px;
+          letter-spacing: -0.03em;
+        }
+
+        .cta-panel {
+          margin-top: 90px;
+          padding: 34px;
+          border-radius: 30px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background:
+            linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+          box-shadow: 0 20px 60px rgba(0,0,0,0.24);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .cta-panel::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(120deg, rgba(255,255,255,0.03), transparent 32%, transparent 68%, rgba(255,255,255,0.03));
+          pointer-events: none;
+        }
+
+        .cta-inner {
+          display: flex;
+          justify-content: space-between;
+          gap: 22px;
+          flex-wrap: wrap;
+          align-items: center;
+          position: relative;
+          z-index: 2;
+        }
+
+        .footer {
+          margin-top: 80px;
+          padding-top: 28px;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          color: #818c9d;
+          display: flex;
+          justify-content: space-between;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes gridDrift {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(0, 64px, 0);
+          }
+        }
+
+        @keyframes floatOrb1 {
+          0% {
+            transform: translateX(-50%) translateY(0px) scale(1);
+          }
+          100% {
+            transform: translateX(-50%) translateY(24px) scale(1.04);
+          }
+        }
+
+        @keyframes floatOrb2 {
+          0% {
+            transform: translateY(0px) translateX(0px);
+          }
+          100% {
+            transform: translateY(18px) translateX(-18px);
+          }
+        }
+
+        @keyframes floatOrb3 {
+          0% {
+            transform: translateY(0px) translateX(0px);
+          }
+          100% {
+            transform: translateY(-18px) translateX(16px);
+          }
+        }
+
+        @keyframes pulseGlow {
+          0%, 100% {
+            box-shadow:
+              0 12px 40px rgba(0,0,0,0.55),
+              0 0 24px rgba(255,255,255,0.04),
+              inset 0 0 18px rgba(255,255,255,0.02);
+          }
+          50% {
+            box-shadow:
+              0 14px 46px rgba(0,0,0,0.60),
+              0 0 34px rgba(255,255,255,0.08),
+              inset 0 0 20px rgba(255,255,255,0.03);
+          }
+        }
+
+        @keyframes shimmerGlow {
+          0%, 100% {
+            opacity: 0.65;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+        }
+
+        @keyframes titleShine {
+          0%, 100% {
+            text-shadow: 0 0 32px rgba(255,255,255,0.08);
+          }
+          50% {
+            text-shadow:
+              0 0 42px rgba(255,255,255,0.12),
+              0 0 70px rgba(140,160,220,0.08);
+          }
+        }
+
+        @keyframes floatCard {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
+        @keyframes cardSweep {
+          0% {
+            transform: translateX(-120%) rotate(14deg);
+            opacity: 0;
+          }
+          15% {
+            opacity: 0.55;
+          }
+          35% {
+            opacity: 0.25;
+          }
+          100% {
+            transform: translateX(260%) rotate(14deg);
+            opacity: 0;
+          }
+        }
+
+        @keyframes logoPulse {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow:
+              0 16px 40px rgba(0,0,0,0.38),
+              inset 0 0 24px rgba(255,255,255,0.015);
+          }
+          50% {
+            transform: scale(1.015);
+            box-shadow:
+              0 18px 46px rgba(0,0,0,0.42),
+              0 0 24px rgba(255,255,255,0.04),
+              inset 0 0 26px rgba(255,255,255,0.02);
+          }
+        }
+
+        @media (max-width: 1100px) {
+          .hero,
+          .cards-3,
+          .section-2,
+          .mini-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .hero-card-wrap {
+            animation: none;
+          }
+        }
+
+        @media (max-width: 700px) {
+          .container {
+            padding: 24px 16px 84px;
+          }
+
+          .nav {
+            margin-bottom: 50px;
+          }
+
+          .hero-text {
+            font-size: 17px;
+          }
+
+          .brand-sub {
+            letter-spacing: 0.08em;
+          }
+
+          .nav-links {
+            gap: 16px;
+          }
+
+          .metrics {
+            grid-template-columns: 1fr;
+          }
+
+          .cta-inner {
+            align-items: flex-start;
+          }
+        }
+      `}</style>
+
+      <div className="orb orb-1" />
+      <div className="orb orb-2" />
+      <div className="orb orb-3" />
+      <div className="noise" />
+
+      <section className="container">
+        <nav className="nav">
+          <div className="brand">
+            <div className="brand-icon-wrap">
               <img
                 src="/sfcm-tree-logo.png"
                 alt="SFCM Tree Logo"
-                style={{
-                  width: "42px",
-                  height: "42px",
-                  objectFit: "contain",
-                  filter: "drop-shadow(0 0 18px rgba(255,255,255,0.18))",
-                }}
+                className="brand-icon"
               />
             </div>
 
             <div>
-              <div
-                style={{
-                  fontSize: "15px",
-                  letterSpacing: "0.22em",
-                  color: "#eef2f8",
-                  fontWeight: 700,
-                }}
-              >
-                SFCM
-              </div>
-              <div
-                style={{
-                  fontSize: "12px",
-                  color: "#97a0af",
-                  letterSpacing: "0.16em",
-                }}
-              >
-                SILVER FIR CAPITAL MANAGEMENT
-              </div>
+              <div className="brand-top">SFCM</div>
+              <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
             </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "28px",
-              color: "#aab2c0",
-              fontSize: "14px",
-              flexWrap: "wrap",
-            }}
-          >
-            <a href="#strategy" style={{ color: "inherit", textDecoration: "none" }}>
-              Strategy
-            </a>
-            <a href="#infrastructure" style={{ color: "inherit", textDecoration: "none" }}>
-              Infrastructure
-            </a>
-            <a href="#clients" style={{ color: "inherit", textDecoration: "none" }}>
-              Clients
-            </a>
-            <a href="#contact" style={{ color: "inherit", textDecoration: "none" }}>
-              Contact
-            </a>
+          <div className="nav-links">
+            <a href="#strategy">Strategy</a>
+            <a href="#infrastructure">Infrastructure</a>
+            <a href="#clients">Clients</a>
+            <a href="#contact">Contact</a>
           </div>
         </nav>
 
-        {/* HERO */}
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.08fr 0.92fr",
-            gap: "42px",
-            alignItems: "center",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                display: "inline-block",
-                padding: "10px 16px",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: "999px",
-                color: "#bcc4d1",
-                fontSize: "12px",
-                letterSpacing: "0.16em",
-                marginBottom: "28px",
-                background: "rgba(255,255,255,0.03)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.02)",
-              }}
-            >
-              PRIVATE TRADING INFRASTRUCTURE
+        <section className="hero">
+          <div className="hero-left">
+            <div className="eyebrow">PRIVATE TRADING INFRASTRUCTURE</div>
+
+            <div className="hero-title-wrap">
+              <h1 className="hero-title">SFCM</h1>
             </div>
 
-            <div
-              style={{
-                position: "relative",
-                marginBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  inset: "20px auto auto 10px",
-                  width: "260px",
-                  height: "120px",
-                  background:
-                    "radial-gradient(circle, rgba(255,255,255,0.12), rgba(255,255,255,0))",
-                  filter: "blur(35px)",
-                  pointerEvents: "none",
-                }}
-              />
-              <h1
-                style={{
-                  fontSize: "clamp(56px, 9vw, 126px)",
-                  lineHeight: "0.92",
-                  margin: 0,
-                  letterSpacing: "-0.06em",
-                  fontFamily: 'Georgia, "Times New Roman", serif',
-                  color: "#f1f4f8",
-                  textShadow: "0 0 38px rgba(255,255,255,0.1)",
-                  position: "relative",
-                }}
-              >
-                SFCM
-              </h1>
-            </div>
+            <div className="hero-sub-1">SILVER FIR</div>
+            <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
 
-            <div
-              style={{
-                fontSize: "clamp(18px, 3vw, 32px)",
-                color: "#d0d6df",
-                letterSpacing: "0.34em",
-                marginBottom: "12px",
-                fontFamily: 'Georgia, "Times New Roman", serif',
-              }}
-            >
-              SILVER FIR
-            </div>
-
-            <div
-              style={{
-                fontSize: "clamp(13px, 2vw, 20px)",
-                color: "#8f97a6",
-                letterSpacing: "0.26em",
-                marginBottom: "30px",
-              }}
-            >
-              CAPITAL MANAGEMENT
-            </div>
-
-            <p
-              style={{
-                maxWidth: "760px",
-                color: "#a8b0bc",
-                fontSize: "19px",
-                lineHeight: "1.9",
-                marginBottom: "36px",
-              }}
-            >
+            <p className="hero-text">
               Advanced algorithmic trading infrastructure built for disciplined
               execution, premium client access, and a modern systematic trading
               brand with institutional presentation.
             </p>
 
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <a
-                href="#clients"
-                style={{
-                  padding: "15px 28px",
-                  borderRadius: "14px",
-                  background:
-                    "linear-gradient(135deg, #f4f6fa 0%, #c2c8d2 100%)",
-                  color: "#101318",
-                  fontWeight: 700,
-                  textDecoration: "none",
-                  boxShadow:
-                    "0 14px 40px rgba(255,255,255,0.12), 0 8px 24px rgba(0,0,0,0.24)",
-                }}
-              >
+            <div className="cta-row">
+              <a href="#clients" className="btn-primary">
                 Get Access
               </a>
 
-              <a
-                href="#strategy"
-                style={{
-                  padding: "15px 28px",
-                  borderRadius: "14px",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                  color: "#eef2f8",
-                  textDecoration: "none",
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02))",
-                  boxShadow: "inset 0 0 20px rgba(255,255,255,0.02)",
-                }}
-              >
+              <a href="#strategy" className="btn-secondary">
                 Explore Strategy
               </a>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "14px",
-                flexWrap: "wrap",
-                marginTop: "38px",
-              }}
-            >
-              {["Gold", "Nasdaq", "Automation", "Risk-First"].map((item) => (
-                <div
-                  key={item}
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "999px",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    background: "rgba(255,255,255,0.03)",
-                    color: "#b8c1ce",
-                    fontSize: "13px",
-                  }}
-                >
-                  {item}
-                </div>
-              ))}
+            <div className="tag-row">
+              <div className="tag">Gold</div>
+              <div className="tag">Nasdaq</div>
+              <div className="tag">Automation</div>
+              <div className="tag">Risk-First</div>
             </div>
           </div>
 
-          {/* HERO CARD */}
-          <div
-            style={{
-              position: "relative",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                inset: "8% 8% auto auto",
-                width: "180px",
-                height: "180px",
-                borderRadius: "999px",
-                background:
-                  "radial-gradient(circle, rgba(255,255,255,0.13), rgba(255,255,255,0))",
-                filter: "blur(26px)",
-                pointerEvents: "none",
-              }}
-            />
+          <div className="hero-card-wrap">
+            <div className="hero-card">
+              <div className="card-label">BRAND MARK</div>
 
-            <div
-              style={{
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "30px",
-                background:
-                  "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))",
-                padding: "30px",
-                boxShadow:
-                  "0 30px 90px rgba(0,0,0,0.46), inset 0 0 40px rgba(255,255,255,0.02)",
-                backdropFilter: "blur(18px)",
-              }}
-            >
-              <div
-                style={{
-                  marginBottom: "18px",
-                  color: "#d6dce5",
-                  fontSize: "15px",
-                  letterSpacing: "0.12em",
-                }}
-              >
-                BRAND MARK
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginBottom: "24px",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "20px",
-                    borderRadius: "28px",
-                    background:
-                      "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015))",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    boxShadow:
-                      "0 16px 40px rgba(0,0,0,0.35), inset 0 0 24px rgba(255,255,255,0.02)",
-                  }}
-                >
+              <div className="logo-frame-wrap">
+                <div className="logo-frame">
                   <img
                     src="/sfcm-tree-logo.png"
                     alt="SFCM Logo"
-                    style={{
-                      width: "240px",
-                      maxWidth: "100%",
-                      borderRadius: "22px",
-                      display: "block",
-                    }}
+                    className="hero-logo"
                   />
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "14px",
-                }}
-              >
-                {[
-                  ["Core Markets", "Gold / Nasdaq"],
-                  ["Access", "Private Clients"],
-                  ["Infrastructure", "Vercel + Cloudflare"],
-                  ["Framework", "Risk-First"],
-                ].map(([label, value]) => (
-                  <div
-                    key={label}
-                    style={{
-                      padding: "18px",
-                      borderRadius: "18px",
-                      background:
-                        "linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02))",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "#8e97a6",
-                        fontSize: "12px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {label}
-                    </div>
-                    <div style={{ fontWeight: 700, fontSize: "17px" }}>{value}</div>
-                  </div>
-                ))}
+              <div className="metrics">
+                <div className="metric">
+                  <div className="metric-label">Core Markets</div>
+                  <div className="metric-value">Gold / Nasdaq</div>
+                </div>
+
+                <div className="metric">
+                  <div className="metric-label">Access</div>
+                  <div className="metric-value">Private Clients</div>
+                </div>
+
+                <div className="metric">
+                  <div className="metric-label">Infrastructure</div>
+                  <div className="metric-value">Vercel + Cloudflare</div>
+                </div>
+
+                <div className="metric">
+                  <div className="metric-label">Framework</div>
+                  <div className="metric-value">Risk-First</div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* FEATURE STRIP */}
-        <section
-          id="strategy"
-          style={{
-            marginTop: "96px",
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "18px",
-          }}
-        >
-          {[
-            [
-              "Structured Execution",
-              "Systematic trade execution with predefined logic, disciplined entries, and controlled management.",
-            ],
-            [
-              "Premium Brand Identity",
-              "A refined digital presence designed to present SFCM as a serious modern capital-markets brand.",
-            ],
-            [
-              "Scalable Client Access",
-              "Built to evolve into dashboards, subscriptions, onboarding, and protected client infrastructure.",
-            ],
-          ].map(([title, text]) => (
-            <div
-              key={title}
-              style={{
-                padding: "28px",
-                borderRadius: "24px",
-                border: "1px solid rgba(255,255,255,0.08)",
-                background:
-                  "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))",
-                boxShadow: "0 16px 45px rgba(0,0,0,0.22)",
-              }}
-            >
-              <h3
-                style={{
-                  marginTop: 0,
-                  marginBottom: "12px",
-                  fontSize: "28px",
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                {title}
-              </h3>
-              <p
-                style={{
-                  color: "#a4adbb",
-                  lineHeight: "1.85",
-                  marginBottom: 0,
-                  fontSize: "16px",
-                }}
-              >
-                {text}
-              </p>
-            </div>
-          ))}
+        <section id="strategy" className="cards-3">
+          <div className="info-card">
+            <h3>Structured Execution</h3>
+            <p>
+              Systematic trade execution with predefined logic, disciplined entries,
+              and controlled management.
+            </p>
+          </div>
+
+          <div className="info-card">
+            <h3>Premium Brand Identity</h3>
+            <p>
+              A refined digital presence designed to present SFCM as a serious
+              modern capital-markets brand.
+            </p>
+          </div>
+
+          <div className="info-card">
+            <h3>Scalable Client Access</h3>
+            <p>
+              Built to evolve into dashboards, subscriptions, onboarding, and
+              protected client infrastructure.
+            </p>
+          </div>
         </section>
 
-        {/* ADVANCED SECTION */}
-        <section
-          id="infrastructure"
-          style={{
-            marginTop: "88px",
-            display: "grid",
-            gridTemplateColumns: "0.95fr 1.05fr",
-            gap: "20px",
-          }}
-        >
-          <div
-            style={{
-              borderRadius: "30px",
-              padding: "34px",
-              border: "1px solid rgba(255,255,255,0.08)",
-              background:
-                "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02))",
-            }}
-          >
-            <div
-              style={{
-                color: "#bbc4d0",
-                letterSpacing: "0.16em",
-                fontSize: "12px",
-                marginBottom: "16px",
-              }}
-            >
-              INFRASTRUCTURE
-            </div>
+        <section id="infrastructure" className="section-2">
+          <div className="big-panel">
+            <div className="section-kicker">INFRASTRUCTURE</div>
 
-            <h2
-              style={{
-                margin: 0,
-                fontSize: "clamp(34px, 5vw, 58px)",
-                lineHeight: 1.02,
-                letterSpacing: "-0.05em",
-              }}
-            >
+            <h2>
               Modern, scalable,
               <br />
               client-ready architecture.
             </h2>
 
-            <p
-              style={{
-                marginTop: "20px",
-                color: "#a4adbb",
-                lineHeight: "1.9",
-                fontSize: "17px",
-              }}
-            >
+            <p>
               SFCM is positioned not only as a trading concept, but as a premium
               digital operating system for private client delivery, execution
               infrastructure, and advanced financial branding.
             </p>
           </div>
 
-          <div
-            id="clients"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "18px",
-            }}
-          >
-            {[
-              ["Private Client Access", "Secure onboarding and controlled access structure."],
-              ["Trading Infrastructure", "Website, server, tunnel, automation, and delivery stack."],
-              ["Execution Framework", "Clear process logic for entry, stop, target, and operational flow."],
-              ["Growth-Ready Platform", "Prepared for subscriptions, dashboard systems, and expansion."],
-            ].map(([title, text]) => (
-              <div
-                key={title}
-                style={{
-                  borderRadius: "24px",
-                  padding: "24px",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.018))",
-                }}
-              >
-                <h3
-                  style={{
-                    marginTop: 0,
-                    marginBottom: "10px",
-                    fontSize: "23px",
-                    letterSpacing: "-0.03em",
-                  }}
-                >
-                  {title}
-                </h3>
-                <p
-                  style={{
-                    margin: 0,
-                    color: "#a4adbb",
-                    lineHeight: "1.8",
-                    fontSize: "15px",
-                  }}
-                >
-                  {text}
-                </p>
-              </div>
-            ))}
+          <div id="clients" className="mini-grid">
+            <div className="mini-card">
+              <h3>Private Client Access</h3>
+              <p>Secure onboarding and controlled access structure.</p>
+            </div>
+
+            <div className="mini-card">
+              <h3>Trading Infrastructure</h3>
+              <p>Website, server, tunnel, automation, and delivery stack.</p>
+            </div>
+
+            <div className="mini-card">
+              <h3>Execution Framework</h3>
+              <p>Clear process logic for entry, stop, target, and operational flow.</p>
+            </div>
+
+            <div className="mini-card">
+              <h3>Growth-Ready Platform</h3>
+              <p>Prepared for subscriptions, dashboard systems, and expansion.</p>
+            </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section
-          style={{
-            marginTop: "90px",
-            padding: "34px",
-            borderRadius: "30px",
-            border: "1px solid rgba(255,255,255,0.09)",
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025))",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.24)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "22px",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
+        <section className="cta-panel">
+          <div className="cta-inner">
             <div>
-              <div
-                style={{
-                  color: "#c2cada",
-                  fontSize: "12px",
-                  letterSpacing: "0.16em",
-                  marginBottom: "10px",
-                }}
-              >
-                NEXT STAGE
-              </div>
-              <h2
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(30px, 5vw, 54px)",
-                  letterSpacing: "-0.05em",
-                  lineHeight: 1.02,
-                }}
-              >
+              <div className="section-kicker">NEXT STAGE</div>
+              <h2>
                 Private access, refined delivery,
                 <br />
                 institutional presence.
               </h2>
             </div>
 
-            <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
-              <a
-                href="#contact"
-                style={{
-                  padding: "15px 26px",
-                  borderRadius: "14px",
-                  background:
-                    "linear-gradient(135deg, #f4f6fa 0%, #c2c8d2 100%)",
-                  color: "#101318",
-                  fontWeight: 700,
-                  textDecoration: "none",
-                }}
-              >
+            <div className="cta-row">
+              <a href="#contact" className="btn-primary">
                 Request Access
               </a>
-              <a
-                href="#strategy"
-                style={{
-                  padding: "15px 26px",
-                  borderRadius: "14px",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                  color: "#eef2f8",
-                  textDecoration: "none",
-                  background: "rgba(255,255,255,0.03)",
-                }}
-              >
+
+              <a href="#strategy" className="btn-secondary">
                 View Infrastructure
               </a>
             </div>
           </div>
         </section>
 
-        <footer
-          id="contact"
-          style={{
-            marginTop: "80px",
-            paddingTop: "28px",
-            borderTop: "1px solid rgba(255,255,255,0.08)",
-            color: "#8f97a6",
-            display: "flex",
-            justifyContent: "space-between",
-            gap: "20px",
-            flexWrap: "wrap",
-          }}
-        >
+        <footer id="contact" className="footer">
           <div>Silver Fir Capital Management</div>
           <div>contact@silverfircm.com</div>
         </footer>
