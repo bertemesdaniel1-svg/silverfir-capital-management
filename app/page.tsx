@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
@@ -271,7 +272,7 @@ export default function Page() {
 
         .hero {
           position: relative;
-          min-height: 760px;
+          min-height: 720px;
           display: flex;
           align-items: center;
           overflow: hidden;
@@ -283,10 +284,10 @@ export default function Page() {
           z-index: 2;
           width: 100%;
           display: grid;
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: 42px;
+          grid-template-columns: 1.08fr 0.92fr;
+          gap: 56px;
           align-items: center;
-          padding: 40px 0;
+          padding: 32px 0;
         }
 
         .hero-left {
@@ -300,20 +301,13 @@ export default function Page() {
           color: #b8c1ce;
           font-size: 11px;
           letter-spacing: 0.18em;
-          margin-bottom: 30px;
-        }
-
-        .hero-main-row {
-          display: grid;
-          grid-template-columns: 1fr 340px;
-          gap: 28px;
-          align-items: center;
-          margin-bottom: 20px;
+          margin-bottom: 28px;
         }
 
         .title-wrap {
           transform-style: preserve-3d;
           transition: transform 0.14s ease-out;
+          margin-bottom: 22px;
         }
 
         .hero-title {
@@ -336,7 +330,7 @@ export default function Page() {
         .hero-sub-2 {
           font-size: clamp(10px, 1vw, 13px);
           letter-spacing: 0.31em;
-          margin-bottom: 30px;
+          margin-bottom: 0;
           font-weight: 550;
         }
 
@@ -345,7 +339,7 @@ export default function Page() {
             linear-gradient(
               180deg,
               #ffffff 0%,
-              #fdfefe 6%,
+              #fefefe 7%,
               #d7dce2 20%,
               #ffffff 34%,
               #b7bec7 50%,
@@ -397,35 +391,13 @@ export default function Page() {
             0 4px 10px rgba(0,0,0,0.14);
         }
 
-        .small-chart-card {
-          border-radius: 28px;
-          padding: 14px;
-          transform-style: preserve-3d;
-          transition: transform 0.18s ease;
-        }
-
-        .small-chart-label {
-          color: #a5afbe;
-          font-size: 11px;
-          letter-spacing: 0.18em;
-          margin-bottom: 10px;
-          padding-left: 4px;
-        }
-
-        .small-chart-image {
-          width: 100%;
-          display: block;
-          border-radius: 20px;
-          border: 1px solid rgba(255,255,255,0.06);
-        }
-
         .hero-text {
-          max-width: 760px;
+          max-width: 650px;
           color: #9aa5b5;
           font-size: 20px;
           line-height: 1.75;
           letter-spacing: -0.015em;
-          margin-bottom: 38px;
+          margin-bottom: 34px;
           text-wrap: pretty;
         }
 
@@ -433,6 +405,7 @@ export default function Page() {
           display: flex;
           gap: 16px;
           flex-wrap: wrap;
+          margin-bottom: 22px;
         }
 
         .btn-primary,
@@ -495,14 +468,13 @@ export default function Page() {
           z-index: 1;
         }
 
-        .tag-row {
+        .micro-row {
           display: flex;
-          gap: 14px;
+          gap: 12px;
           flex-wrap: wrap;
-          margin-top: 38px;
         }
 
-        .tag {
+        .micro-pill {
           padding: 10px 14px;
           border-radius: 999px;
           color: #aeb7c4;
@@ -510,112 +482,46 @@ export default function Page() {
           font-weight: 500;
         }
 
-        .hero-card-wrap {
+        .hero-right {
           animation: fadeUp 1.2s ease forwards;
         }
 
-        .hero-card {
-          border-radius: 32px;
-          padding: 30px;
+        .small-chart-card {
+          border-radius: 30px;
+          padding: 16px;
           transform-style: preserve-3d;
           transition: transform 0.18s ease;
+          max-width: 460px;
+          margin-left: auto;
         }
 
-        .card-label {
-          margin-bottom: 18px;
-          color: #ccd3dd;
-          font-size: 14px;
-          letter-spacing: 0.14em;
-          font-weight: 600;
+        .small-chart-label {
+          color: #a5afbe;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          margin-bottom: 12px;
+          padding-left: 4px;
         }
 
-        .integrated-brand {
-          display: flex;
-          align-items: center;
-          gap: 18px;
-          margin-bottom: 28px;
-          padding-bottom: 24px;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+        .small-chart-image {
+          width: 100%;
+          display: block;
+          border-radius: 22px;
+          border: 1px solid rgba(255,255,255,0.06);
         }
 
-        .integrated-logo-box {
-          width: 108px;
-          height: 108px;
-          border-radius: 26px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex: 0 0 auto;
+        .section-shell {
+          margin-top: 88px;
         }
 
-        .integrated-logo {
-          width: 72px;
-          height: 72px;
-          object-fit: contain;
-        }
-
-        .integrated-text-top {
-          font-size: 13px;
-          letter-spacing: 0.22em;
-          color: #e6ebf3;
-          font-weight: 700;
-          margin-bottom: 8px;
-        }
-
-        .integrated-text-main {
-          font-size: 30px;
-          line-height: 1;
-          letter-spacing: -0.035em;
-          color: #f2f5fa;
-          margin-bottom: 8px;
-          font-weight: 650;
-        }
-
-        .integrated-text-sub {
-          color: #8a93a3;
-          font-size: 13px;
-          letter-spacing: 0.14em;
-          font-weight: 500;
-        }
-
-        .metrics {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 14px;
-        }
-
-        .metric {
-          padding: 18px;
-          border-radius: 20px;
-          transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .metric:hover {
-          transform: translateY(-2px);
-          border-color: rgba(255,255,255,0.10);
-        }
-
-        .metric-label {
-          color: #808b9b;
-          font-size: 12px;
-          margin-bottom: 8px;
-        }
-
-        .metric-value {
-          font-weight: 650;
-          font-size: 17px;
-          letter-spacing: -0.02em;
-        }
-
-        .cards-3 {
-          margin-top: 96px;
+        .section-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 18px;
         }
 
         .info-card {
-          padding: 30px;
+          padding: 28px;
           border-radius: 28px;
           transition: transform 0.25s ease, border-color 0.25s ease;
         }
@@ -628,7 +534,7 @@ export default function Page() {
         .info-card h3 {
           margin-top: 0;
           margin-bottom: 12px;
-          font-size: 30px;
+          font-size: 28px;
           letter-spacing: -0.04em;
           line-height: 1.02;
           font-weight: 650;
@@ -642,85 +548,8 @@ export default function Page() {
           letter-spacing: -0.01em;
         }
 
-        .section-2 {
-          margin-top: 88px;
-          display: grid;
-          grid-template-columns: 0.95fr 1.05fr;
-          gap: 20px;
-        }
-
-        .big-panel {
-          border-radius: 32px;
-          padding: 36px;
-        }
-
-        .section-kicker {
-          color: #b2bbc8;
-          letter-spacing: 0.16em;
-          font-size: 12px;
-          margin-bottom: 16px;
-          font-weight: 600;
-        }
-
-        .big-panel h2,
-        .cta-panel h2 {
-          margin: 0;
-          font-size: clamp(36px, 5vw, 60px);
-          line-height: 0.98;
-          letter-spacing: -0.06em;
-          font-weight: 680;
-          text-wrap: balance;
-        }
-
-        .big-panel p,
-        .mini-card p {
-          color: #97a2b2;
-          line-height: 1.85;
-          letter-spacing: -0.01em;
-        }
-
-        .mini-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 18px;
-        }
-
-        .mini-card {
-          border-radius: 28px;
-          padding: 26px;
-          transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .mini-card:hover {
-          transform: translateY(-3px);
-          border-color: rgba(255,255,255,0.10);
-        }
-
-        .mini-card h3 {
-          margin-top: 0;
-          margin-bottom: 10px;
-          font-size: 24px;
-          letter-spacing: -0.035em;
-          line-height: 1.04;
-          font-weight: 640;
-        }
-
-        .cta-panel {
-          margin-top: 90px;
-          padding: 36px;
-          border-radius: 32px;
-        }
-
-        .cta-inner {
-          display: flex;
-          justify-content: space-between;
-          gap: 22px;
-          flex-wrap: wrap;
-          align-items: center;
-        }
-
         .footer {
-          margin-top: 80px;
+          margin-top: 70px;
           padding-top: 28px;
           border-top: 1px solid rgba(255,255,255,0.07);
           color: #7f8999;
@@ -742,18 +571,14 @@ export default function Page() {
           }
         }
 
-        @media (max-width: 1180px) {
-          .hero-main-row {
-            grid-template-columns: 1fr;
-          }
-        }
-
         @media (max-width: 1100px) {
           .hero-content,
-          .cards-3,
-          .section-2,
-          .mini-grid {
+          .section-grid {
             grid-template-columns: 1fr !important;
+          }
+
+          .small-chart-card {
+            margin-left: 0;
           }
         }
 
@@ -780,19 +605,6 @@ export default function Page() {
 
           .nav-links {
             gap: 16px;
-          }
-
-          .metrics {
-            grid-template-columns: 1fr;
-          }
-
-          .cta-inner {
-            align-items: flex-start;
-          }
-
-          .integrated-brand {
-            flex-direction: column;
-            align-items: flex-start;
           }
         }
       `}</style>
@@ -828,9 +640,9 @@ export default function Page() {
           </div>
 
           <div className="nav-links">
-            <a href="#strategy">Strategy</a>
+            <a href="#overview">Overview</a>
+            <a href="#access">Access</a>
             <a href="#infrastructure">Infrastructure</a>
-            <a href="#clients">Clients</a>
             <a href="#contact">Contact</a>
           </div>
         </div>
@@ -838,37 +650,21 @@ export default function Page() {
 
       <div className="page-content">
         <section className="container">
-          <section className="hero">
+          <section className="hero" id="overview">
             <div className="hero-content">
               <div className="hero-left">
                 <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
 
-                <div className="hero-main-row">
-                  <div
-                    className="title-wrap"
-                    style={{
-                      transform: `perspective(1200px) rotateX(${tilt.x * 0.16}deg) rotateY(${tilt.y * 0.16}deg)`,
-                    }}
-                  >
-                    <h1 className="hero-title metallic-title">SFCM</h1>
-                    <div className="hero-sub-1 metallic-sub">SILVER FIR</div>
-                    <div className="hero-sub-2 metallic-sub-2">
-                      CAPITAL MANAGEMENT
-                    </div>
-                  </div>
-
-                  <div
-                    className="small-chart-card glass"
-                    style={{
-                      transform: `perspective(1200px) rotateX(${tilt.x * 0.26}deg) rotateY(${tilt.y * 0.26}deg)`,
-                    }}
-                  >
-                    <div className="small-chart-label">US100 CHART</div>
-                    <img
-                      src="/us100-small.png"
-                      alt="US100 Chart"
-                      className="small-chart-image"
-                    />
+                <div
+                  className="title-wrap"
+                  style={{
+                    transform: `perspective(1200px) rotateX(${tilt.x * 0.16}deg) rotateY(${tilt.y * 0.16}deg)`,
+                  }}
+                >
+                  <h1 className="hero-title metallic-title">SFCM</h1>
+                  <div className="hero-sub-1 metallic-sub">SILVER FIR</div>
+                  <div className="hero-sub-2 metallic-sub-2">
+                    CAPITAL MANAGEMENT
                   </div>
                 </div>
 
@@ -879,166 +675,65 @@ export default function Page() {
                 </p>
 
                 <div className="cta-row">
-                  <a href="#clients" className="btn-primary glass">
+                  <a href="#access" className="btn-primary glass">
                     <span>Get Access</span>
                   </a>
 
-                  <a href="#strategy" className="btn-secondary glass">
-                    <span>Explore Strategy</span>
-                  </a>
+                  <Link href="/more" className="btn-secondary glass">
+                    <span>More Information</span>
+                  </Link>
                 </div>
 
-                <div className="tag-row">
-                  <div className="tag glass">Gold</div>
-                  <div className="tag glass">Nasdaq</div>
-                  <div className="tag glass">Automation</div>
-                  <div className="tag glass">Risk-First</div>
+                <div className="micro-row">
+                  <div className="micro-pill glass">Gold</div>
+                  <div className="micro-pill glass">Nasdaq</div>
+                  <div className="micro-pill glass">Automation</div>
+                  <div className="micro-pill glass">Risk-First</div>
                 </div>
               </div>
 
-              <div className="hero-card-wrap">
+              <div className="hero-right">
                 <div
-                  className="hero-card glass"
+                  className="small-chart-card glass"
                   style={{
-                    transform: `perspective(1200px) rotateX(${tilt.x * 0.18}deg) rotateY(${tilt.y * 0.18}deg)`,
+                    transform: `perspective(1200px) rotateX(${tilt.x * 0.24}deg) rotateY(${tilt.y * 0.24}deg)`,
                   }}
                 >
-                  <div className="card-label">BRAND MARK</div>
-
-                  <div className="integrated-brand">
-                    <div className="integrated-logo-box glass">
-                      <img
-                        src="/sfcm-tree-logo.png"
-                        alt="SFCM Logo"
-                        className="integrated-logo"
-                      />
-                    </div>
-
-                    <div>
-                      <div className="integrated-text-top">SFCM</div>
-                      <div className="integrated-text-main">Silver Fir</div>
-                      <div className="integrated-text-sub">
-                        CAPITAL MANAGEMENT
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="metrics">
-                    <div className="metric glass">
-                      <div className="metric-label">Core Markets</div>
-                      <div className="metric-value">Gold / Nasdaq</div>
-                    </div>
-
-                    <div className="metric glass">
-                      <div className="metric-label">Access</div>
-                      <div className="metric-value">Private Clients</div>
-                    </div>
-
-                    <div className="metric glass">
-                      <div className="metric-label">Infrastructure</div>
-                      <div className="metric-value">Vercel + Cloudflare</div>
-                    </div>
-
-                    <div className="metric glass">
-                      <div className="metric-label">Framework</div>
-                      <div className="metric-value">Risk-First</div>
-                    </div>
-                  </div>
+                  <div className="small-chart-label">US100 CHART</div>
+                  <img
+                    src="/us100-small.png"
+                    alt="US100 Chart"
+                    className="small-chart-image"
+                  />
                 </div>
               </div>
             </div>
           </section>
 
-          <section id="strategy" className="cards-3">
-            <div className="info-card glass">
-              <h3>Structured Execution</h3>
-              <p>
-                Systematic trade execution with predefined logic, disciplined
-                entries, and controlled management.
-              </p>
-            </div>
-
-            <div className="info-card glass">
-              <h3>Premium Brand Identity</h3>
-              <p>
-                A refined digital presence designed to present SFCM as a serious
-                modern capital-markets brand.
-              </p>
-            </div>
-
-            <div className="info-card glass">
-              <h3>Scalable Client Access</h3>
-              <p>
-                Built to evolve into dashboards, subscriptions, onboarding, and
-                protected client infrastructure.
-              </p>
-            </div>
-          </section>
-
-          <section id="infrastructure" className="section-2">
-            <div className="big-panel glass">
-              <div className="section-kicker">INFRASTRUCTURE</div>
-
-              <h2>
-                Modern, scalable,
-                <br />
-                client-ready architecture.
-              </h2>
-
-              <p>
-                SFCM is positioned not only as a trading concept, but as a premium
-                digital operating system for private client delivery, execution
-                infrastructure, and advanced financial branding.
-              </p>
-            </div>
-
-            <div id="clients" className="mini-grid">
-              <div className="mini-card glass">
-                <h3>Private Client Access</h3>
-                <p>Secure onboarding and controlled access structure.</p>
-              </div>
-
-              <div className="mini-card glass">
-                <h3>Trading Infrastructure</h3>
-                <p>Website, server, tunnel, automation, and delivery stack.</p>
-              </div>
-
-              <div className="mini-card glass">
-                <h3>Execution Framework</h3>
+          <section className="section-shell" id="access">
+            <div className="section-grid">
+              <div className="info-card glass">
+                <h3>Private Access</h3>
                 <p>
-                  Clear process logic for entry, stop, target, and operational
-                  flow.
+                  Structured onboarding for selected users who want a premium and
+                  disciplined execution environment.
                 </p>
               </div>
 
-              <div className="mini-card glass">
-                <h3>Growth-Ready Platform</h3>
+              <div className="info-card glass" id="infrastructure">
+                <h3>Execution Infrastructure</h3>
                 <p>
-                  Prepared for subscriptions, dashboard systems, and expansion.
+                  Website, server-side delivery, automation components, and a
+                  client-ready digital framework.
                 </p>
               </div>
-            </div>
-          </section>
 
-          <section className="cta-panel glass">
-            <div className="cta-inner">
-              <div>
-                <div className="section-kicker">NEXT STAGE</div>
-                <h2>
-                  Private access, refined delivery,
-                  <br />
-                  institutional presence.
-                </h2>
-              </div>
-
-              <div className="cta-row">
-                <a href="#contact" className="btn-primary glass">
-                  <span>Request Access</span>
-                </a>
-
-                <a href="#strategy" className="btn-secondary glass">
-                  <span>View Infrastructure</span>
-                </a>
+              <div className="info-card glass">
+                <h3>Controlled Methodology</h3>
+                <p>
+                  Professional presentation of the system and process without
+                  exposing proprietary internal strategy logic.
+                </p>
               </div>
             </div>
           </section>
