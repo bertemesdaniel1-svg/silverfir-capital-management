@@ -94,7 +94,7 @@ export default function Page() {
 
   return (
     <main className="sfcm-page">
-      <style>{`
+      <style>{
         * {
           box-sizing: border-box;
         }
@@ -424,6 +424,29 @@ export default function Page() {
           overflow: hidden;
         }
 
+        .login-btn {
+  padding: 10px 18px;
+  border-radius: 14px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #eef2f8;
+  margin-left: 10px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03)
+  );
+
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+}
+
         .btn-primary::before,
         .btn-secondary::before {
           content: "";
@@ -638,13 +661,16 @@ export default function Page() {
               </div>
             </div>
           </div>
+<div className="nav-links">
+  <a href="#overview">Overview</a>
+  <a href="#access">Access</a>
+  <a href="#infrastructure">Infrastructure</a>
+  <a href="#contact">Contact</a>
 
-          <div className="nav-links">
-            <a href="#overview">Overview</a>
-            <a href="#access">Access</a>
-            <a href="#infrastructure">Infrastructure</a>
-            <a href="#contact">Contact</a>
-          </div>
+  <Link href="/login" className="login-btn glass">
+    Login
+  </Link>
+</div>
         </div>
       </div>
 
