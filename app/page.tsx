@@ -317,79 +317,84 @@ export default function Page() {
         }
 
         .hero-title {
-          margin: 0 0 14px 0;
-          font-size: clamp(44px, 6.5vw, 78px);
-          line-height: 0.90;
-          letter-spacing: -0.055em;
+          margin: 0 0 10px 0;
+          font-size: clamp(42px, 6.1vw, 72px);
+          line-height: 0.88;
+          letter-spacing: -0.07em;
           font-weight: 700;
           text-wrap: balance;
+          font-family: Georgia, "Times New Roman", serif;
         }
 
         .hero-sub-1 {
-          font-size: clamp(15px, 1.8vw, 20px);
-          letter-spacing: 0.32em;
-          margin-bottom: 10px;
+          font-size: clamp(14px, 1.65vw, 18px);
+          letter-spacing: 0.36em;
+          margin-bottom: 8px;
           font-weight: 650;
         }
 
         .hero-sub-2 {
-          font-size: clamp(10px, 1.05vw, 14px);
-          letter-spacing: 0.28em;
+          font-size: clamp(10px, 1vw, 13px);
+          letter-spacing: 0.31em;
           margin-bottom: 30px;
           font-weight: 550;
         }
 
         .metallic-title {
-          background: linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #fbfcfd 9%,
-            #dde2e8 24%,
-            #ffffff 40%,
-            #bcc2cb 58%,
-            #f2f4f7 76%,
-            #8b939d 100%
-          );
+          background:
+            linear-gradient(
+              180deg,
+              #ffffff 0%,
+              #fdfefe 6%,
+              #d7dce2 20%,
+              #ffffff 34%,
+              #b7bec7 50%,
+              #eef1f5 68%,
+              #8c949e 84%,
+              #dde2e8 100%
+            );
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           text-shadow:
-            0 1px 0 rgba(255,255,255,0.22),
-            0 12px 30px rgba(0,0,0,0.26);
-          filter: drop-shadow(0 0 8px rgba(255,255,255,0.05));
+            0 1px 0 rgba(255,255,255,0.24),
+            0 8px 18px rgba(0,0,0,0.22);
+          filter: drop-shadow(0 0 6px rgba(255,255,255,0.04));
         }
 
         .metallic-sub {
-          background: linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #e7ebf0 22%,
-            #ffffff 42%,
-            #bcc3cc 70%,
-            #f1f4f7 100%
-          );
+          background:
+            linear-gradient(
+              180deg,
+              #ffffff 0%,
+              #eaedf2 24%,
+              #ffffff 42%,
+              #bcc3cc 70%,
+              #f1f4f7 100%
+            );
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           text-shadow:
-            0 1px 0 rgba(255,255,255,0.12),
-            0 6px 18px rgba(0,0,0,0.16);
+            0 1px 0 rgba(255,255,255,0.10),
+            0 5px 14px rgba(0,0,0,0.16);
         }
 
         .metallic-sub-2 {
-          background: linear-gradient(
-            180deg,
-            #dfe5ec 0%,
-            #bcc3cc 34%,
-            #eef2f6 60%,
-            #919aa5 100%
-          );
+          background:
+            linear-gradient(
+              180deg,
+              #e1e6ed 0%,
+              #bcc3cc 34%,
+              #eef2f6 60%,
+              #919aa5 100%
+            );
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           text-shadow:
-            0 1px 0 rgba(255,255,255,0.08),
-            0 4px 12px rgba(0,0,0,0.14);
+            0 1px 0 rgba(255,255,255,0.07),
+            0 4px 10px rgba(0,0,0,0.14);
         }
 
         .small-chart-card {
@@ -815,8 +820,10 @@ export default function Page() {
             </div>
 
             <div>
-              <div className="brand-top">SFCM</div>
-              <div className="brand-sub">SILVER FIR CAPITAL MANAGEMENT</div>
+              <div className="brand-top metallic-sub">SFCM</div>
+              <div className="brand-sub metallic-sub-2">
+                SILVER FIR CAPITAL MANAGEMENT
+              </div>
             </div>
           </div>
 
