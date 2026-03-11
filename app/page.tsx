@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
-  const [chartDarkness, setChartDarkness] = useState(0.18);
-  const [parallax, setParallax] = useState(0);
+  const fadeRef = useRef<HTMLDivElement | null>(null);
+  const ambientRef = useRef<HTMLDivElement | null>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    let ticking = false;
+    let rafId = 0;
+    let currentDarkness = 0.18;
+    let targetDarkness = 0.18;
+    let currentParallax = 0;
+    let targetParallax = 0;
 
-    const updateEffects = () => {
+    const updateTargets = () => {
       const scrollTop = window.scrollY;
       const docHeight = Math.max(
         document.body.scrollHeight - window.innerHeight,
@@ -18,19 +22,52 @@ export default function Page() {
       );
       const progress = Math.min(scrollTop / docHeight, 1);
 
-      // oben relativ klar, unten fast weg
-      const darkness = 0.18 + progress * 0.77;
-      setChartDarkness(Math.min(0.95, darkness));
+      targetDarkness = 0.18 + progress * 0.77;
+      targetParallax = scrollTop * 0.06;
 
-      setParallax(scrollTop * 0.08);
-
-      ticking = false;
+      if (!rafId) animate();
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(updateEffects);
-        ticking = true;
+    const animate = () => {
+      const darkDiff = targetDarkness - currentDarkness;
+      const paraDiff = targetParallax - currentParallax;
+
+      currentDarkness += darkDiff * 0.08;
+      currentParallax += paraDiff * 0.08;
+
+      if (fadeRef.current) {
+        fadeRef.current.style.background = `
+          linear-gradient(
+            180deg,
+            rgba(4,6,11,${currentDarkness}) 0%,
+            rgba(4,6,11,${Math.min(currentDarkness + 0.10, 0.98)}) 18%,
+            rgba(4,6,11,${Math.min(currentDarkness + 0.22, 0.985)}) 40%,
+            rgba(4,6,11,${Math.min(currentDarkness + 0.36, 0.99)}) 62%,
+            rgba(4,6,11,${Math.min(currentDarkness + 0.52, 0.995)}) 82%,
+            rgba(4,6,11,${Math.min(currentDarkness + 0.64, 0.998)}) 100%
+          ),
+          linear-gradient(
+            90deg,
+            rgba(4,6,11,0.70) 0%,
+            rgba(4,6,11,0.30) 22%,
+            rgba(4,6,11,0.10) 50%,
+            rgba(4,6,11,0.30) 78%,
+            rgba(4,6,11,0.72) 100%
+          )
+        `;
+      }
+
+      if (ambientRef.current) {
+        ambientRef.current.style.transform = `translateY(${currentParallax}px)`;
+      }
+
+      const stillMoving =
+        Math.abs(darkDiff) > 0.001 || Math.abs(paraDiff) > 0.1;
+
+      if (stillMoving) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        rafId = 0;
       }
     };
 
@@ -42,13 +79,15 @@ export default function Page() {
       setTilt({ x: rx, y: ry });
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", updateTargets, { passive: true });
     window.addEventListener("mousemove", onMouseMove);
-    updateEffects();
+
+    updateTargets();
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", updateTargets);
       window.removeEventListener("mousemove", onMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -94,13 +133,12 @@ export default function Page() {
           object-position: center center;
           opacity: 0.65;
           transform: scale(1.03);
-          will-change: transform;
         }
 
         .fixed-chart-fade {
           position: absolute;
           inset: 0;
-          transition: background 0.18s linear;
+          will-change: background;
         }
 
         .sfcm-page::before {
@@ -150,7 +188,6 @@ export default function Page() {
           -webkit-backdrop-filter: blur(18px) saturate(125%);
         }
 
-        /* Sticky top bar */
         .topbar-wrap {
           position: fixed;
           top: 0;
@@ -158,8 +195,6 @@ export default function Page() {
           right: 0;
           z-index: 20;
           padding: 18px 24px;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
         }
 
         .topbar {
@@ -172,10 +207,10 @@ export default function Page() {
           flex-wrap: wrap;
           border-radius: 22px;
           padding: 14px 18px;
-          background: rgba(7,10,16,0.48);
+          background: #0b0f17;
           border: 1px solid rgba(255,255,255,0.08);
           box-shadow:
-            0 14px 30px rgba(0,0,0,0.28),
+            0 14px 30px rgba(0,0,0,0.32),
             inset 0 1px 0 rgba(255,255,255,0.04);
         }
 
@@ -192,6 +227,8 @@ export default function Page() {
           display: flex;
           align-items: center;
           justify-content: center;
+          background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+          border: 1px solid rgba(255,255,255,0.08);
         }
 
         .brand-icon {
@@ -281,23 +318,23 @@ export default function Page() {
 
         .hero-title {
           margin: 0 0 14px 0;
-          font-size: clamp(48px, 7vw, 88px);
+          font-size: clamp(44px, 6.5vw, 78px);
           line-height: 0.90;
-          letter-spacing: -0.06em;
+          letter-spacing: -0.055em;
           font-weight: 700;
           text-wrap: balance;
         }
 
         .hero-sub-1 {
-          font-size: clamp(16px, 2vw, 22px);
-          letter-spacing: 0.34em;
+          font-size: clamp(15px, 1.8vw, 20px);
+          letter-spacing: 0.32em;
           margin-bottom: 10px;
           font-weight: 650;
         }
 
         .hero-sub-2 {
-          font-size: clamp(11px, 1.2vw, 15px);
-          letter-spacing: 0.30em;
+          font-size: clamp(10px, 1.05vw, 14px);
+          letter-spacing: 0.28em;
           margin-bottom: 30px;
           font-weight: 550;
         }
@@ -306,19 +343,19 @@ export default function Page() {
           background: linear-gradient(
             180deg,
             #ffffff 0%,
-            #f8f9fb 10%,
-            #d8dde4 28%,
-            #ffffff 44%,
-            #b1b7c0 62%,
-            #f0f3f6 78%,
-            #9199a3 100%
+            #fbfcfd 9%,
+            #dde2e8 24%,
+            #ffffff 40%,
+            #bcc2cb 58%,
+            #f2f4f7 76%,
+            #8b939d 100%
           );
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
           text-shadow:
             0 1px 0 rgba(255,255,255,0.22),
-            0 12px 30px rgba(0,0,0,0.24);
+            0 12px 30px rgba(0,0,0,0.26);
           filter: drop-shadow(0 0 8px rgba(255,255,255,0.05));
         }
 
@@ -326,10 +363,10 @@ export default function Page() {
           background: linear-gradient(
             180deg,
             #ffffff 0%,
-            #e2e6ec 24%,
-            #ffffff 46%,
-            #b3bac4 72%,
-            #eef2f6 100%
+            #e7ebf0 22%,
+            #ffffff 42%,
+            #bcc3cc 70%,
+            #f1f4f7 100%
           );
           -webkit-background-clip: text;
           background-clip: text;
@@ -342,9 +379,9 @@ export default function Page() {
         .metallic-sub-2 {
           background: linear-gradient(
             180deg,
-            #dce2ea 0%,
-            #b5bcc6 36%,
-            #eef2f6 62%,
+            #dfe5ec 0%,
+            #bcc3cc 34%,
+            #eef2f6 60%,
             #919aa5 100%
           );
           -webkit-background-clip: text;
@@ -757,45 +794,19 @@ export default function Page() {
 
       <div className="fixed-chart-bg">
         <img
-          src="/us100-chart.png"
+          src="/us100-bg.png"
           alt="US100 Background Chart"
           className="fixed-chart-image"
         />
-        <div
-          className="fixed-chart-fade"
-          style={{
-            background: `
-              linear-gradient(
-                180deg,
-                rgba(4,6,11,${chartDarkness}) 0%,
-                rgba(4,6,11,${Math.min(chartDarkness + 0.10, 0.98)}) 18%,
-                rgba(4,6,11,${Math.min(chartDarkness + 0.22, 0.985)}) 40%,
-                rgba(4,6,11,${Math.min(chartDarkness + 0.36, 0.99)}) 62%,
-                rgba(4,6,11,${Math.min(chartDarkness + 0.52, 0.995)}) 82%,
-                rgba(4,6,11,${Math.min(chartDarkness + 0.64, 0.998)}) 100%
-              ),
-              linear-gradient(
-                90deg,
-                rgba(4,6,11,0.70) 0%,
-                rgba(4,6,11,0.30) 22%,
-                rgba(4,6,11,0.10) 50%,
-                rgba(4,6,11,0.30) 78%,
-                rgba(4,6,11,0.72) 100%
-              )
-            `,
-          }}
-        />
+        <div ref={fadeRef} className="fixed-chart-fade" />
       </div>
 
-      <div
-        className="ambient"
-        style={{ transform: `translateY(${parallax * 0.35}px)` }}
-      />
+      <div ref={ambientRef} className="ambient" />
 
       <div className="topbar-wrap">
         <div className="topbar">
           <div className="brand">
-            <div className="brand-icon-wrap glass">
+            <div className="brand-icon-wrap">
               <img
                 src="/sfcm-tree-logo.png"
                 alt="SFCM Tree Logo"
@@ -847,7 +858,7 @@ export default function Page() {
                   >
                     <div className="small-chart-label">US100 CHART</div>
                     <img
-                      src="/us100-chart.png"
+                      src="/us100-small.png"
                       alt="US100 Chart"
                       className="small-chart-image"
                     />
