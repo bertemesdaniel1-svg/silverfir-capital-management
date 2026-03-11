@@ -1,89 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-declare global {
-  interface Window {
-    TradingView?: any;
-  }
-}
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const [mouse, setMouse] = useState({ x: 50, y: 50 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const chartRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMouse({ x, y });
-
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
+
       const rotateY = ((e.clientX - centerX) / centerX) * 4;
       const rotateX = ((e.clientY - centerY) / centerY) * -3;
+
       setTilt({ x: rotateX, y: rotateY });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    const buildWidget = () => {
-      if (!window.TradingView || !chartRef.current) return;
-
-      chartRef.current.innerHTML = "";
-      const widgetContainer = document.createElement("div");
-      widgetContainer.style.height = "100%";
-      widgetContainer.style.width = "100%";
-      chartRef.current.appendChild(widgetContainer);
-
-      new window.TradingView.widget({
-        autosize: true,
-        symbol: "OANDA:NAS100USD",
-        interval: "15",
-        timezone: "Europe/Luxembourg",
-        theme: "dark",
-        style: "1",
-        locale: "en",
-        hide_top_toolbar: true,
-        hide_legend: false,
-        save_image: false,
-        hide_volume: true,
-        allow_symbol_change: false,
-        calendar: false,
-        backgroundColor: "rgba(5,8,14,1)",
-        gridColor: "rgba(255,255,255,0.04)",
-        studies: [],
-        container_id: widgetContainer,
-      });
-    };
-
-    if (window.TradingView) {
-      buildWidget();
-      return;
-    }
-
-    const existing = document.querySelector(
-      'script[src="https://s3.tradingview.com/tv.js"]'
-    ) as HTMLScriptElement | null;
-
-    if (existing) {
-      existing.addEventListener("load", buildWidget);
-      return () => existing.removeEventListener("load", buildWidget);
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/tv.js";
-    script.async = true;
-    script.onload = buildWidget;
-    document.body.appendChild(script);
-
-    return () => {
-      script.onload = null;
-    };
   }, []);
 
   return (
@@ -109,8 +43,7 @@ export default function Page() {
           position: relative;
           overflow: hidden;
           background:
-            radial-gradient(circle at ${mouse.x}% ${mouse.y}%, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 14%, rgba(255,255,255,0) 32%),
-            linear-gradient(180deg, #070910 0%, #04060b 45%, #020409 100%);
+            linear-gradient(180deg, #070910 0%, #04060b 48%, #020409 100%);
         }
 
         .sfcm-page::before {
@@ -118,10 +51,10 @@ export default function Page() {
           position: absolute;
           inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
           background-size: 64px 64px;
-          opacity: 0.14;
+          opacity: 0.12;
           animation: gridDrift 28s linear infinite;
           pointer-events: none;
           mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
@@ -133,8 +66,8 @@ export default function Page() {
           inset: 0;
           pointer-events: none;
           background:
-            radial-gradient(circle at 15% 85%, rgba(90,110,160,0.06), transparent 22%),
-            radial-gradient(circle at 88% 20%, rgba(255,255,255,0.03), transparent 18%);
+            radial-gradient(circle at 15% 85%, rgba(90,110,160,0.04), transparent 24%),
+            radial-gradient(circle at 88% 20%, rgba(255,255,255,0.018), transparent 18%);
           opacity: 0.7;
         }
 
@@ -147,13 +80,13 @@ export default function Page() {
         }
 
         .glass {
-          background: rgba(255,255,255,0.035);
-          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.09);
           box-shadow:
-            0 16px 40px rgba(0,0,0,0.26),
-            inset 0 1px 0 rgba(255,255,255,0.035);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
+            0 14px 34px rgba(0,0,0,0.28),
+            inset 0 1px 0 rgba(255,255,255,0.04);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
         }
 
         .nav {
@@ -249,7 +182,7 @@ export default function Page() {
         }
 
         .title-wrap {
-          transform: perspective(1400px) rotateX(${tilt.x * 0.08}deg) rotateY(${tilt.y * 0.08}deg);
+          transform: perspective(1400px) rotateX(${tilt.x * 0.06}deg) rotateY(${tilt.y * 0.06}deg);
           transition: transform 0.12s ease-out;
         }
 
@@ -260,7 +193,7 @@ export default function Page() {
           letter-spacing: -0.06em;
           font-family: Georgia, "Times New Roman", serif;
           color: rgba(245,248,252,0.96);
-          text-shadow: 0 0 12px rgba(255,255,255,0.03);
+          text-shadow: 0 0 10px rgba(255,255,255,0.02);
         }
 
         .hero-sub-1 {
@@ -293,13 +226,11 @@ export default function Page() {
           padding-left: 4px;
         }
 
-        .hero-chart-box {
+        .hero-chart-image {
           width: 100%;
-          height: 250px;
+          display: block;
           border-radius: 18px;
-          overflow: hidden;
           border: 1px solid rgba(255,255,255,0.06);
-          background: #05080e;
         }
 
         .hero-text {
@@ -322,28 +253,23 @@ export default function Page() {
           border-radius: 14px;
           padding: 15px 28px;
           transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .btn-primary {
-          background: linear-gradient(135deg, #eef2f7 0%, #bcc3cf 100%);
-          color: #101318;
+          color: #f3f6fb;
           font-weight: 700;
-          box-shadow: 0 10px 24px rgba(0,0,0,0.22);
-        }
-
-        .btn-primary:hover {
-          transform: translateY(-2px);
         }
 
         .btn-secondary {
-          border: 1px solid rgba(255,255,255,0.10);
           color: #eef2f8;
-          background: rgba(255,255,255,0.02);
         }
 
+        .btn-primary:hover,
         .btn-secondary:hover {
           transform: translateY(-2px);
-          background: rgba(255,255,255,0.03);
         }
 
         .tag-row {
@@ -588,33 +514,6 @@ export default function Page() {
           }
         }
 
-        @keyframes floatOrb1 {
-          0% {
-            transform: translateX(-50%) translateY(0px);
-          }
-          100% {
-            transform: translateX(-50%) translateY(18px);
-          }
-        }
-
-        @keyframes floatOrb2 {
-          0% {
-            transform: translateY(0px) translateX(0px);
-          }
-          100% {
-            transform: translateY(12px) translateX(-10px);
-          }
-        }
-
-        @keyframes floatOrb3 {
-          0% {
-            transform: translateY(0px) translateX(0px);
-          }
-          100% {
-            transform: translateY(-12px) translateX(8px);
-          }
-        }
-
         @media (max-width: 1180px) {
           .hero-main-row {
             grid-template-columns: 1fr;
@@ -671,9 +570,6 @@ export default function Page() {
       `}</style>
 
       <div className="ambient" />
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
-      <div className="orb orb-3" />
 
       <section className="container">
         <nav className="nav">
@@ -714,11 +610,15 @@ export default function Page() {
               <div
                 className="hero-chart-card glass"
                 style={{
-                  transform: `perspective(1200px) rotateX(${tilt.x * 0.35}deg) rotateY(${tilt.y * 0.35}deg)`,
+                  transform: `perspective(1200px) rotateX(${tilt.x * 0.18}deg) rotateY(${tilt.y * 0.18}deg)`,
                 }}
               >
-                <div className="hero-chart-label">US100 LIVE CHART</div>
-                <div className="hero-chart-box" ref={chartRef} />
+                <div className="hero-chart-label">US100 CHART</div>
+                <img
+                  src="/us100-chart.png"
+                  alt="US100 Chart"
+                  className="hero-chart-image"
+                />
               </div>
             </div>
 
@@ -729,7 +629,7 @@ export default function Page() {
             </p>
 
             <div className="cta-row">
-              <a href="#clients" className="btn-primary">
+              <a href="#clients" className="btn-primary glass">
                 Get Access
               </a>
 
@@ -750,7 +650,7 @@ export default function Page() {
             <div
               className="hero-card glass"
               style={{
-                transform: `perspective(1400px) rotateX(${tilt.x * 0.2}deg) rotateY(${tilt.y * 0.2}deg)`,
+                transform: `perspective(1400px) rotateX(${tilt.x * 0.12}deg) rotateY(${tilt.y * 0.12}deg)`,
               }}
             >
               <div className="card-label">BRAND MARK</div>
@@ -874,7 +774,7 @@ export default function Page() {
             </div>
 
             <div className="cta-row">
-              <a href="#contact" className="btn-primary">
+              <a href="#contact" className="btn-primary glass">
                 Request Access
               </a>
 
