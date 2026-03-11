@@ -1,4 +1,58 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function Page() {
+  const [chartDarkness, setChartDarkness] = useState(0.25);
+  const [parallax, setParallax] = useState(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    let ticking = false;
+
+    const updateEffects = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = Math.max(
+        document.body.scrollHeight - window.innerHeight,
+        1
+      );
+      const progress = Math.min(scrollTop / docHeight, 1);
+
+      // oben ca. 65% sichtbar, unten ca. 5%
+      const darkness = 0.25 + progress * 0.70;
+      setChartDarkness(Math.min(0.95, darkness));
+
+      // leichte Parallax für Grid/Atmosphäre
+      setParallax(scrollTop * 0.12);
+
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateEffects);
+        ticking = true;
+      }
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      const rx = ((e.clientY - cy) / cy) * -2.5;
+      const ry = ((e.clientX - cx) / cx) * 3.5;
+      setTilt({ x: rx, y: ry });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("mousemove", onMouseMove);
+    updateEffects();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mousemove", onMouseMove);
+    };
+  }, []);
+
   return (
     <main className="sfcm-page">
       <style>{`
@@ -24,7 +78,6 @@ export default function Page() {
           background: linear-gradient(180deg, #070910 0%, #04060b 48%, #020409 100%);
         }
 
-        /* Fixed chart always behind everything */
         .fixed-chart-bg {
           position: fixed;
           inset: 0;
@@ -35,38 +88,20 @@ export default function Page() {
 
         .fixed-chart-image {
           position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
+          inset: -2%;
+          width: 104%;
+          height: 104%;
           object-fit: cover;
           object-position: center center;
           opacity: 0.65;
           transform: scale(1.03);
+          will-change: transform;
         }
 
-        /* This is what makes the chart darker lower on the page */
         .fixed-chart-fade {
           position: absolute;
           inset: 0;
-          background:
-            linear-gradient(
-              180deg,
-              rgba(4,6,11,0.22) 0%,
-              rgba(4,6,11,0.34) 14%,
-              rgba(4,6,11,0.50) 30%,
-              rgba(4,6,11,0.68) 48%,
-              rgba(4,6,11,0.82) 66%,
-              rgba(4,6,11,0.92) 82%,
-              rgba(4,6,11,0.97) 100%
-            ),
-            linear-gradient(
-              90deg,
-              rgba(4,6,11,0.70) 0%,
-              rgba(4,6,11,0.30) 22%,
-              rgba(4,6,11,0.10) 50%,
-              rgba(4,6,11,0.30) 78%,
-              rgba(4,6,11,0.72) 100%
-            );
+          transition: background 0.18s linear;
         }
 
         .sfcm-page::before {
@@ -79,10 +114,8 @@ export default function Page() {
             linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
           background-size: 64px 64px;
           opacity: 0.10;
-          animation: gridDrift 28s linear infinite;
           pointer-events: none;
-          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25));
-          -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25));
+          will-change: transform;
         }
 
         .ambient {
@@ -94,6 +127,7 @@ export default function Page() {
             radial-gradient(circle at 18% 82%, rgba(90,110,160,0.03), transparent 24%),
             radial-gradient(circle at 86% 18%, rgba(255,255,255,0.012), transparent 18%);
           opacity: 0.7;
+          will-change: transform;
         }
 
         .page-content {
@@ -223,35 +257,92 @@ export default function Page() {
           margin-bottom: 20px;
         }
 
+        .title-wrap {
+          transform-style: preserve-3d;
+          transition: transform 0.14s ease-out;
+        }
+
         .hero-title {
-          margin: 0 0 16px 0;
-          font-size: clamp(64px, 10vw, 136px);
+          margin: 0 0 14px 0;
+          font-size: clamp(54px, 8vw, 104px);
           line-height: 0.90;
-          letter-spacing: -0.075em;
+          letter-spacing: -0.07em;
           font-weight: 700;
-          color: rgba(248,250,252,0.98);
           text-wrap: balance;
         }
 
         .hero-sub-1 {
-          font-size: clamp(18px, 3vw, 30px);
-          color: rgba(224,230,238,0.94);
-          letter-spacing: 0.28em;
+          font-size: clamp(18px, 2.4vw, 24px);
+          letter-spacing: 0.34em;
           margin-bottom: 10px;
-          font-weight: 600;
+          font-weight: 650;
         }
 
         .hero-sub-2 {
-          font-size: clamp(13px, 2vw, 18px);
-          color: #7f8898;
-          letter-spacing: 0.24em;
+          font-size: clamp(12px, 1.5vw, 16px);
+          letter-spacing: 0.30em;
           margin-bottom: 30px;
-          font-weight: 500;
+          font-weight: 550;
+        }
+
+        .metallic-title {
+          background: linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f0f2f5 18%,
+            #cfd4db 38%,
+            #ffffff 52%,
+            #aeb4bc 68%,
+            #e9edf2 82%,
+            #8f97a1 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          text-shadow:
+            0 1px 0 rgba(255,255,255,0.20),
+            0 10px 30px rgba(0,0,0,0.22);
+          filter: drop-shadow(0 0 8px rgba(255,255,255,0.05));
+        }
+
+        .metallic-sub {
+          background: linear-gradient(
+            180deg,
+            #f7f8fa 0%,
+            #d9dee5 30%,
+            #ffffff 52%,
+            #adb4be 78%,
+            #e3e7ec 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          text-shadow:
+            0 1px 0 rgba(255,255,255,0.12),
+            0 6px 18px rgba(0,0,0,0.16);
+        }
+
+        .metallic-sub-2 {
+          background: linear-gradient(
+            180deg,
+            #d6dce4 0%,
+            #b1b8c2 45%,
+            #e8ecf1 68%,
+            #8e97a2 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          text-shadow:
+            0 1px 0 rgba(255,255,255,0.08),
+            0 4px 12px rgba(0,0,0,0.14);
         }
 
         .small-chart-card {
           border-radius: 28px;
           padding: 14px;
+          transform-style: preserve-3d;
+          transition: transform 0.18s ease;
         }
 
         .small-chart-label {
@@ -297,21 +388,37 @@ export default function Page() {
           font-weight: 600;
           letter-spacing: -0.01em;
           min-height: 54px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-primary::before,
+        .btn-secondary::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(255,255,255,0.12) 0%,
+            rgba(255,255,255,0.04) 40%,
+            rgba(255,255,255,0.015) 100%
+          );
+          pointer-events: none;
         }
 
         .btn-primary {
           color: #f6f8fb;
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+            linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
           box-shadow:
             0 12px 30px rgba(0,0,0,0.24),
-            inset 0 1px 0 rgba(255,255,255,0.10);
+            inset 0 1px 0 rgba(255,255,255,0.12);
         }
 
         .btn-secondary {
           color: #e9edf4;
           background:
-            linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.025));
+            linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
         }
 
         .btn-primary:hover,
@@ -320,7 +427,13 @@ export default function Page() {
           border-color: rgba(255,255,255,0.14);
           box-shadow:
             0 16px 36px rgba(0,0,0,0.28),
-            inset 0 1px 0 rgba(255,255,255,0.12);
+            inset 0 1px 0 rgba(255,255,255,0.14);
+        }
+
+        .btn-primary span,
+        .btn-secondary span {
+          position: relative;
+          z-index: 1;
         }
 
         .tag-row {
@@ -345,6 +458,8 @@ export default function Page() {
         .hero-card {
           border-radius: 32px;
           padding: 30px;
+          transform-style: preserve-3d;
+          transition: transform 0.18s ease;
         }
 
         .card-label {
@@ -641,9 +756,15 @@ export default function Page() {
         <div className="fixed-chart-fade" />
       </div>
 
-      <div className="ambient" />
+      <div
+        className="ambient"
+        style={{ transform: `translateY(${parallax * 0.4}px)` }}
+      />
 
-      <div className="page-content">
+      <div
+        className="page-content"
+        style={{ transform: `translateY(${parallax * 0}px)` }}
+      >
         <section className="container">
           <nav className="nav">
             <div className="brand">
@@ -675,13 +796,25 @@ export default function Page() {
                 <div className="eyebrow glass">PRIVATE TRADING INFRASTRUCTURE</div>
 
                 <div className="hero-main-row">
-                  <div>
-                    <h1 className="hero-title">SFCM</h1>
-                    <div className="hero-sub-1">SILVER FIR</div>
-                    <div className="hero-sub-2">CAPITAL MANAGEMENT</div>
+                  <div
+                    className="title-wrap"
+                    style={{
+                      transform: `perspective(1200px) rotateX(${tilt.x * 0.18}deg) rotateY(${tilt.y * 0.18}deg)`,
+                    }}
+                  >
+                    <h1 className="hero-title metallic-title">SFCM</h1>
+                    <div className="hero-sub-1 metallic-sub">SILVER FIR</div>
+                    <div className="hero-sub-2 metallic-sub-2">
+                      CAPITAL MANAGEMENT
+                    </div>
                   </div>
 
-                  <div className="small-chart-card glass">
+                  <div
+                    className="small-chart-card glass"
+                    style={{
+                      transform: `perspective(1200px) rotateX(${tilt.x * 0.3}deg) rotateY(${tilt.y * 0.3}deg)`,
+                    }}
+                  >
                     <div className="small-chart-label">US100 CHART</div>
                     <img
                       src="/us100-chart.png"
@@ -699,11 +832,11 @@ export default function Page() {
 
                 <div className="cta-row">
                   <a href="#clients" className="btn-primary glass">
-                    Get Access
+                    <span>Get Access</span>
                   </a>
 
                   <a href="#strategy" className="btn-secondary glass">
-                    Explore Strategy
+                    <span>Explore Strategy</span>
                   </a>
                 </div>
 
@@ -716,7 +849,12 @@ export default function Page() {
               </div>
 
               <div className="hero-card-wrap">
-                <div className="hero-card glass">
+                <div
+                  className="hero-card glass"
+                  style={{
+                    transform: `perspective(1200px) rotateX(${tilt.x * 0.22}deg) rotateY(${tilt.y * 0.22}deg)`,
+                  }}
+                >
                   <div className="card-label">BRAND MARK</div>
 
                   <div className="integrated-brand">
@@ -731,7 +869,9 @@ export default function Page() {
                     <div>
                       <div className="integrated-text-top">SFCM</div>
                       <div className="integrated-text-main">Silver Fir</div>
-                      <div className="integrated-text-sub">CAPITAL MANAGEMENT</div>
+                      <div className="integrated-text-sub">
+                        CAPITAL MANAGEMENT
+                      </div>
                     </div>
                   </div>
 
@@ -765,8 +905,8 @@ export default function Page() {
             <div className="info-card glass">
               <h3>Structured Execution</h3>
               <p>
-                Systematic trade execution with predefined logic, disciplined entries,
-                and controlled management.
+                Systematic trade execution with predefined logic, disciplined
+                entries, and controlled management.
               </p>
             </div>
 
@@ -817,12 +957,17 @@ export default function Page() {
 
               <div className="mini-card glass">
                 <h3>Execution Framework</h3>
-                <p>Clear process logic for entry, stop, target, and operational flow.</p>
+                <p>
+                  Clear process logic for entry, stop, target, and operational
+                  flow.
+                </p>
               </div>
 
               <div className="mini-card glass">
                 <h3>Growth-Ready Platform</h3>
-                <p>Prepared for subscriptions, dashboard systems, and expansion.</p>
+                <p>
+                  Prepared for subscriptions, dashboard systems, and expansion.
+                </p>
               </div>
             </div>
           </section>
@@ -840,11 +985,11 @@ export default function Page() {
 
               <div className="cta-row">
                 <a href="#contact" className="btn-primary glass">
-                  Request Access
+                  <span>Request Access</span>
                 </a>
 
                 <a href="#strategy" className="btn-secondary glass">
-                  View Infrastructure
+                  <span>View Infrastructure</span>
                 </a>
               </div>
             </div>
