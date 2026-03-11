@@ -324,7 +324,9 @@ export default function DashboardPage() {
 
         <section className="hero glass">
           <div className="eyebrow">CLIENT OVERVIEW</div>
-          <h1 className="hero-title">Private client access area.</h1>
+          <h1 className="hero-title">
+            {client ? `Welcome, ${client.first_name} ${client.last_name}.` : "Private client access area."}
+          </h1>
           <p className="hero-text">
             This dashboard gives a clean overview of your SFCM access status,
             client credentials, infrastructure readiness, and protected delivery
@@ -338,9 +340,9 @@ export default function DashboardPage() {
             </div>
 
             <div className="stat">
-              <div className="stat-label">Access Level</div>
-              <div className="stat-value">Private Client</div>
-            </div>
+              <div className="stat-label">Email</div>
+              <div className="stat-value">{client?.email}</div>
+              </div>
 
             <div className="stat">
               <div className="stat-label">Client Secret</div>
@@ -358,8 +360,9 @@ export default function DashboardPage() {
           <div className="card glass">
             <h2>Access Details</h2>
             <p>
-              This area is intended for private clients with controlled access to
-              SFCM infrastructure, setup information, and future protected content.
+              {client
+                ? `${client.first_name} ${client.last_name} has controlled access to SFCM infrastructure, setup information, and protected client content.`
+                : "This area is intended for private clients with controlled access to SFCM infrastructure, setup information, and future protected content."}
             </p>
 
             <div className="list">
