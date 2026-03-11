@@ -1,4 +1,36 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function Page() {
+  const [chartOpacity, setChartOpacity] = useState(0.68);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const updateOpacity = () => {
+      const maxScroll = 1400;
+      const progress = Math.min(window.scrollY / maxScroll, 1);
+
+      // Start 10% sichtbarer als vorher und unten fast weg
+      const opacity = 0.68 - progress * 0.6; // endet bei ca. 0.08
+      setChartOpacity(Math.max(0.08, opacity));
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateOpacity);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateOpacity();
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <main className="sfcm-page">
       <style>{`
@@ -154,9 +186,9 @@ export default function Page() {
           height: 100%;
           object-fit: cover;
           object-position: center center;
-          opacity: 0.58;
-          filter: blur(0px);
           transform: scale(1.02);
+          will-change: opacity;
+          transition: opacity 0.18s linear;
         }
 
         .hero-chart-overlay {
@@ -166,17 +198,17 @@ export default function Page() {
             linear-gradient(
               90deg,
               rgba(4,6,11,0.72) 0%,
-              rgba(4,6,11,0.40) 24%,
-              rgba(4,6,11,0.16) 50%,
-              rgba(4,6,11,0.40) 76%,
+              rgba(4,6,11,0.38) 24%,
+              rgba(4,6,11,0.12) 50%,
+              rgba(4,6,11,0.38) 76%,
               rgba(4,6,11,0.74) 100%
             ),
             linear-gradient(
               180deg,
-              rgba(4,6,11,0.28) 0%,
-              rgba(4,6,11,0.10) 24%,
-              rgba(4,6,11,0.28) 62%,
-              rgba(4,6,11,0.78) 100%
+              rgba(4,6,11,0.24) 0%,
+              rgba(4,6,11,0.08) 24%,
+              rgba(4,6,11,0.24) 62%,
+              rgba(4,6,11,0.82) 100%
             );
         }
 
@@ -625,6 +657,7 @@ export default function Page() {
               src="/us100-chart.png"
               alt="US100 Background Chart"
               className="hero-chart-image"
+              style={{ opacity: chartOpacity }}
             />
             <div className="hero-chart-overlay" />
           </div>
