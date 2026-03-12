@@ -8,6 +8,7 @@ type ClientType = {
   first_name: string;
   last_name: string;
   email: string;
+  tv_username: string;
   client_secret: string;
   subscription_status: string;
   payment_status: string;
@@ -32,6 +33,7 @@ export default function ProfilePage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [tvUsername, setTvUsername] = useState("");
 
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
@@ -58,6 +60,7 @@ export default function ProfilePage() {
         setFirstName(data.client.first_name);
         setLastName(data.client.last_name);
         setEmail(data.client.email);
+        setTvUsername(data.client.tv_username || "");
       } catch {
         window.location.href = "/login";
       } finally {
@@ -84,7 +87,8 @@ export default function ProfilePage() {
       body: JSON.stringify({
         firstName,
         lastName,
-        email
+        email,
+        tvUsername
       })
     });
 
@@ -104,7 +108,8 @@ export default function ProfilePage() {
             ...prev,
             first_name: firstName,
             last_name: lastName,
-            email
+            email,
+            tv_username: tvUsername,
           }
         : prev
     );
@@ -735,6 +740,17 @@ export default function ProfilePage() {
       onChange={(e) => setEmail(e.target.value)}
     />
   </div>
+
+  <div className="field">
+  <label htmlFor="tvUsername">TradingView Username</label>
+  <input
+    id="tvUsername"
+    type="text"
+    placeholder="TradingView username"
+    value={tvUsername}
+    onChange={(e) => setTvUsername(e.target.value)}
+  />
+</div>
 
   <button className="save-btn" type="submit" disabled={profileLoading}>
     {profileLoading ? "Saving..." : "Update Profile"}
