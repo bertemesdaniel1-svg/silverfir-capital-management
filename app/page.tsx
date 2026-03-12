@@ -701,9 +701,9 @@ export default function Page() {
                 </p>
 
                 <div className="cta-row">
-                  <a href="#access" className="btn-primary glass">
-                    <span>Get Access</span>
-                  </a>
+                  <Link href="/register" className="btn-primary glass">
+                       <span>Get Access</span>
+                     </Link>
 
                   <Link href="/more" className="btn-secondary glass">
                     <span>More Information</span>
