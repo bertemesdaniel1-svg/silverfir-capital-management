@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import { sql } from "@/lib/db";
 import { getClientFromSessionToken } from "@/lib/auth";
 
-
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
