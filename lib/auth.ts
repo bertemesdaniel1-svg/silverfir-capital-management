@@ -29,6 +29,7 @@ export async function getClientFromSessionToken(token: string) {
       c.first_name,
       c.last_name,
       c.email,
+      c.tv_username,
       c.client_secret,
       c.subscription_status,
       c.payment_status,
