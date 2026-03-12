@@ -26,6 +26,16 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       client,
+      access: {
+        canViewSecret:
+          client.subscription_status === "active" &&
+          client.payment_status === "paid" &&
+          client.is_approved === true,
+        canDownloadEA:
+          client.subscription_status === "active" &&
+          client.payment_status === "paid" &&
+          client.is_approved === true,
+      },
     });
   } catch {
     return NextResponse.json(
