@@ -1,6 +1,7 @@
+import { createSession, verifyPassword } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
-import { createSession } from "@/lib/auth";
+
 
 export async function POST(request: Request) {
 
@@ -25,12 +26,14 @@ export async function POST(request: Request) {
     });
   }
 
-  if (client.password_hash !== password) {
-    return NextResponse.json({
-      success: false,
-      error: "Wrong password"
-    });
-  }
+  const passwordOk = await verifyPassword(password, client.password_hash);
+
+if (!passwordOk) {
+  return NextResponse.json({
+    success: false,
+    error: "Wrong password"
+  });
+}
 
   const session = await createSession(client.id);
 
