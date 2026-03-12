@@ -13,6 +13,7 @@
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
