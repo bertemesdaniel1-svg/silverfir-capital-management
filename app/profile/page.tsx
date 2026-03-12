@@ -29,6 +29,14 @@ export default function ProfilePage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState("");
+  const [profileError, setProfileError] = useState("");
+
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -46,6 +54,10 @@ export default function ProfilePage() {
 
         setClient(data.client);
         setAccess(data.access);
+
+        setFirstName(data.client.first_name);
+        setLastName(data.client.last_name);
+        setEmail(data.client.email);
       } catch {
         window.location.href = "/login";
       } finally {
@@ -56,6 +68,52 @@ export default function ProfilePage() {
     loadProfile();
   }, []);
 
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  setProfileMessage("");
+  setProfileError("");
+  setProfileLoading(true);
+
+  try {
+    const res = await fetch("/api/update-profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email
+      })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      setProfileError(data.error || "Failed to update profile.");
+      setProfileLoading(false);
+      return;
+    }
+
+    setProfileMessage(data.message || "Profile updated successfully.");
+
+    setClient((prev) =>
+      prev
+        ? {
+            ...prev,
+            first_name: firstName,
+            last_name: lastName,
+            email
+          }
+        : prev
+    );
+  } catch {
+    setProfileError("Server error.");
+  } finally {
+    setProfileLoading(false);
+  }
+};
   const copySecret = async () => {
     if (!client?.client_secret || !access?.canViewSecret) return;
 
@@ -621,26 +679,54 @@ export default function ProfilePage() {
         </section>
 
         <section className="portal-grid">
-          <div className="card glass">
-            <h2>Account Information</h2>
+         <h2>Account Information</h2>
 
-            <div className="info-grid">
-              <div className="info-item">
-                <div className="info-label">First Name</div>
-                <div className="info-value">{client?.first_name}</div>
-              </div>
+<form className="form" onSubmit={handleProfileUpdate}>
+  <div className="field">
+    <label htmlFor="firstName">First Name</label>
+    <input
+      id="firstName"
+      type="text"
+      placeholder="First name"
+      value={firstName}
+      onChange={(e) => setFirstName(e.target.value)}
+    />
+  </div>
 
-              <div className="info-item">
-                <div className="info-label">Last Name</div>
-                <div className="info-value">{client?.last_name}</div>
-              </div>
+  <div className="field">
+    <label htmlFor="lastName">Last Name</label>
+    <input
+      id="lastName"
+      type="text"
+      placeholder="Last name"
+      value={lastName}
+      onChange={(e) => setLastName(e.target.value)}
+    />
+  </div>
 
-              <div className="info-item">
-                <div className="info-label">Email</div>
-                <div className="info-value">{client?.email}</div>
-              </div>
-            </div>
-          </div>
+  <div className="field">
+    <label htmlFor="email">Email</label>
+    <input
+      id="email"
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
+  </div>
+
+  <button className="save-btn" type="submit" disabled={profileLoading}>
+    {profileLoading ? "Saving..." : "Update Profile"}
+  </button>
+
+  {profileMessage ? (
+    <div className="message-box">{profileMessage}</div>
+  ) : null}
+
+  {profileError ? (
+    <div className="error-box">{profileError}</div>
+  ) : null}
+</form>
 
           <div className="card glass">
             <h2>Security</h2>
