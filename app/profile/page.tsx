@@ -124,6 +124,18 @@ export default function ProfilePage() {
     } catch {}
   };
 
+  const handleLogout = async () => {
+  try {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+
+    window.location.href = "/";
+  } catch {
+    window.location.href = "/";
+  }
+};
+
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
 
