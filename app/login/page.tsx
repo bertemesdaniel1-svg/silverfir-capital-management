@@ -295,6 +295,7 @@ export default function LoginPage() {
                       password,
                       rememberMe,
                     }),
+                    });
 
                   const data = await res.json();
 
