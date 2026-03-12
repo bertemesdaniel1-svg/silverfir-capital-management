@@ -352,6 +352,10 @@ export default function LoginPage() {
 <button className="primary-btn" type="submit" disabled={loading}>
   {loading ? "Signing In..." : "Sign In"}
 </button>
+
+              <Link href="/register" className="ghost-btn">
+  Create Client Account
+</Link>
               {error && <div className="error-box">{error}</div>}
             </form>
 
