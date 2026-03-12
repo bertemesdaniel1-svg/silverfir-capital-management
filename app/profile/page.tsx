@@ -577,7 +577,6 @@ export default function ProfilePage() {
           </div>
 
           <div className="top-actions">
-            <Link href="/" className="action-btn">Home</Link>
 
             <form action="/api/logout" method="post">
               <button className="logout-btn" type="submit">
@@ -683,10 +682,6 @@ export default function ProfilePage() {
               <button className="save-btn" type="submit" disabled={passwordLoading}>
                 {passwordLoading ? "Saving..." : "Update Password"}
               </button>
-
-              <Link href="/forgot-password" className="ghost-btn">
-                Forgot Password
-              </Link>
 
               {passwordMessage ? (
                 <div className="message-box">{passwordMessage}</div>
