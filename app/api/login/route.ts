@@ -1,4 +1,4 @@
-import { createSession, verifyPassword } from "@/lib/auth";
+import { createSession, verifyPassword, hashPassword } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 
@@ -26,7 +26,28 @@ export async function POST(request: Request) {
     });
   }
 
-  const passwordOk = await verifyPassword(password, client.password_hash);
+const storedPassword = String(client.password_hash ?? "");
+let passwordOk = false;
+
+if (
+  storedPassword.startsWith("$2a$") ||
+  storedPassword.startsWith("$2b$") ||
+  storedPassword.startsWith("$2y$")
+) {
+  passwordOk = await verifyPassword(password, storedPassword);
+} else {
+  passwordOk = password === storedPassword;
+
+  if (passwordOk) {
+    const newHash = await hashPassword(password);
+
+    await sql`
+      UPDATE clients
+      SET password_hash = ${newHash}
+      WHERE id = ${client.id}
+    `;
+  }
+}
 
 if (!passwordOk) {
   return NextResponse.json({
