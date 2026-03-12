@@ -144,6 +144,16 @@ export default function ProfilePage() {
         })
       });
 
+      const handleLogout = async () => {
+  try {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
+  } catch {}
+
+  window.location.href = "/";
+};
+
       const data = await res.json();
 
       if (!data.success) {
@@ -636,11 +646,9 @@ export default function ProfilePage() {
 
           <div className="top-actions">
 
-            <form action="/api/logout" method="post">
-              <button className="logout-btn" type="submit">
-                Log Out
-              </button>
-            </form>
+           <button className="logout-btn" type="button" onClick={handleLogout}>
+  Log Out
+</button>
           </div>
         </div>
 
