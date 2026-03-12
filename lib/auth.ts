@@ -1,5 +1,6 @@
 import { randomBytes } from "crypto";
 import { sql } from "@/lib/db";
+import bcrypt from "bcryptjs";
 
 export function generateSessionToken() {
   return randomBytes(32).toString("hex");
@@ -51,4 +52,24 @@ export async function deleteSession(token: string) {
     WHERE session_token = ${token}
   `;
 
+}
+
+export async function hashPassword(password: string) {
+  return bcrypt.hash(password, 10);
+}
+
+export async function verifyPassword(password: string, hash: string) {
+  return bcrypt.compare(password, hash);
+}
+
+export function generateClientSecret(chosenCode: string) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  let randomPart = "";
+
+  for (let i = 0; i < 8; i++) {
+    randomPart += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  return `SFCM_${chosenCode}_${randomPart}`;
 }
