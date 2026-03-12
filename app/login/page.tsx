@@ -334,24 +334,24 @@ export default function LoginPage() {
                 />
               </div>
 
-             <label className="checkbox">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-              Remember me
-            </label>
+             <div className="row">
+  <label className="checkbox">
+    <input
+      type="checkbox"
+      checked={rememberMe}
+      onChange={(e) => setRememberMe(e.target.checked)}
+    />
+    Remember me
+  </label>
 
-                <a href="#" className="forgot">
-                  Forgot password?
-                </a>
-              </div>
+  <Link href="/forgot-password" className="forgot">
+    Forgot password?
+  </Link>
+</div>
 
-              <button className="primary-btn" type="submit" disabled={loading}>
-                {loading ? "Signing In..." : "Sign In"}
-              </button>
-
+<button className="primary-btn" type="submit" disabled={loading}>
+  {loading ? "Signing In..." : "Sign In"}
+</button>
               {error && <div className="error-box">{error}</div>}
             </form>
 
