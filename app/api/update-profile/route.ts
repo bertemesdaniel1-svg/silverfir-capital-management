@@ -29,6 +29,7 @@ export async function POST(request: Request) {
     const firstName = String(body.firstName ?? "").trim();
     const lastName = String(body.lastName ?? "").trim();
     const email = String(body.email ?? "").trim().toLowerCase();
+    const tvUsername = String(body.tvUsername ?? "").trim();
 
     if (!firstName || !lastName || !email) {
       return NextResponse.json(
@@ -53,13 +54,14 @@ export async function POST(request: Request) {
     }
 
     await sql`
-      UPDATE clients
-      SET
-        first_name = ${firstName},
-        last_name = ${lastName},
-        email = ${email}
-      WHERE id = ${client.id}
-    `;
+  UPDATE clients
+  SET
+    first_name = ${firstName},
+    last_name = ${lastName},
+    email = ${email},
+    tv_username = ${tvUsername}
+  WHERE id = ${client.id}
+`;
 
     return NextResponse.json({
       success: true,
