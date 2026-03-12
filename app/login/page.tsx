@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   return (
     <main className="login-page">
@@ -292,8 +293,8 @@ export default function LoginPage() {
                     body: JSON.stringify({
                       email,
                       password,
+                      rememberMe,
                     }),
-                  });
 
                   const data = await res.json();
 
@@ -332,11 +333,14 @@ export default function LoginPage() {
                 />
               </div>
 
-              <div className="row">
-                <label className="checkbox">
-                  <input type="checkbox" />
-                  Remember me
-                </label>
+             <label className="checkbox">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              Remember me
+            </label>
 
                 <a href="#" className="forgot">
                   Forgot password?
