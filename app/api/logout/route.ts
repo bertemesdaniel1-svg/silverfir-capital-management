@@ -1,35 +1,28 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import { deleteSession } from "@/lib/auth";
 
 export async function POST(request: Request) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sfcm_session")?.value;
 
-  const cookie = request.headers.get("cookie");
+    if (token) {
+      await deleteSession(token);
+    }
 
-  const token = cookie
-    ?.split("; ")
-    .find(c => c.startsWith("sfcm_session="))
-    ?.split("=")[1];
+    const response = NextResponse.redirect(new URL("/", request.url));
 
-  if (token) {
-    await deleteSession(token);
-  }
-
-  const response = NextResponse.redirect(
-    new URL("/", request.url)
-  );
-
-  response.cookies.set(
-    "sfcm_session",
-    "",
-    {
+    response.cookies.set("sfcm_session", "", {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
       path: "/",
       expires: new Date(0)
-    }
-  );
+    });
 
-  return response;
-
+    return response;
+  } catch {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 }
