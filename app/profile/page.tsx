@@ -679,6 +679,7 @@ export default function ProfilePage() {
         </section>
 
         <section className="portal-grid">
+          <div className="card glass">
          <h2>Account Information</h2>
 
 <form className="form" onSubmit={handleProfileUpdate}>
@@ -727,6 +728,7 @@ export default function ProfilePage() {
     <div className="error-box">{profileError}</div>
   ) : null}
 </form>
+</div>
 
           <div className="card glass">
             <h2>Security</h2>
